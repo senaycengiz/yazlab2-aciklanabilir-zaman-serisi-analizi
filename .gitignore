@@ -1,4 +1,5 @@
-data/raw/*
+# Large datasets
+data/raw/WADI/
 
 data/processed/*
 
