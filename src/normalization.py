@@ -10,7 +10,11 @@ SCALER_DIR = "models/scalers"
 
 
 def get_feature_columns(dataframe):
-    excluded_columns = ["DATETIME", "ATT_FLAG", "Attack", "Label", "label", "class"]
+    excluded_columns = [
+        "DATETIME", "Date", "DATE", "Time", "TIME",
+        "ATT_FLAG", "Attack", "Label", "LABEL", "label",
+        "class", "Class", "Normal/Attack"
+    ]
 
     return [
         column for column in dataframe.columns
@@ -22,11 +26,31 @@ def normalize_dataset(train_path, validation_path, test_path, dataset_group, dat
     os.makedirs(NORMALIZED_DATA_DIR, exist_ok=True)
     os.makedirs(SCALER_DIR, exist_ok=True)
 
-    train_data = pd.read_csv(train_path)
-    validation_data = pd.read_csv(validation_path)
-    test_data = pd.read_csv(test_path)
+    train_data = pd.read_csv(train_path, low_memory=False)
+    validation_data = pd.read_csv(validation_path, low_memory=False)
+    test_data = pd.read_csv(test_path, low_memory=False)
 
     feature_columns = get_feature_columns(train_data)
+
+    for column in feature_columns:
+        train_data[column] = pd.to_numeric(train_data[column], errors="coerce")
+        validation_data[column] = pd.to_numeric(validation_data[column], errors="coerce")
+        test_data[column] = pd.to_numeric(test_data[column], errors="coerce")
+
+    feature_columns = [
+        column for column in feature_columns
+        if not train_data[column].isna().all()
+    ]
+
+    if len(feature_columns) == 0:
+        print(f"{dataset_group}/{dataset_name} için sayısal feature bulunamadı, atlandı.")
+        return
+
+    train_means = train_data[feature_columns].mean()
+
+    train_data[feature_columns] = train_data[feature_columns].fillna(train_means)
+    validation_data[feature_columns] = validation_data[feature_columns].fillna(train_means)
+    test_data[feature_columns] = test_data[feature_columns].fillna(train_means)
 
     scaler = StandardScaler()
 
@@ -63,7 +87,7 @@ def run_normalization():
         if not os.path.isdir(dataset_group_path):
             continue
 
-        if dataset_group == "normalized":
+        if dataset_group in ["normalized", "pca"]:
             continue
 
         for dataset_name in os.listdir(dataset_group_path):
