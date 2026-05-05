@@ -110,7 +110,6 @@ WADI attack veri setinde kolon isimleri düzgün okunmadığı için veri yükle
 
 ---
 
-
 ## 5. Veri Ön İşleme (Preprocessing)
 
 Zaman serisi verileri üzerinde modelleme yapılmadan önce veri ön işleme adımları uygulanmıştır.
@@ -126,7 +125,6 @@ Veri setleri aşağıdaki oranlarda sıralı şekilde bölünmüştür:
 Zaman serisi yapısını korumak amacıyla *shuffle işlemi uygulanmamıştır* ve veriler kronolojik sıraya göre bölünmüştür.
 
 ---
-
 
 ### 5.2 Veri Normalizasyonu
 
