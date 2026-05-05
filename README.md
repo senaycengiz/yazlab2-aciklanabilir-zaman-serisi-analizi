@@ -107,3 +107,167 @@ WADI attack veri setinde kolon isimleri düzgün okunmadığı için veri yükle
 - Her iki veri setinde train verisinin tamamen normal olması, anomaly detection probleminin gerçekçi bir şekilde ele alındığını göstermektedir.  
 - Test verilerinde yaklaşık %5 oranında anomaly bulunması, modellerin performansını değerlendirmek için dengeli bir senaryo sunmaktadır.  
 - Veri setleri arasındaki boyut ve karmaşıklık farkı, modellerin genellenebilirlik performansını karşılaştırmak açısından önemli bir avantaj sağlamaktadır.
+
+---
+
+
+## 5. Veri Ön İşleme (Preprocessing)
+
+Zaman serisi verileri üzerinde modelleme yapılmadan önce veri ön işleme adımları uygulanmıştır.
+
+### 5.1 Veri Bölme
+
+Veri setleri aşağıdaki oranlarda sıralı şekilde bölünmüştür:
+
+•⁠  ⁠Train: %60  
+•⁠  ⁠Validation: %20  
+•⁠  ⁠Test: %20  
+
+Zaman serisi yapısını korumak amacıyla *shuffle işlemi uygulanmamıştır* ve veriler kronolojik sıraya göre bölünmüştür.
+
+---
+
+
+### 5.2 Veri Normalizasyonu
+
+Bu aşamada veri setleri üzerinde **normalizasyon işlemi** uygulanmıştır. Amaç, farklı ölçeklerde bulunan özelliklerin aynı referans aralığına getirilerek modelin daha sağlıklı öğrenmesini sağlamaktır. Özellikle sensör verilerinin bulunduğu WADI ve BATADAL veri setlerinde, değişkenler arasında ciddi ölçek farkları bulunduğundan bu adım kritik öneme sahiptir.
+
+
+### Kullanılan Yöntem
+
+Normalizasyon işlemi için **Standard Scaler** yöntemi tercih edilmiştir. Bu yöntem ile her özellik için:
+
+- Ortalama (mean) = 0
+- Standart sapma (std) = 1
+
+olacak şekilde dönüşüm yapılmaktadır.
+
+### Veri Sızıntısını Önleme 
+
+Bu projede hocanın özellikle vurguladığı en önemli kurallardan biri **veri sızıntısının (data leakage) engellenmesidir**. Bu nedenle normalizasyon işlemi aşağıdaki şekilde gerçekleştirilmiştir:
+
+- Scaler **yalnızca train verisi üzerinde fit edilmiştir**
+- Validation ve test verilerine **fit işlemi yapılmamış**, sadece aynı scaler ile **transform uygulanmıştır**
+
+Bu yaklaşım sayesinde modelin test verisi hakkında önceden bilgi edinmesi engellenmiştir.
+
+### Uygulama Akışı
+
+Normalizasyon işlemi aşağıdaki sıraya göre gerçekleştirilmiştir:
+
+1. Train veri seti alınır
+2. Scaler bu veri üzerinde eğitilir (`fit`)
+3. Train verisi dönüştürülür (`transform`)
+4. Aynı scaler kullanılarak validation ve test verileri dönüştürülür
+
+
+### Elde Edilen Çıktılar
+
+- Normalize edilmiş **train**, **validation** ve **test** veri setleri oluşturulmuştur
+- Kullanılan scaler modeli tekrar kullanılabilmesi için `.pkl` formatında saklanmıştır
+- Tüm veri setleri aynı ölçeğe getirildiği için model eğitimi için uygun hale getirilmiştir
+
+---
+
+## 6. Boyut İndirgeme (PCA)
+
+Normalizasyon işleminden sonra veri setleri üzerinde **boyut indirgeme (dimensionality reduction)** işlemi uygulanmıştır. Bu amaçla **Principal Component Analysis (PCA)** yöntemi kullanılmıştır.
+
+### Amaç
+
+Bu adımın temel amaçları:
+
+- Çok boyutlu veriyi daha sade hale getirmek
+- Gürültüyü (noise) azaltmak
+- Hesaplama maliyetini düşürmek
+- Zaman serisini tek boyutlu temsil ederek sonraki adımlar (SAX, state transition) için uygun hale getirmek
+
+### Kullanılan Yöntem
+
+PCA yöntemi kullanılarak veri **tek bileşene indirgenmiştir**:
+
+- Sadece **birinci ana bileşen (Principal Component 1 - PC1)** kullanılmıştır
+- Böylece her zaman adımı tek bir değer ile temsil edilmiştir
+
+### Veri Sızıntısını Önleme 
+
+Normalizasyonda olduğu gibi PCA uygulamasında da veri sızıntısını önlemek için şu kurala uyulmuştur:
+
+- PCA modeli **sadece train verisi ile fit edilmiştir**
+- Validation ve test verilerine **fit işlemi yapılmadan**, aynı PCA modeli ile sadece **transform uygulanmıştır**
+
+Bu sayede modelin test verisinden bilgi öğrenmesi engellenmiştir.
+
+### Uygulama Akışı
+
+PCA işlemi aşağıdaki şekilde gerçekleştirilmiştir:
+
+1. Normalize edilmiş train verisi alınır
+2. PCA modeli bu veri ile eğitilir (`fit`)
+3. Train verisi dönüştürülür (`transform`)
+4. Aynı PCA modeli kullanılarak validation ve test verileri dönüştürülür
+
+
+### Çıktı Özellikleri
+
+- Veri seti çok boyutlu yapıdan **tek boyutlu yapıya indirgenmiştir**
+- Her örnek için çıktı boyutu: (n_samples, 1)
+
+- Tüm özellikler yerine artık sadece **en yüksek varyansı temsil eden tek bileşen (PC1)** kullanılmaktadır
+
+### Proje Açısından Önemi
+
+Bu adım, projenin ilerleyen aşamalarında uygulanacak olan:
+
+- **Sliding Window**
+- **PAA (Piecewise Aggregate Approximation)**
+- **SAX (Symbolic Aggregate Approximation)**
+- **Durum (state) ve geçiş (transition) analizi**
+
+için temel veri temsilini oluşturmaktadır.
+
+Tek boyutlu zaman serisi elde edilerek, verinin **yorumlanabilir (explainable)** hale getilmesi yönünde önemli bir adım atılmıştır.
+
+---
+
+## 6.1 PCA ve Normalizasyon Sonuçlarının Doğrulanması
+
+Uygulanan normalizasyon ve PCA işlemlerinin doğruluğunu garanti altına almak amacıyla testler gerçekleştirilmiştir.
+
+### Test Edilen Kriterler
+
+Bu kapsamda aşağıdaki kontroller yapılmıştır:
+
+- Normalizasyon sonrası verilerin aynı ölçeğe getirildiği doğrulanmıştır
+- PCA sonrası veri boyutunun **tek bileşene indirildiği (n_components = 1)** kontrol edilmiştir
+- PCA modelinin **sadece train verisi ile fit edildiği** doğrulanmıştır
+- Validation ve test verilerinin yalnızca **transform işlemi ile dönüştürüldüğü** test edilmiştir
+
+### Test Sonuçları
+
+Yapılan testler sonucunda:
+
+- PCA çıktısının her veri seti için `(n_samples, 1)` boyutunda olduğu gözlemlenmiştir
+- Train, validation ve test veri setlerinde dönüşümün tutarlı olduğu doğrulanmıştır
+- Veri sızıntısının oluşmadığı garanti altına alınmıştır
+
+### Örnek Çıktı
+
+Aşağıda PCA sonrası veri boyutuna ait örnek bir çıktı verilmiştir:
+
+```
+Train shape after PCA      : (5256, 1)
+Validation shape after PCA : (1752, 1)
+Test shape after PCA       : (1753, 1)
+```
+
+---
+
+
+### Genel Değerlendirme
+
+Uygulanan normalizasyon ve PCA işlemleri sonucunda veri, modelleme süreci için uygun hale getirilmiştir. Dönüşümlerin yalnızca train verisi üzerinden öğrenilmesi veri sızıntısını engelleyerek sonuçların güvenilirliğini artırmıştır.
+
+PCA ile veri tek boyuta indirgenmiş ve en yüksek varyansı temsil eden bileşen korunmuştur. Bu sayede veri daha sade hale gelmiş ve sonraki adımlar (SAX, sliding window, state transition) için uygun bir yapı elde edilmiştir.
+
+
