@@ -1,30 +1,41 @@
-from data_loader import load_csv, load_wadi_attack, print_basic_info, print_anomaly_info
+from data_loader import (
+    load_csv,
+    load_skab_dataset,
+    print_basic_info,
+    print_anomaly_info,
+    find_label_column,
+    get_feature_columns
+)
 
-batadal_train_path = "data/raw/BATADAL/BATADAL_dataset03.csv"
-batadal_test_path = "data/raw/BATADAL/BATADAL_dataset04.csv"
 
-wadi_train_path = "data/raw/WADI/WADI_14days_new.csv"
-wadi_attack_path = "data/raw/WADI/WADI_attackdataLABLE.csv"
+batadal_path = "data/raw/BATADAL/BATADAL_dataset04.csv"
 
 
 # BATADAL
-batadal_train = load_csv(batadal_train_path)
-batadal_test = load_csv(batadal_test_path)
+batadal_df = load_csv(batadal_path)
 
-print_basic_info(batadal_train, "BATADAL TRAIN - dataset03")
-print_anomaly_info(batadal_train, "BATADAL TRAIN - dataset03")
+print_basic_info(batadal_df, "BATADAL - Training Dataset 2")
+print_anomaly_info(batadal_df, "BATADAL - Training Dataset 2")
 
-print_basic_info(batadal_test, "BATADAL TEST - dataset04")
-print_anomaly_info(batadal_test, "BATADAL TEST - dataset04")
+batadal_label = find_label_column(batadal_df)
+batadal_features = get_feature_columns(batadal_df)
+
+print("\nBATADAL label sütunu:", batadal_label)
+print("BATADAL model feature sayısı:", len(batadal_features))
 
 
-# WADI
-wadi_train = load_csv(wadi_train_path)
+# SKAB
+skab_df = load_skab_dataset("data/raw/SKAB")
 
-wadi_attack = load_wadi_attack(wadi_attack_path)
+print_basic_info(skab_df, "SKAB - valve1 + valve2")
+print_anomaly_info(skab_df, "SKAB - valve1 + valve2")
 
-print_basic_info(wadi_train, "WADI TRAIN")
-print_anomaly_info(wadi_train, "WADI TRAIN")
+skab_label = find_label_column(skab_df)
+skab_features = get_feature_columns(skab_df)
 
-print_basic_info(wadi_attack, "WADI ATTACK")
-print_anomaly_info(wadi_attack, "WADI ATTACK")
+print("\nSKAB label sütunu:", skab_label)
+print("SKAB model feature sayısı:", len(skab_features))
+print("SKAB source_group dağılımı:")
+print(skab_df["source_group"].value_counts())
+
+print("\nSKAB source_file sayısı:", skab_df["source_file"].nunique())
