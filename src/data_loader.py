@@ -1,29 +1,51 @@
+import os
 import pandas as pd
 
 
 def load_csv(path):
     """
     Verilen CSV dosyasını pandas ile okur.
-    Kolon isimlerindeki gereksiz boşlukları temizler.
+    SKAB dosyalarında ayraç ; olduğu için otomatik separator algılanır.
+    Kolon isimlerindeki gereksiz boşluklar temizlenir.
     """
-    df = pd.read_csv(path, low_memory=False)
+    df = pd.read_csv(path, sep=None, engine="python")
     df.columns = df.columns.str.strip()
     return df
 
 
-def load_wadi_attack(path):
+def load_skab_dataset(base_path="data/raw/SKAB"):
     """
-    WADI attack dosyasında ilk satır gerçek kolon isimlerini içerdiği için
-    dosya özel olarak düzenlenerek okunur.
+    SKAB veri setinde yalnızca valve1 ve valve2 klasörleri kullanılır.
+    Bu klasörlerdeki tüm CSV dosyaları birleştirilir.
+
+    Eklenen sütunlar:
+    - source_group: valve1 veya valve2
+    - source_file: kaydın geldiği CSV dosyası
     """
-    df = pd.read_csv(path, low_memory=False)
+    all_dataframes = []
 
-    # İlk satırı kolon ismi olarak al
-    new_columns = df.iloc[0].astype(str).str.strip()
-    df = df.iloc[1:].copy()
-    df.columns = new_columns
+    for group_name in ["valve1", "valve2"]:
+        group_path = os.path.join(base_path, group_name)
 
-    return df
+        if not os.path.exists(group_path):
+            print(f"Uyarı: {group_path} klasörü bulunamadı.")
+            continue
+
+        for file_name in os.listdir(group_path):
+            if file_name.endswith(".csv"):
+                file_path = os.path.join(group_path, file_name)
+
+                df = load_csv(file_path)
+                df["source_group"] = group_name
+                df["source_file"] = file_name
+
+                all_dataframes.append(df)
+
+    if not all_dataframes:
+        raise FileNotFoundError("SKAB için valve1/valve2 klasörlerinde CSV dosyası bulunamadı.")
+
+    combined_df = pd.concat(all_dataframes, ignore_index=True)
+    return combined_df
 
 
 def print_basic_info(df, dataset_name):
@@ -63,6 +85,35 @@ def find_label_column(df):
             return col
 
     return None
+
+
+def get_feature_columns(df):
+    """
+    Model girdisi olarak kullanılacak feature sütunlarını döndürür.
+    Zaman, etiket ve takip amaçlı sütunlar çıkarılır.
+    """
+    label_col = find_label_column(df)
+
+    excluded_columns = [
+        "datetime",
+        "DATETIME",
+        "Date",
+        "Time",
+        "Timestamp",
+        "changepoint",
+        "source_group",
+        "source_file"
+    ]
+
+    if label_col is not None:
+        excluded_columns.append(label_col)
+
+    feature_columns = [
+        col for col in df.columns
+        if col not in excluded_columns
+    ]
+
+    return feature_columns
 
 
 def print_anomaly_info(df, dataset_name):
