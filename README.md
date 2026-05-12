@@ -24,248 +24,407 @@ Kullanılacak yöntemler:
 
 ## 4. Veri Seti Analizi
 
-Bu projede **WADI** ve **BATADAL** veri setleri kullanılmıştır.
+Bu projede BATADAL Training Dataset 2 ve SKAB veri setleri kullanılmıştır.
 
 ---
 
-### 4.1 BATADAL Veri Seti
+## 4.1 BATADAL Veri Seti
 
-**Dataset03 (Train):**
-- Satır sayısı: 8761  
-- Kolon sayısı: 45  
-- Anomaly oranı: %0  
+Bu projede BATADAL veri seti içerisinden yalnızca hocanın proje isterlerinde belirtilen Training Dataset 2 kullanılmıştır.
 
-**Dataset04 (Test):**
-- Satır sayısı: 4177  
-- Kolon sayısı: 45  
-- Anomaly oranı:
-  - %94.75 normal  
-  - %5.24 anomaly  
+Genel Bilgiler
 
-**Genel Özellikler:**
-- Eksik veri bulunmamaktadır  
-- Train veri tamamen normaldir  
-- Test veri anomaly içerir  
-- Veri seti düşük boyutlu ve düzenli yapıdadır  
+* Satır sayısı: 4177
+* Kolon sayısı: 45
+* Model feature sayısı: 43
+* Label sütunu: ATT_FLAG
 
----
+Anomaly Dağılımı
 
-### 4.2 WADI Veri Seti
+* %94.75 normal
+* %5.24 anomaly
 
-**Train Verisi:**
-- Satır sayısı: 784571  
-- Kolon sayısı: 130  
-- Label sütunu bulunmamaktadır  
+Genel Özellikler
 
-**Attack Verisi:**
-- Satır sayısı: 172803  
-- Kolon sayısı: 131  
-- Label sütunu:
-  - `Attack LABLE (1:No Attack, -1:Attack)`
-
-**Anomaly oranı:**
-- %94.22 normal  
-- %5.77 anomaly  
-
-**Genel Özellikler:**
-- Veri seti yüksek boyutlu ve büyük ölçeklidir  
-- Bazı kolonlarda eksik veri bulunmaktadır  
-- Anomaly yalnızca attack veri setinde yer almaktadır  
-
-**Önemli Not:**
-WADI attack veri setinde kolon isimleri düzgün okunmadığı için veri yükleme aşamasında ilk satır kolon isimleri olarak atanmış ve veri seti yeniden düzenlenmiştir.
+* Veri setinde eksik veri bulunmamaktadır.
+* Veri seti düzenli ve düşük boyutlu yapıdadır.
+* Anomaly bilgisi doğrudan ATT_FLAG sütununda tutulmaktadır.
+* Sensör verileri farklı ölçeklerde olduğu için normalizasyon işlemi uygulanmıştır.
+* PCA ile veri tek boyutlu zaman serisine indirgenmiştir.
 
 ---
 
-### 4.3 Veri Setleri Karşılaştırması
+## 4.2 SKAB Veri Seti
 
-| Özellik | BATADAL | WADI |
-|--------|--------|------|
-| Feature sayısı | 45 | 130 |
-| Veri boyutu | Küçük | Büyük |
-| Eksik veri | Yok | Var |
-| Train anomaly | Yok | Yok |
-| Test anomaly | Var | Attack datasetinde |
-| Veri karmaşıklığı | Düşük | Yüksek |
+Bu projede SKAB veri seti içerisinden yalnızca:
+
+* valve1
+* valve2
+
+klasörleri kullanılmıştır.
+
+Bu klasörlerde yer alan tüm .csv dosyaları birleştirilerek tek bir veri seti oluşturulmuştur.
+
+Genel Bilgiler
+
+* Satır sayısı: 22474
+* Kolon sayısı: 13
+* Model feature sayısı: 8
+* Label sütunu: anomaly
+* Source file sayısı: 16
+
+Kullanılan Kolonlar
+
+SKAB veri setinde aşağıdaki temel sensör değişkenleri kullanılmıştır:
+
+* Accelerometer1RMS
+* Accelerometer2RMS
+* Current
+* Pressure
+* Temperature
+* Thermocouple
+* Voltage
+* Volume Flow RateRMS
+
+Ek olarak veri takibi ve grup bazlı bölme işlemleri için:
+
+* source_group
+* source_file
+
+kolonları eklenmiştir.
+
+Anomaly Dağılımı
+
+* %65.17 normal
+* %34.82 anomaly
+
+Genel Özellikler
+
+* Veri setinde eksik veri bulunmamaktadır.
+* Veri seti farklı sensörlerden oluşan çok değişkenli zaman serisi yapısındadır.
+* Anomaly bilgisi anomaly sütununda tutulmaktadır.
+* Veri seti birden fazla csv dosyasından oluştuğu için dosya bazlı veri bölme stratejisi uygulanmıştır.
+* Aynı source file’ın hem train hem test verisinde bulunması engellenmiştir.
 
 ---
 
-### 4.4 Sayısal Karşılaştırma
+## 4.3 Veri Setleri Karşılaştırması
 
-- WADI veri seti, BATADAL veri setine göre yaklaşık **18 kat daha fazla veri içermektedir**.  
-- Feature sayısı açısından WADI, BATADAL’a göre yaklaşık **3 kat daha fazladır** (130 vs 45).  
-- Her iki veri setinde anomaly oranı benzer olup yaklaşık **%5 civarındadır**.  
-- BATADAL veri setinde eksik veri bulunmazken, WADI veri setinde eksik değerler bulunmaktadır.  
-
----
-
-### 4.5 Analitik Değerlendirme
-
-- WADI veri setinin yüksek boyutlu ve büyük ölçekli olması, modelin daha fazla örüntü öğrenmesini sağlayabilir; ancak bu durum model karmaşıklığını artırarak eğitim süresini uzatabilir.  
-- BATADAL veri seti daha küçük ve temiz olduğu için model geliştirme sürecinde hızlı denemeler yapılmasına olanak sağlar.  
-- WADI veri setindeki yüksek feature sayısı, özellikle PCA gibi boyut indirgeme tekniklerinin kullanılmasını gerekli kılmaktadır.  
-- Her iki veri setinde train verisinin tamamen normal olması, anomaly detection probleminin gerçekçi bir şekilde ele alındığını göstermektedir.  
-- Test verilerinde yaklaşık %5 oranında anomaly bulunması, modellerin performansını değerlendirmek için dengeli bir senaryo sunmaktadır.  
-- Veri setleri arasındaki boyut ve karmaşıklık farkı, modellerin genellenebilirlik performansını karşılaştırmak açısından önemli bir avantaj sağlamaktadır.
+Özellik	BATADAL	SKAB
+Feature sayısı	43	8
+Veri boyutu	Küçük	Orta
+Eksik veri	Yok	Yok
+Label sütunu	ATT_FLAG	anomaly
+Veri yapısı	Tek csv	Çoklu csv
+Veri karmaşıklığı	Düşük	Orta
+Bölme yöntemi	Sıralı split	GroupKFold
 
 ---
 
+## 4.4 Sayısal Karşılaştırma
+
+* SKAB veri seti, BATADAL veri setine göre daha fazla satır içermektedir.
+* BATADAL veri seti daha fazla feature içermektedir.
+* BATADAL veri setinde anomaly oranı yaklaşık %5 seviyesindedir.
+* SKAB veri setinde anomaly oranı yaklaşık %35 seviyesindedir.
+* Her iki veri setinde de eksik veri bulunmamaktadır.
+* Veri setlerinin yapısal farklılıkları nedeniyle veri bölme stratejileri veri setine özel uygulanmıştır.
+
+---
+
+## 4.5 Analitik Değerlendirme
+
+BATADAL veri seti daha küçük ve düzenli bir yapıya sahip olduğu için model geliştirme sürecinde hızlı deneyler yapılmasına olanak sağlamaktadır.
+
+SKAB veri seti ise çoklu csv yapısı ve farklı sensör değişkenleri nedeniyle daha karmaşık bir yapı sunmaktadır. Bu nedenle veri bölme aşamasında klasik train/test ayrımı yerine GroupKFold yaklaşımı kullanılmıştır.
+
+SKAB veri setinde aynı source file’ın hem eğitim hem test verisine düşmesi engellenerek veri sızıntısı (data leakage) riski azaltılmıştır.
+
+Her iki veri setinde de sensör değişkenlerinin farklı ölçeklerde olması nedeniyle normalizasyon işlemi uygulanmıştır.
+
+PCA ile veriler tek boyutlu zaman serisi temsiline indirgenmiş ve ilerleyen aşamalarda uygulanacak olan:
+
+* Sliding Window
+* PAA
+* SAX
+* State Transition
+* Explainability
+
+adımları için uygun veri yapısı elde edilmiştir.
+
+---
 ## 5. Veri Ön İşleme (Preprocessing)
 
 Zaman serisi verileri üzerinde modelleme yapılmadan önce veri ön işleme adımları uygulanmıştır.
 
-### 5.1 Veri Bölme
+---
 
-Veri setleri aşağıdaki oranlarda sıralı şekilde bölünmüştür:
+## 5.1 Veri Bölme
 
-•⁠  ⁠Train: %60  
-•⁠  ⁠Validation: %20  
-•⁠  ⁠Test: %20  
+BATADAL Veri Seti
 
-Zaman serisi yapısını korumak amacıyla *shuffle işlemi uygulanmamıştır* ve veriler kronolojik sıraya göre bölünmüştür.
+BATADAL veri seti zaman sırası korunacak şekilde aşağıdaki oranlarda bölünmüştür:
+
+* Train: %60
+* Validation: %20
+* Test: %20
+
+Shuffle işlemi uygulanmamış ve veriler kronolojik sıraya göre ayrılmıştır.
+
+BATADAL Split Sonuçları
+
+* Train: 2506 satır
+* Validation: 835 satır
+* Test: 836 satır
 
 ---
 
-### 5.2 Veri Normalizasyonu
+SKAB Veri Seti
 
-Bu aşamada veri setleri üzerinde **normalizasyon işlemi** uygulanmıştır. Amaç, farklı ölçeklerde bulunan özelliklerin aynı referans aralığına getirilerek modelin daha sağlıklı öğrenmesini sağlamaktır. Özellikle sensör verilerinin bulunduğu WADI ve BATADAL veri setlerinde, değişkenler arasında ciddi ölçek farkları bulunduğundan bu adım kritik öneme sahiptir.
+SKAB veri seti çoklu csv dosyalarından oluştuğu için klasik train/test bölmesi yerine GroupKFold yaklaşımı kullanılmıştır.
 
+Bu yöntemde:
 
-### Kullanılan Yöntem
+* source_file sütunu grup değişkeni olarak kullanılmıştır.
+* Aynı csv dosyasının hem train hem test verisinde bulunması engellenmiştir.
+* Veri sızıntısı oluşmaması hedeflenmiştir.
 
-Normalizasyon işlemi için **Standard Scaler** yöntemi tercih edilmiştir. Bu yöntem ile her özellik için:
+SKAB Fold Sonuçları
 
-- Ortalama (mean) = 0
-- Standart sapma (std) = 1
+Fold 1
+
+* Train: 17962 satır
+* Test: 4512 satır
+
+Fold 2
+
+* Train: 17981 satır
+* Test: 4493 satır
+
+Fold 3
+
+* Train: 17982 satır
+* Test: 4492 satır
+
+Fold 4
+
+* Train: 18040 satır
+* Test: 4434 satır
+
+Fold 5
+
+* Train: 17931 satır
+* Test: 4543 satır
+
+---
+
+## 5.2 Veri Normalizasyonu
+
+Bu aşamada veri setleri üzerinde normalizasyon işlemi uygulanmıştır. Amaç, farklı ölçeklerde bulunan özelliklerin aynı referans aralığına getirilerek modelin daha sağlıklı öğrenmesini sağlamaktır.
+
+Özellikle sensör verilerinin bulunduğu BATADAL ve SKAB veri setlerinde değişkenler arasında ciddi ölçek farkları bulunduğundan bu adım kritik öneme sahiptir.
+
+---
+
+Kullanılan Yöntem
+
+Normalizasyon işlemi için StandardScaler yöntemi tercih edilmiştir.
+
+Bu yöntem ile her özellik için:
+
+* Ortalama (mean) = 0
+* Standart sapma (std) = 1
 
 olacak şekilde dönüşüm yapılmaktadır.
 
-### Veri Sızıntısını Önleme 
+---
 
-Bu projede hocanın özellikle vurguladığı en önemli kurallardan biri **veri sızıntısının (data leakage) engellenmesidir**. Bu nedenle normalizasyon işlemi aşağıdaki şekilde gerçekleştirilmiştir:
+Veri Sızıntısını Önleme
 
-- Scaler **yalnızca train verisi üzerinde fit edilmiştir**
-- Validation ve test verilerine **fit işlemi yapılmamış**, sadece aynı scaler ile **transform uygulanmıştır**
+Bu projede veri sızıntısının (data leakage) önlenmesi temel kurallardan biridir.
 
-Bu yaklaşım sayesinde modelin test verisi hakkında önceden bilgi edinmesi engellenmiştir.
+Bu nedenle:
 
-### Uygulama Akışı
+* Scaler yalnızca train verisi üzerinde fit edilmiştir.
+* Validation ve test verilerine fit işlemi uygulanmamıştır.
+* Aynı scaler kullanılarak yalnızca transform işlemi yapılmıştır.
+
+Bu yaklaşım sayesinde modelin test verisinden önceden bilgi öğrenmesi engellenmiştir.
+
+---
+
+Uygulama Akışı
 
 Normalizasyon işlemi aşağıdaki sıraya göre gerçekleştirilmiştir:
 
 1. Train veri seti alınır
-2. Scaler bu veri üzerinde eğitilir (`fit`)
-3. Train verisi dönüştürülür (`transform`)
-4. Aynı scaler kullanılarak validation ve test verileri dönüştürülür
+2. Scaler train verisi üzerinde fit edilir
+3. Train verisi transform edilir
+4. Aynı scaler validation ve test verilerine uygulanır
 
+---
 
-### Elde Edilen Çıktılar
+Elde Edilen Çıktılar
 
-- Normalize edilmiş **train**, **validation** ve **test** veri setleri oluşturulmuştur
-- Kullanılan scaler modeli tekrar kullanılabilmesi için `.pkl` formatında saklanmıştır
-- Tüm veri setleri aynı ölçeğe getirildiği için model eğitimi için uygun hale getirilmiştir
+* Normalize edilmiş train/test/validation veri setleri oluşturulmuştur.
+* Kullanılan scaler modelleri .pkl formatında kaydedilmiştir.
+* Tüm veri setleri aynı ölçeğe getirilmiştir.
+* Her fold için ayrı scaler modeli oluşturulmuştur.
 
 ---
 
 ## 6. Boyut İndirgeme (PCA)
 
-Normalizasyon işleminden sonra veri setleri üzerinde **boyut indirgeme (dimensionality reduction)** işlemi uygulanmıştır. Bu amaçla **Principal Component Analysis (PCA)** yöntemi kullanılmıştır.
+Normalizasyon işleminden sonra veri setleri üzerinde boyut indirgeme işlemi uygulanmıştır.
 
-### Amaç
+Bu amaçla Principal Component Analysis (PCA) yöntemi kullanılmıştır.
+
+---
+
+Amaç
 
 Bu adımın temel amaçları:
 
-- Çok boyutlu veriyi daha sade hale getirmek
-- Gürültüyü (noise) azaltmak
-- Hesaplama maliyetini düşürmek
-- Zaman serisini tek boyutlu temsil ederek sonraki adımlar (SAX, state transition) için uygun hale getirmek
+* Çok boyutlu veriyi sade hale getirmek
+* Gürültüyü azaltmak
+* Hesaplama maliyetini düşürmek
+* Zaman serisini tek boyutlu temsil etmek
+* SAX ve state transition adımları için uygun yapı oluşturmak
 
-### Kullanılan Yöntem
+---
 
-PCA yöntemi kullanılarak veri **tek bileşene indirgenmiştir**:
+Kullanılan Yöntem
 
-- Sadece **birinci ana bileşen (Principal Component 1 - PC1)** kullanılmıştır
-- Böylece her zaman adımı tek bir değer ile temsil edilmiştir
+PCA yöntemi kullanılarak veri tek bileşene indirgenmiştir.
 
-### Veri Sızıntısını Önleme 
+* Sadece birinci ana bileşen (PC1) kullanılmıştır.
+* Her zaman adımı tek bir değer ile temsil edilmiştir.
 
-Normalizasyonda olduğu gibi PCA uygulamasında da veri sızıntısını önlemek için şu kurala uyulmuştur:
+---
 
-- PCA modeli **sadece train verisi ile fit edilmiştir**
-- Validation ve test verilerine **fit işlemi yapılmadan**, aynı PCA modeli ile sadece **transform uygulanmıştır**
+Veri Sızıntısını Önleme
 
-Bu sayede modelin test verisinden bilgi öğrenmesi engellenmiştir.
+Normalizasyonda olduğu gibi PCA aşamasında da veri sızıntısını önlemek için:
 
-### Uygulama Akışı
+* PCA modeli yalnızca train verisi ile fit edilmiştir.
+* Validation ve test verilerine fit işlemi uygulanmamıştır.
+* Aynı PCA modeli ile yalnızca transform işlemi yapılmıştır.
 
-PCA işlemi aşağıdaki şekilde gerçekleştirilmiştir:
+---
+
+Uygulama Akışı
 
 1. Normalize edilmiş train verisi alınır
-2. PCA modeli bu veri ile eğitilir (`fit`)
-3. Train verisi dönüştürülür (`transform`)
-4. Aynı PCA modeli kullanılarak validation ve test verileri dönüştürülür
+2. PCA modeli train verisi ile fit edilir
+3. Train verisi transform edilir
+4. Aynı PCA modeli validation/test verilerine uygulanır
 
+---
 
-### Çıktı Özellikleri
+Çıktı Özellikleri
 
-- Veri seti çok boyutlu yapıdan **tek boyutlu yapıya indirgenmiştir**
-- Her örnek için çıktı boyutu: (n_samples, 1)
+Veri setleri çok boyutlu yapıdan tek boyutlu yapıya indirgenmiştir.
 
-- Tüm özellikler yerine artık sadece **en yüksek varyansı temsil eden tek bileşen (PC1)** kullanılmaktadır
+Her örnek için temel çıktı:
 
-### Proje Açısından Önemi
+* PC1
 
-Bu adım, projenin ilerleyen aşamalarında uygulanacak olan:
+şeklinde elde edilmiştir.
 
-- **Sliding Window**
-- **PAA (Piecewise Aggregate Approximation)**
-- **SAX (Symbolic Aggregate Approximation)**
-- **Durum (state) ve geçiş (transition) analizi**
+Metadata kolonları ayrıca korunmuştur.
 
-için temel veri temsilini oluşturmaktadır.
+---
 
-Tek boyutlu zaman serisi elde edilerek, verinin **yorumlanabilir (explainable)** hale getilmesi yönünde önemli bir adım atılmıştır.
+PCA Sonuçları
+
+BATADAL
+
+* Train: (2506, 3)
+* Validation: (835, 3)
+* Test: (836, 3)
+
+Korunan kolonlar:
+
+* PC1
+* DATETIME
+* ATT_FLAG
+
+---
+
+SKAB
+
+Örnek fold çıktıları:
+
+Fold 1
+
+* Train: (17962, 6)
+* Test: (4512, 6)
+
+Fold 2
+
+* Train: (17981, 6)
+* Test: (4493, 6)
+
+Fold 3
+
+* Train: (17982, 6)
+* Test: (4492, 6)
+
+Fold 4
+
+* Train: (18040, 6)
+* Test: (4434, 6)
+
+Fold 5
+
+* Train: (17931, 6)
+* Test: (4543, 6)
+
+Korunan kolonlar:
+
+* PC1
+* datetime
+* anomaly
+* changepoint
+* source_group
+* source_file
 
 ---
 
 ## 6.1 PCA ve Normalizasyon Sonuçlarının Doğrulanması
 
-Uygulanan normalizasyon ve PCA işlemlerinin doğruluğunu garanti altına almak amacıyla testler gerçekleştirilmiştir.
-
-### Test Edilen Kriterler
-
-Bu kapsamda aşağıdaki kontroller yapılmıştır:
-
-- Normalizasyon sonrası verilerin aynı ölçeğe getirildiği doğrulanmıştır
-- PCA sonrası veri boyutunun **tek bileşene indirildiği (n_components = 1)** kontrol edilmiştir
-- PCA modelinin **sadece train verisi ile fit edildiği** doğrulanmıştır
-- Validation ve test verilerinin yalnızca **transform işlemi ile dönüştürüldüğü** test edilmiştir
-
-### Test Sonuçları
-
-Yapılan testler sonucunda:
-
-- PCA çıktısının her veri seti için `(n_samples, 1)` boyutunda olduğu gözlemlenmiştir
-- Train, validation ve test veri setlerinde dönüşümün tutarlı olduğu doğrulanmıştır
-- Veri sızıntısının oluşmadığı garanti altına alınmıştır
-
-### Örnek Çıktı
-
-Aşağıda PCA sonrası veri boyutuna ait örnek bir çıktı verilmiştir:
-
-```
-Train shape after PCA      : (5256, 1)
-Validation shape after PCA : (1752, 1)
-Test shape after PCA       : (1753, 1)
-```
+Uygulanan normalizasyon ve PCA işlemlerinin doğruluğunu garanti altına almak amacıyla çeşitli kontroller gerçekleştirilmiştir.
 
 ---
 
+Test Edilen Kriterler
 
-### Genel Değerlendirme
+Bu kapsamda aşağıdaki kontroller yapılmıştır:
 
-Uygulanan normalizasyon ve PCA işlemleri sonucunda veri, modelleme süreci için uygun hale getirilmiştir. Dönüşümlerin yalnızca train verisi üzerinden öğrenilmesi veri sızıntısını engelleyerek sonuçların güvenilirliğini artırmıştır.
+* Normalizasyon sonrası verilerin aynı ölçeğe getirildiği doğrulanmıştır.
+* PCA sonrası veri boyutunun tek bileşene indirildiği kontrol edilmiştir.
+* PCA modelinin yalnızca train verisi ile fit edildiği doğrulanmıştır.
+* Validation ve test verilerinin yalnızca transform işlemi ile dönüştürüldüğü test edilmiştir.
+* GroupKFold yapısında aynı source file’ın train ve test verisinde tekrar etmediği kontrol edilmiştir.
 
-PCA ile veri tek boyuta indirgenmiş ve en yüksek varyansı temsil eden bileşen korunmuştur. Bu sayede veri daha sade hale gelmiş ve sonraki adımlar (SAX, sliding window, state transition) için uygun bir yapı elde edilmiştir.
+---
 
+Test Sonuçları
+
+Yapılan kontroller sonucunda:
+
+* Veri sızıntısının oluşmadığı doğrulanmıştır.
+* PCA çıktılarının tutarlı olduğu gözlemlenmiştir.
+* Fold yapısının doğru çalıştığı doğrulanmıştır.
+* Train/test ayrımının source file bazlı gerçekleştirildiği doğrulanmıştır.
+
+---
+
+Genel Değerlendirme
+
+Uygulanan preprocessing süreci sonucunda veri modelleme için uygun hale getirilmiştir.
+
+Normalizasyon ve PCA işlemlerinin yalnızca train verisi üzerinden öğrenilmesi sayesinde veri sızıntısı engellenmiştir.
+
+PCA ile veriler tek boyutlu zaman serisi temsiline dönüştürülmüş ve explainable state transition yapısı için gerekli temel veri yapısı oluşturulmuştur.
 
