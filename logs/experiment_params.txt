@@ -1,0 +1,11 @@
+Deney Parametreleri
+
+Train oranı: 0.60
+Validation oranı: 0.20
+Test oranı: 0.20
+Normalizasyon yöntemi: StandardScaler
+PCA kullanımı: Evet
+PCA bileşen sayısı: 1
+Shuffle: Hayır
+Zaman serisi sırası: Korundu
+Pipeline akışı: data -> split -> normalize -> PCA
