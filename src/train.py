@@ -2,15 +2,20 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 
-from config.config import EARLY_STOPPING_PATIENCE
+from config.config import (
+    EPOCHS,
+    BATCH_SIZE,
+    LEARNING_RATE,
+    EARLY_STOPPING_PATIENCE
+)
 
 
 def train_model(
     model,
     train_loader,
     validation_loader,
-    epochs=10,
-    learning_rate=0.001,
+    epochs=EPOCHS,
+learning_rate=LEARNING_RATE,
     device="cpu",
     patience=EARLY_STOPPING_PATIENCE
 ):

@@ -26,6 +26,7 @@ PCA_COMPONENTS = 1
 # Derin öğrenme eğitim parametreleri
 EPOCHS = 50
 BATCH_SIZE = 32
+LEARNING_RATE = 0.001
 EARLY_STOPPING_PATIENCE = 5
 VALIDATION_MONITOR = "val_loss"
 
