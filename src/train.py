@@ -2,6 +2,8 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 
+from config.config import EARLY_STOPPING_PATIENCE
+
 
 def train_model(
     model,
@@ -9,7 +11,8 @@ def train_model(
     validation_loader,
     epochs=10,
     learning_rate=0.001,
-    device="cpu"
+    device="cpu",
+    patience=EARLY_STOPPING_PATIENCE
 ):
 
     criterion = nn.BCEWithLogitsLoss()
@@ -20,6 +23,9 @@ def train_model(
     )
 
     model.to(device)
+
+    best_validation_loss = float("inf")
+    patience_counter = 0
 
     for epoch in range(epochs):
 
@@ -78,5 +84,23 @@ def train_model(
             f"Train Loss: {average_train_loss:.4f} | "
             f"Validation Loss: {average_validation_loss:.4f}"
         )
+
+        if average_validation_loss < best_validation_loss:
+            best_validation_loss = average_validation_loss
+            patience_counter = 0
+        else:
+            patience_counter += 1
+
+            print(
+                f"Validation loss iyileşmedi. "
+                f"Early stopping sayacı: {patience_counter}/{patience}"
+            )
+
+        if patience_counter >= patience:
+            print(
+                f"Early stopping çalıştı. "
+                f"Eğitim {epoch+1}. epochta durduruldu."
+            )
+            break
 
     return model
