@@ -1,0 +1,6 @@
+dataset,fold,model_path,status
+SKAB,1,models/gru/gru_skab_fold_1.pt,trained
+SKAB,2,models/gru/gru_skab_fold_2.pt,trained
+SKAB,3,models/gru/gru_skab_fold_3.pt,trained
+SKAB,4,models/gru/gru_skab_fold_4.pt,trained
+SKAB,5,models/gru/gru_skab_fold_5.pt,trained
