@@ -428,3 +428,194 @@ Normalizasyon ve PCA işlemlerinin yalnızca train verisi üzerinden öğrenilme
 
 PCA ile veriler tek boyutlu zaman serisi temsiline dönüştürülmüş ve explainable state transition yapısı için gerekli temel veri yapısı oluşturulmuştur.
 
+
+---
+
+# 7. Derin Öğrenme Model Eğitimleri
+
+Bu aşamada PCA sonrası elde edilen tek boyutlu zaman serisi verileri üzerinde derin öğrenme tabanlı model eğitimleri gerçekleştirilmiştir.
+
+Projede:
+
+* LSTM
+* GRU
+
+modelleri kullanılmıştır.
+
+Model eğitimleri PyTorch frameworkü kullanılarak gerçekleştirilmiştir.
+
+---
+
+## 7.1 Ortak Training Pipeline Yapısı
+
+Derin öğrenme modellerinin eğitim süreçlerini standart hale getirmek amacıyla ortak bir training pipeline oluşturulmuştur.
+
+Bu yapı sayesinde:
+
+* Eğitim süreçleri merkezi hale getirilmiştir.
+* Model bazlı tekrar eden kod yapısı azaltılmıştır.
+* Validation kontrolü standartlaştırılmıştır.
+* Early stopping mekanizması ortak yapı üzerinden yönetilmiştir.
+
+---
+
+### Kullanılan Eğitim Parametreleri
+
+| Parametre | Değer |
+|---|---|
+| Epoch Sayısı | 50 |
+| Batch Size | 32 |
+| Learning Rate | 0.001 |
+| Early Stopping Patience | 5 |
+
+---
+
+### Kullanılan Yapılar
+
+* BCEWithLogitsLoss
+* Adam Optimizer
+* Early Stopping
+* Validation Loss Takibi
+* PyTorch DataLoader
+
+---
+
+### Oluşturulan Dosyalar
+
+```text
+src/train.py
+src/train_gru.py
+src/train_lstm.py
+src/data_loader_torch.py
+```
+
+---
+
+## 7.2 GRU Model Eğitimi
+
+Bu aşamada GRU modeli PCA sonrası elde edilen zaman serisi verileri üzerinde eğitilmiştir.
+
+---
+
+### Model Özellikleri
+
+* PyTorch tabanlı GRU yapısı kullanılmıştır.
+* Girdi formatı:
+
+```text
+(batch_size, sequence_length, input_size)
+```
+
+şeklinde düzenlenmiştir.
+
+* PCA sonrası tek boyutlu veri yapısına uygun hale getirilmiştir.
+
+---
+
+### SKAB Eğitimi
+
+SKAB veri seti üzerinde 5-fold yapısı kullanılmıştır.
+
+Bu süreçte:
+
+* Her fold için ayrı eğitim gerçekleştirilmiştir.
+* Fold bazlı train/test yapısı korunmuştur.
+* Fold sonuçları CSV formatında kaydedilmiştir.
+
+---
+
+### BATADAL Eğitimi
+
+BATADAL veri setleri üzerinde zaman sıralı eğitim uygulanmıştır.
+
+Bu süreçte:
+
+* Shuffle işlemi uygulanmamıştır.
+* Train-validation ayrımı korunmuştur.
+* Dataset03 ve Dataset04 üzerinde ayrı eğitim gerçekleştirilmiştir.
+
+---
+
+### Kaydedilen Çıktılar
+
+```text
+results/gru/
+models/gru/
+```
+
+Bu klasörlerde:
+
+* Fold sonuçları
+* Eğitim sonuçları
+* Eğitilmiş model ağırlıkları
+
+saklanmıştır.
+
+---
+
+## 7.3 LSTM Model Eğitimi
+
+Bu aşamada LSTM modeli PCA sonrası oluşturulan zaman serisi verileri üzerinde eğitilmiştir.
+
+---
+
+### Model Özellikleri
+
+* PyTorch tabanlı LSTM yapısı kullanılmıştır.
+* Tek boyutlu zaman serisi yapısına uygun giriş formatı oluşturulmuştur.
+* Validation loss takibi ile eğitim süreci kontrol edilmiştir.
+
+---
+
+### SKAB Eğitimi
+
+SKAB veri seti üzerinde:
+
+* 5-fold cross validation yapısı kullanılmıştır.
+* Her fold için ayrı model eğitimi gerçekleştirilmiştir.
+* Fold sonuçları CSV formatında kaydedilmiştir.
+
+---
+
+### BATADAL Eğitimi
+
+BATADAL veri setleri üzerinde:
+
+* Zaman sıralı eğitim uygulanmıştır.
+* Validation veri yapısı korunmuştur.
+* Dataset03 ve Dataset04 üzerinde ayrı eğitim gerçekleştirilmiştir.
+
+---
+
+### Kaydedilen Çıktılar
+
+```text
+results/lstm/
+models/lstm/
+```
+
+Bu klasörlerde:
+
+* Fold sonuçları
+* Eğitim çıktıları
+* Eğitilmiş model ağırlıkları
+
+saklanmıştır.
+
+---
+
+## 7.4 Eğitim Süreci Değerlendirmesi
+
+Model eğitim sürecinde validation loss değerleri takip edilmiştir.
+
+Overfitting riskini azaltmak amacıyla early stopping mekanizması kullanılmıştır.
+
+SKAB veri setinde fold bazlı eğitim uygulanarak modelin farklı veri grupları üzerindeki davranışı incelenmiştir.
+
+BATADAL veri setinde ise zaman sırası korunarak gerçek zaman serisi senaryosuna uygun eğitim gerçekleştirilmiştir.
+
+Model ağırlıkları `.pt` formatında kaydedilmiş ve tekrar kullanılabilir hale getirilmiştir.
+
+--- 
+
+
