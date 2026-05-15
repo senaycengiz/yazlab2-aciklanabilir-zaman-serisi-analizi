@@ -13,7 +13,12 @@ def create_dataloader(
 
     df = pd.read_csv(csv_path)
 
-    y = df[label_column].astype(float).values
+    y = df[label_column].astype(float)
+
+    if label_column == "ATT_FLAG":
+        y = y.apply(lambda value: 0.0 if value == -999 else 1.0)
+
+    y = y.values
 
     X = df.drop(columns=[label_column])
 

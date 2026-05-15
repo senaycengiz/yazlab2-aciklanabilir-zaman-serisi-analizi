@@ -1,0 +1,2 @@
+dataset,model,model_path,status
+BATADAL_dataset04,CNN,models/cnn/cnn_BATADAL_dataset04.pt,trained
