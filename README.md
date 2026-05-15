@@ -618,4 +618,84 @@ Model ağırlıkları `.pt` formatında kaydedilmiş ve tekrar kullanılabilir h
 
 --- 
 
+## 7.5 1D-CNN Model Eğitimi
+
+Bu aşamada 1D-CNN modeli PCA sonrası elde edilen tek boyutlu zaman serisi verileri üzerinde eğitilmiştir.
+
+---
+
+### Model Özellikleri
+
+* PyTorch tabanlı 1D-CNN mimarisi kullanılmıştır.
+* Conv1D katmanları ile zaman serisi örüntüleri öğrenilmiştir.
+* PCA sonrası tek boyutlu veri yapısına uygun giriş formatı oluşturulmuştur.
+* Adaptive pooling yapısı kullanılarak sabit boyutlu çıktı elde edilmiştir.
+
+---
+
+### SKAB Eğitimi
+
+SKAB veri seti üzerinde:
+
+* 5-fold GroupKFold yapısı kullanılmıştır.
+* Her fold için ayrı CNN modeli eğitilmiştir.
+* Fold bazlı eğitim sonuçları CSV formatında kaydedilmiştir.
+* Eğitim süreçleri training loss ve validation loss değerleri üzerinden takip edilmiştir.
+
+---
+
+### BATADAL Eğitimi
+
+BATADAL veri seti üzerinde:
+
+* Zaman sıralı eğitim yaklaşımı uygulanmıştır.
+* Validation veri yapısı korunmuştur.
+* CNN modeli PCA sonrası oluşturulan tek boyutlu veri üzerinde eğitilmiştir.
+
+---
+
+### Eğitim Takibi ve Loglama
+
+CNN eğitim sürecinde:
+
+* Epoch bazlı training loss kayıtları tutulmuştur.
+* Validation loss değerleri otomatik loglanmıştır.
+* Eğitim geçmişleri CSV formatında kaydedilmiştir.
+* Loss grafikleri otomatik olarak oluşturulmuştur.
+
+---
+
+### Oluşturulan Çıktılar
+
+```text
+models/cnn/
+results/cnn/
+logs/cnn/
+results/plots/cnn/
+```
+
+Bu klasörlerde:
+
+* Eğitilmiş model ağırlıkları
+* Fold bazlı sonuçlar
+* Eğitim geçmişi logları
+* Loss analiz grafikleri
+
+saklanmıştır.
+
+---
+
+### Eğitim Süreci Değerlendirmesi
+
+CNN modeli özellikle SKAB veri setinde fold bazlı eğitim yapısı üzerinde test edilmiştir.
+
+Validation loss değerleri takip edilerek early stopping mekanizması uygulanmıştır.
+
+Eğitim süreçlerinin görselleştirilmesi sayesinde:
+
+* Overfitting davranışı
+* Fold bazlı performans değişimleri
+* Eğitim kararlılığı
+
+analiz edilmiştir.
 
