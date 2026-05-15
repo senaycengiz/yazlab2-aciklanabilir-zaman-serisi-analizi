@@ -1,6 +1,6 @@
-dataset,fold,model,model_path,status
-SKAB,1,CNN,models/cnn/cnn_skab_fold_1.pt,trained
-SKAB,2,CNN,models/cnn/cnn_skab_fold_2.pt,trained
-SKAB,3,CNN,models/cnn/cnn_skab_fold_3.pt,trained
-SKAB,4,CNN,models/cnn/cnn_skab_fold_4.pt,trained
-SKAB,5,CNN,models/cnn/cnn_skab_fold_5.pt,trained
+dataset,fold,model,model_path,loss_history_path,loss_plot_path,status
+SKAB,1,CNN,models/cnn/cnn_skab_fold_1.pt,logs/cnn/cnn_skab_fold_1_loss_history.csv,results/plots/cnn/cnn_skab_fold_1_loss.png,trained
+SKAB,2,CNN,models/cnn/cnn_skab_fold_2.pt,logs/cnn/cnn_skab_fold_2_loss_history.csv,results/plots/cnn/cnn_skab_fold_2_loss.png,trained
+SKAB,3,CNN,models/cnn/cnn_skab_fold_3.pt,logs/cnn/cnn_skab_fold_3_loss_history.csv,results/plots/cnn/cnn_skab_fold_3_loss.png,trained
+SKAB,4,CNN,models/cnn/cnn_skab_fold_4.pt,logs/cnn/cnn_skab_fold_4_loss_history.csv,results/plots/cnn/cnn_skab_fold_4_loss.png,trained
+SKAB,5,CNN,models/cnn/cnn_skab_fold_5.pt,logs/cnn/cnn_skab_fold_5_loss_history.csv,results/plots/cnn/cnn_skab_fold_5_loss.png,trained

@@ -4,7 +4,6 @@ import torch.optim as optim
 
 from config.config import (
     EPOCHS,
-    BATCH_SIZE,
     LEARNING_RATE,
     EARLY_STOPPING_PATIENCE
 )
@@ -15,9 +14,10 @@ def train_model(
     train_loader,
     validation_loader,
     epochs=EPOCHS,
-learning_rate=LEARNING_RATE,
+    learning_rate=LEARNING_RATE,
     device="cpu",
-    patience=EARLY_STOPPING_PATIENCE
+    patience=EARLY_STOPPING_PATIENCE,
+    return_history=False
 ):
 
     criterion = nn.BCEWithLogitsLoss()
@@ -31,6 +31,12 @@ learning_rate=LEARNING_RATE,
 
     best_validation_loss = float("inf")
     patience_counter = 0
+
+    history = {
+        "epoch": [],
+        "train_loss": [],
+        "validation_loss": []
+    }
 
     for epoch in range(epochs):
 
@@ -80,9 +86,11 @@ learning_rate=LEARNING_RATE,
 
                 validation_loss += loss.item()
 
-        average_validation_loss = (
-            validation_loss / len(validation_loader)
-        )
+        average_validation_loss = validation_loss / len(validation_loader)
+
+        history["epoch"].append(epoch + 1)
+        history["train_loss"].append(average_train_loss)
+        history["validation_loss"].append(average_validation_loss)
 
         print(
             f"Epoch {epoch+1} | "
@@ -107,5 +115,8 @@ learning_rate=LEARNING_RATE,
                 f"Eğitim {epoch+1}. epochta durduruldu."
             )
             break
+
+    if return_history:
+        return model, history
 
     return model

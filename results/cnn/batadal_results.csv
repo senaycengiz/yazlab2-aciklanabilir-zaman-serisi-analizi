@@ -1,2 +1,2 @@
-dataset,model,model_path,status
-BATADAL_dataset04,CNN,models/cnn/cnn_BATADAL_dataset04.pt,trained
+dataset,model,model_path,loss_history_path,loss_plot_path,status
+BATADAL_dataset04,CNN,models/cnn/cnn_BATADAL_dataset04.pt,logs/cnn/cnn_BATADAL_dataset04_loss_history.csv,results/plots/cnn/cnn_BATADAL_dataset04_loss.png,trained
