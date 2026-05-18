@@ -4,13 +4,13 @@ import numpy as np
 import pandas as pd
 
 
-ALPHABET_SIZE = 3
-SAX_ALPHABET = ["a", "b", "c"]
-
-PAA_DATA_DIR = "data/processed/paa"
-SAX_DATA_DIR = "data/processed/sax"
-SAX_WORD_COLUMN = "sax_word"
-
+from config.config import (
+    ALPHABET_SIZE,
+    SAX_ALPHABET,
+    PAA_DATA_DIR,
+    SAX_DATA_DIR,
+    SAX_WORD_COLUMN,
+)
 
 def fit_sax_breakpoints(train_df):
     train_values = train_df["PAA"].values
