@@ -699,3 +699,273 @@ Eğitim süreçlerinin görselleştirilmesi sayesinde:
 
 analiz edilmiştir.
 
+---
+
+# 8. Model Performans Analizi ve Görselleştirme
+
+Bu aşamada eğitilen derin öğrenme modellerinin performanslarını değerlendirmek amacıyla çeşitli metrik hesaplama ve görselleştirme işlemleri gerçekleştirilmiştir.
+
+Bu süreçte:
+
+* Accuracy
+* Precision
+* Recall
+* F1-score
+* Confusion Matrix
+* ROC Curve
+* Precision-Recall Curve
+
+analizleri uygulanmıştır.
+
+---
+
+## 8.1 Performans Metrikleri
+
+Model performanslarını yalnızca doğruluk (accuracy) üzerinden değerlendirmek anomaly detection problemleri için yeterli değildir.
+
+Bu nedenle aşağıdaki metrikler birlikte kullanılmıştır:
+
+| Metrik | Açıklama |
+|---|---|
+| Accuracy | Toplam doğru tahmin oranı |
+| Precision | Anomaly olarak tahmin edilen örneklerin doğruluk oranı |
+| Recall | Gerçek anomalilerin yakalanma oranı |
+| F1-Score | Precision ve recall değerlerinin dengeli ortalaması |
+
+---
+
+### Kullanılan Yapılar
+
+Bu aşamada aşağıdaki sklearn metrik yapıları kullanılmıştır:
+
+```python
+accuracy_score
+precision_score
+recall_score
+f1_score
+```
+
+---
+
+### Oluşturulan Dosya
+
+```text
+src/evaluation/metrics.py
+```
+
+Bu modül içerisinde:
+
+* Veri seti bazlı metrik hesaplama
+* Fold bazlı değerlendirme
+* Ortalama ve standart sapma hesaplama
+* Zaman sıralı test çıktıları
+
+işlemleri gerçekleştirilmiştir.
+
+---
+
+## 8.2 SKAB Fold Analizi
+
+SKAB veri setinde GroupKFold yapısı kullanıldığı için her fold üzerinde ayrı performans değerlendirmesi yapılmıştır.
+
+Bu süreçte:
+
+* Her fold için accuracy hesaplanmıştır.
+* Precision, recall ve F1-score değerleri çıkarılmıştır.
+* Fold sonuçlarının ortalaması alınmıştır.
+* Standart sapma hesaplanarak model kararlılığı incelenmiştir.
+
+Bu yaklaşım sayesinde modelin farklı veri grupları üzerindeki davranışı daha güvenilir şekilde analiz edilmiştir.
+
+---
+
+## 8.3 BATADAL Zaman Sıralı Test Analizi
+
+BATADAL veri setinde zaman sırası korunarak test değerlendirmesi yapılmıştır.
+
+Bu süreçte:
+
+* Shuffle işlemi uygulanmamıştır.
+* Test sonuçları zaman sırasına göre kaydedilmiştir.
+* Modelin zaman serisi üzerindeki anomaly detection davranışı analiz edilmiştir.
+
+---
+
+## 8.4 Confusion Matrix Analizi
+
+Model tahminlerinin detaylı şekilde incelenebilmesi amacıyla confusion matrix görselleştirmeleri oluşturulmuştur.
+
+Bu grafikler sayesinde:
+
+* True Positive
+* True Negative
+* False Positive
+* False Negative
+
+değerleri analiz edilmiştir.
+
+---
+
+### Oluşturulan Dosya
+
+```text
+src/evaluation/visualization.py
+```
+
+Bu modül içerisinde:
+
+* Confusion Matrix
+* ROC Curve
+* Precision-Recall Curve
+
+grafikleri otomatik olarak oluşturulmaktadır.
+
+---
+
+## 8.5 ROC Curve Analizi
+
+ROC eğrisi kullanılarak modellerin anomaly ve normal veri ayrım performansı incelenmiştir.
+
+ROC eğrisi sayesinde:
+
+* True Positive Rate
+* False Positive Rate
+
+arasındaki ilişki analiz edilmiştir.
+
+Yüksek AUC değerine sahip modellerin daha başarılı ayrım yaptığı gözlemlenmiştir.
+
+---
+
+## 8.6 Precision-Recall Eğrisi
+
+Anomaly detection problemlerinde veri dengesizliği önemli bir problem olduğu için precision-recall eğrileri ayrıca değerlendirilmiştir.
+
+Bu analiz sayesinde:
+
+* Precision-recall dengesi
+* Düşük anomaly oranlarında model başarısı
+* False positive davranışı
+
+incelenmiştir.
+
+---
+
+## 8.7 Grafik Çıktıları
+
+Üretilen görseller aşağıdaki klasörlerde saklanmıştır:
+
+```text
+results/figures/
+results/plots/
+```
+
+Bu klasörlerde:
+
+* Confusion matrix görselleri
+* ROC curve grafikleri
+* Precision-recall grafikleri
+* Eğitim loss grafikleri
+
+bulunmaktadır.
+
+---
+
+# 9. Model Karşılaştırma ve Analitik Değerlendirme
+
+Bu aşamada:
+
+* LSTM
+* GRU
+* 1D-CNN
+
+modellerinin performansları karşılaştırılmıştır.
+
+Karşılaştırmalar hem:
+
+* SKAB
+* BATADAL
+
+veri setleri üzerinde gerçekleştirilmiştir.
+
+---
+
+## 9.1 Model Karşılaştırma Süreci
+
+Bu aşamada modeller:
+
+* Accuracy
+* Precision
+* Recall
+* F1-score
+* Validation loss
+
+değerleri üzerinden analiz edilmiştir.
+
+Karşılaştırma sonuçları tablo halinde kaydedilmiştir.
+
+---
+
+### Oluşturulan Dosya
+
+```text
+src/evaluation/model_comparison.py
+```
+
+Bu modül içerisinde:
+
+* Model sonuçlarını birleştirme
+* Veri seti bazlı karşılaştırma
+* Fold sonuçlarını analiz etme
+* Overfitting değerlendirmesi
+
+işlemleri gerçekleştirilmiştir.
+
+---
+
+## 9.2 SKAB Veri Seti Değerlendirmesi
+
+SKAB veri setinde:
+
+* Fold bazlı performans değişimleri gözlemlenmiştir.
+* Veri grupları arasındaki farklılıkların model sonuçlarını etkilediği görülmüştür.
+* CNN modeli bazı foldlarda daha stabil sonuçlar üretmiştir.
+* GRU ve LSTM modelleri uzun zaman bağımlılıklarını öğrenmede başarılı sonuçlar göstermiştir.
+
+---
+
+## 9.3 BATADAL Veri Seti Değerlendirmesi
+
+BATADAL veri setinde:
+
+* Veri yapısının daha düzenli olması nedeniyle modeller daha stabil sonuçlar üretmiştir.
+* Anomaly oranının düşük olması precision ve recall dengesini önemli hale getirmiştir.
+* Zaman sıralı yapı sayesinde gerçek anomaly detection senaryosuna yakın değerlendirme yapılmıştır.
+
+---
+
+## 9.4 Overfitting Analizi
+
+Model eğitim süreçlerinde train ve validation sonuçları karşılaştırılmıştır.
+
+Bu analiz sonucunda:
+
+* Validation loss takibi yapılmıştır.
+* Early stopping mekanizması uygulanmıştır.
+* Bazı foldlarda overfitting eğilimleri gözlemlenmiştir.
+* CNN modelinin bazı veri gruplarında daha kararlı öğrenme gerçekleştirdiği görülmüştür.
+
+---
+
+## 9.5 Genel Değerlendirme
+
+Gerçekleştirilen analizler sonucunda:
+
+* Derin öğrenme modellerinin anomaly detection performansları veri setine göre değişiklik göstermiştir.
+* SKAB veri seti daha karmaşık yapısı nedeniyle modeller için daha zorlayıcı olmuştur.
+* BATADAL veri setinde modeller daha stabil sonuçlar üretmiştir.
+* Precision, recall ve F1-score metriklerinin anomaly detection problemlerinde accuracy değerinden daha kritik olduğu gözlemlenmiştir.
+* Fold bazlı analizler model davranışlarını daha güvenilir şekilde incelemeye olanak sağlamıştır.
+
+Bu aşama ile birlikte proje kapsamında derin öğrenme modellerinin performans analiz süreci tamamlanmıştır.
+
