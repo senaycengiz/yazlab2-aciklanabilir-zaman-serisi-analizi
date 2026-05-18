@@ -53,7 +53,7 @@ def process_directory(input_dir, output_dir):
 
         for file in files:
 
-            if file.endswith(".csv") and file == "train.csv":
+            if file.endswith(".csv") and file in ["train.csv", "validation.csv", "test.csv"]:
 
                 input_path = os.path.join(root, file)
 
