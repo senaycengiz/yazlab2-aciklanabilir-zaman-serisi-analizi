@@ -69,3 +69,12 @@ STATISTICAL_TESTS = ["wilcoxon", "mcnemar"]
 SAVE_EXPERIMENT_PARAMS = True
 SAVE_METRICS = True
 SAVE_RESULTS_AS = "csv"
+
+# SAX parameters
+ALPHABET_SIZE = 3
+SAX_ALPHABET = ["a", "b", "c"]
+
+PAA_DATA_DIR = "data/processed/paa"
+SAX_DATA_DIR = "data/processed/sax"
+
+SAX_WORD_COLUMN = "sax_word"
