@@ -431,6 +431,302 @@ PCA ile veriler tek boyutlu zaman serisi temsiline dönüştürülmüş ve expla
 
 ---
 
+## 6.2 Açıklanabilirlik Tabanlı Sembolik Dönüşümler
+
+Bu aşamada PCA sonrası elde edilen tek boyutlu zaman serisi verileri üzerinde açıklanabilir otomata yapısının oluşturulabilmesi amacıyla sırasıyla:
+
+* PAA
+* SAX
+* Sliding Window
+* State Transition
+
+dönüşümleri uygulanmıştır.
+
+Bu dönüşümlerin temel amacı sürekli zaman serisi verilerini sembolik ve yorumlanabilir yapılara dönüştürerek olasılıksal otomata modeli için uygun veri yapısı oluşturmaktır.
+
+---
+
+### 6.2.1 PAA (Piecewise Aggregate Approximation)
+
+PCA sonrası elde edilen PC1 zaman serisi verileri üzerinde PAA dönüşümü uygulanmıştır.
+
+Bu yöntemde zaman serisi belirli segmentlere ayrılmış ve her segmentin ortalama değeri alınarak veri boyutu azaltılmıştır.
+
+Bu yaklaşım sayesinde:
+
+* Gürültü azaltılmıştır.
+* Veri daha sade hale getirilmiştir.
+* SAX dönüşümü için uygun giriş yapısı oluşturulmuştur.
+
+#### Uygulama Yapısı
+
+Projede:
+
+* PAA işlemi PCA sonrası elde edilen PC1 verisi üzerinde uygulanmıştır.
+* Segment yapıları oluşturularak zaman serisi daha kısa ve temsil edilebilir hale getirilmiştir.
+* Veri sızıntısını önlemek amacıyla dönüşüm sürecinde train/fold-train yapısı korunmuştur.
+* SKAB veri setinde fold bazlı yapı, BATADAL veri setinde ise train/validation/test yapısı dikkate alınmıştır.
+
+#### Kullanılan Parametreler
+
+```python
+PAA_SEGMENTS = 4
+```
+
+#### Örnek Dönüşüm
+
+```text
+Orijinal zaman serisi:
+[1.2, 1.4, 1.5, 1.3, 0.9, 0.8]
+
+PAA çıktısı:
+[1.35, 0.85]
+```
+
+#### Oluşturulan Çıktılar
+
+```text
+data/processed/paa/
+```
+
+Bu klasör altında:
+
+* SKAB fold bazlı PAA çıktıları
+* BATADAL train/validation/test PAA çıktıları
+
+saklanmıştır.
+
+---
+
+### 6.2.2 SAX (Symbolic Aggregate approXimation)
+
+PAA dönüşümünden elde edilen sayısal segment değerleri SAX yöntemi ile sembolik yapıya dönüştürülmüştür.
+
+Bu aşamada:
+
+* Sayısal değerler belirli aralıklara bölünmüştür.
+* Her aralık bir sembol ile temsil edilmiştir.
+* Sürekli zaman serileri sembolik dizilere dönüştürülmüştür.
+
+#### Kullanılan Parametreler
+
+```python
+ALPHABET_SIZE = 3
+SAX_ALPHABET = ["a", "b", "c"]
+```
+
+Alphabet size parametresi merkezi config yapısına bağlanmıştır.
+
+#### Veri Sızıntısını Önleme
+
+SAX dönüşümünde:
+
+* SAX sözlüğü yalnızca train/fold-train verisi kullanılarak oluşturulmuştur.
+* Validation ve test verileri aynı train sözlüğü kullanılarak dönüştürülmüştür.
+* Böylece test verisinden önceden bilgi öğrenilmesi engellenmiştir.
+
+#### Örnek Dönüşüm
+
+```text
+PAA:
+[1.35, 0.82, -0.15]
+
+SAX:
+[c, b, a]
+```
+
+#### Oluşturulan Çıktılar
+
+```text
+data/processed/sax/
+```
+
+Bu klasör altında:
+
+* SAX sembolik veri çıktıları
+* Fold bazlı SAX sözlükleri
+
+saklanmıştır.
+
+---
+
+### 6.2.3 Sliding Window ve Pattern Üretimi
+
+SAX dönüşümünden elde edilen sembolik veriler üzerinde sliding window yöntemi uygulanarak pattern listeleri oluşturulmuştur.
+
+Bu yaklaşım sayesinde:
+
+* Tek semboller yerine sembol dizileri oluşturulmuştur.
+* Zaman serisi içerisindeki lokal davranış örüntüleri çıkarılmıştır.
+* Automata state yapısı için anlamlı patternler elde edilmiştir.
+
+#### Kullanılan Parametreler
+
+```python
+WINDOW_SIZE = 4
+WINDOW_SIZE_OPTIONS = [3, 4, 5, 6]
+```
+
+Window size parametresi merkezi config yapısına bağlanmıştır.
+
+#### Örnek Pattern Üretimi
+
+```text
+SAX dizisi:
+[a, b, c, c, a]
+
+Window size = 3
+
+Üretilen patternler:
+abc
+bcc
+cca
+```
+
+#### Pattern Analizi
+
+Bu aşamada:
+
+* Toplam pattern sayıları
+* Benzersiz pattern sayıları
+* Window size değişiminin pattern yoğunluğuna etkisi
+
+analiz edilmiştir.
+
+Window size değeri arttıkça üretilen toplam pattern sayısının azaldığı gözlemlenmiştir.
+
+#### Oluşturulan Çıktılar
+
+```text
+data/processed/patterns/
+results/pattern_count_analysis.csv
+```
+
+Bu çıktılar altında:
+
+* Pattern listeleri
+* Pattern yoğunluk analizleri
+* Window size bazlı sonuçlar
+
+saklanmıştır.
+
+---
+
+### 6.2.4 Automata State ve Transition Yapısı
+
+Sliding window sonucunda elde edilen patternler automata state yapısına dönüştürülmüştür.
+
+Bu aşamada:
+
+* Her benzersiz pattern bir state olarak tanımlanmıştır.
+* State yapıları `q0`, `q1`, `q2` formatında isimlendirilmiştir.
+* Pattern sırasına göre state transition ilişkileri oluşturulmuştur.
+
+#### State Oluşturma Mantığı
+
+```text
+Pattern:
+abca
+
+State:
+q1
+```
+
+Her benzersiz pattern yalnızca bir state ile temsil edilmektedir.
+
+#### Transition Yapısı
+
+Pattern akışına göre state geçişleri oluşturulmuştur.
+
+```text
+abca → bcac → caca
+
+Transition:
+q1 → q5
+q5 → q2
+```
+
+#### Transition Matrix
+
+State transition geçiş sayıları hesaplanarak transition matrix yapısı oluşturulmuştur.
+
+Bu yapıda:
+
+* Satırlar başlangıç state’ini
+* Sütunlar hedef state’i
+* Hücre değerleri geçiş sayılarını
+
+temsil etmektedir.
+
+Bu yaklaşım sayesinde zaman serisinin davranış akışı yorumlanabilir hale getirilmiştir.
+
+#### Oluşturulan Çıktılar
+
+```text
+data/processed/automata/
+results/transition_matrices/
+```
+
+Bu klasörlerde:
+
+* State listeleri
+* Transition listeleri
+* Transition matrix çıktıları
+
+saklanmıştır.
+
+---
+
+### 6.2.5 Doğrulama ve Test Süreci
+
+PAA, SAX, Sliding Window ve Automata dönüşümleri için birim testleri gerçekleştirilmiştir.
+
+Bu testlerde:
+
+* PAA segment yapıları
+* SAX sembolik dönüşümleri
+* Sliding window pattern üretimi
+* Window size davranışı
+* State oluşturma işlemleri
+* Transition hesaplamaları
+* Transition matrix doğruluğu
+
+kontrol edilmiştir.
+
+#### Kullanılan Test Yapısı
+
+Projede pytest frameworkü kullanılmıştır.
+
+Örnek test komutları:
+
+```bash
+python3 -m pytest tests
+python3 -m pytest tests/test_sliding_window.py
+python3 -m pytest tests/test_transition_analysis.py
+```
+
+---
+
+### Genel Değerlendirme
+
+Bu aşama sonucunda:
+
+* Sürekli zaman serileri sembolik yapılara dönüştürülmüştür.
+* Açıklanabilir automata state yapısı oluşturulmuştur.
+* State transition ilişkileri çıkarılmıştır.
+* Olasılıksal automata modelinin temel veri yapısı hazırlanmıştır.
+
+Bu yapı ilerleyen aşamalarda:
+
+* Unseen pattern kontrolü
+* Transition probability hesaplamaları
+* Explainability analizleri
+* State davranış yorumlamaları
+
+için kullanılacaktır.
+
+---
+
 # 7. Derin Öğrenme Model Eğitimleri
 
 Bu aşamada PCA sonrası elde edilen tek boyutlu zaman serisi verileri üzerinde derin öğrenme tabanlı model eğitimleri gerçekleştirilmiştir.
