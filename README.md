@@ -1264,4 +1264,120 @@ Gerçekleştirilen analizler sonucunda:
 * Fold bazlı analizler model davranışlarını daha güvenilir şekilde incelemeye olanak sağlamıştır.
 
 Bu aşama ile birlikte proje kapsamında derin öğrenme modellerinin performans analiz süreci tamamlanmıştır.
+---
 
+# 10. Olasılıksal Automata ve Transition Probability Analizi
+
+Bu aşamada oluşturulan automata state yapıları kullanılarak durumlar arasındaki geçiş olasılıkları hesaplanmıştır.
+
+Her state için geçiş olasılıkları frekans tabanlı yöntem kullanılarak elde edilmiştir.
+
+Kullanılan formül:
+
+```text
+P(Si → Sj) =
+Geçiş Sayısı / Toplam Çıkış Sayısı
+```
+
+Bu yöntem sayesinde her state'in hangi state'lere ne olasılıkla geçiş yaptığı belirlenmiştir.
+
+---
+
+## 10.1 Transition Probability Hesaplamaları
+
+Transition count matrix yapıları kullanılarak probability matrixleri oluşturulmuştur.
+
+Bu matrislerde:
+
+* Satırlar başlangıç state'lerini
+* Sütunlar hedef state'leri
+* Hücre değerleri geçiş olasılıklarını
+
+temsil etmektedir.
+
+Üretilen bazı çıktılar:
+
+| Veri Seti | Bölüm | State Sayısı | Matrix Boyutu |
+|------------|------------|------------|------------|
+| SKAB | Fold 1 Train | 34 | 34 × 34 |
+| SKAB | Fold 4 Train | 34 | 34 × 34 |
+| BATADAL Dataset04 | Train | 60 | 60 × 60 |
+
+---
+
+## 10.2 Smoothing Uygulaması
+
+Eğitim verisinde gözlemlenmeyen state geçişlerinin sıfır olasılık üretmesi ilerleyen aşamalarda path probability hesaplamalarında problemlere neden olabilmektedir.
+
+Bu nedenle Laplace Smoothing yöntemi uygulanmıştır.
+
+Bu yaklaşım sayesinde:
+
+* Zero probability problemi önlenmiştir.
+* Görülmeyen geçişler için küçük olasılık değerleri üretilmiştir.
+* Olasılık hesaplamalarının kararlılığı artırılmıştır.
+* Unseen veri senaryoları için altyapı hazırlanmıştır.
+
+---
+
+## 10.3 Gerçek Çıktı Örnekleri
+
+Transition probability matrisi içerisinden elde edilen bazı gerçek sonuçlar aşağıda verilmiştir:
+
+```text
+aaaa → aaaa : 0.8621
+aaaa → aaab : 0.0678
+
+aaab → aabb : 0.3098
+aaab → aaba : 0.2394
+
+abbb → bbbb : 0.4202
+abbb → bbba : 0.1159
+```
+
+Bu sonuçlar bazı state geçişlerinin yüksek olasılıkla tekrarlandığını, bazı geçişlerin ise daha düşük frekansta gerçekleştiğini göstermektedir.
+
+---
+
+## 10.4 Test Sonuçları
+
+Transition probability hesaplamalarının doğruluğu pytest kullanılarak doğrulanmıştır.
+
+Çalıştırılan test:
+
+```bash
+pytest tests/test_transition_analysis.py
+```
+
+Sonuç:
+
+```text
+======================= 2 passed in 0.34s =======================
+```
+
+Bu sonuç transition count ve transition probability hesaplamalarının beklenen şekilde çalıştığını göstermektedir.
+
+---
+
+## 10.5 Oluşturulan Çıktılar
+
+```text
+results/transition_matrices/
+results/transition_probabilities/
+```
+
+Bu klasörlerde:
+
+* Transition count matrixleri
+* Transition probability matrixleri
+* Smoothing uygulanmış olasılık çıktıları
+
+saklanmaktadır.
+
+---
+
+## 10.6 Genel Değerlendirme
+
+Bu aşama sonucunda olasılıksal automata modelinin temel bileşenlerinden biri tamamlanmıştır.
+
+State geçiş olasılıkları başarıyla hesaplanmış ve smoothing uygulanarak olasılık sistemi geliştirilmiştir.
