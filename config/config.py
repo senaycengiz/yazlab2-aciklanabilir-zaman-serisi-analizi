@@ -77,3 +77,8 @@ PAA_DATA_DIR = "data/processed/paa"
 SAX_DATA_DIR = "data/processed/sax"
 
 SAX_WORD_COLUMN = "sax_word"
+
+# Automata değerlendirme parametreleri
+AUTOMATA_SMOOTHING_ALPHA = 1.0
+AUTOMATA_THRESHOLD_QUANTILE = 0.10
+UNSEEN_DISTANCE_THRESHOLD = 1
