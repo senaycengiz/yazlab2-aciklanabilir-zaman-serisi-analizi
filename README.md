@@ -1381,3 +1381,184 @@ saklanmaktadır.
 Bu aşama sonucunda olasılıksal automata modelinin temel bileşenlerinden biri tamamlanmıştır.
 
 State geçiş olasılıkları başarıyla hesaplanmış ve smoothing uygulanarak olasılık sistemi geliştirilmiştir.
+
+
+---
+
+# 11. Automata Tahmin Sistemi ve Unseen Pattern Yönetimi
+
+Bu aşamada oluşturulan olasılıksal automata yapısı kullanılarak sequence tabanlı tahmin sistemi geliştirilmiştir.
+
+Amaç, test sırasında gelen sembolik pattern dizilerinin eğitim verisinde öğrenilen automata state yapısı ile karşılaştırılması ve anomaly/normal kararının üretilebilmesidir.
+
+---
+
+## 11.1 Automata Tahmin Sistemi
+
+Automata tahmin sistemi, verilen bir sequence değerinin eğitim sırasında oluşturulan state patternleri içerisinde bulunup bulunmadığını kontrol etmektedir.
+
+Eğer gelen sequence eğitim verisinde görülen patternlerden biri ise sistem bu patterni normal davranış olarak değerlendirmektedir.
+
+Eğer sequence eğitim verisinde bulunmuyorsa, bu durum potansiyel anomaly olarak ele alınmaktadır.
+
+Bu kapsamda:
+
+* Automata state dosyalarından bilinen patternler okunmuştur.
+* Sequence üzerinden tahmin yapan fonksiyon geliştirilmiştir.
+* Patternin eğitim verisinde bulunma durumuna göre normal/anomaly kararı verilmiştir.
+* Tahmin doğruluğunu kontrol etmek amacıyla unit testler yazılmıştır.
+
+Tahmin çıktısı:
+
+```text
+0 -> normal
+1 -> anomaly
+```
+
+şeklinde düzenlenmiştir.
+
+---
+
+## 11.2 Levenshtein Distance ile En Yakın Pattern Hesaplama
+
+Unseen pattern problemini yönetebilmek için Levenshtein Distance algoritması uygulanmıştır.
+
+Levenshtein Distance, iki string arasındaki farklılığı ölçen bir algoritmadır. Bu projede sembolik patternler string olarak temsil edildiği için, test sırasında gelen bilinmeyen patternin eğitim verisindeki patternlere ne kadar benzediği bu yöntemle hesaplanmıştır.
+
+Örnek:
+
+```text
+Test pattern:
+abd
+
+Eğitim patterni:
+abc
+
+Levenshtein distance:
+1
+```
+
+Bu sonuç, `abd` patterninin `abc` patternine oldukça yakın olduğunu göstermektedir.
+
+Bu aşamada:
+
+* İki pattern arasındaki mesafe hesaplanmıştır.
+* Eğitim verisindeki tüm patternler taranmıştır.
+* En düşük mesafeye sahip pattern en yakın pattern olarak seçilmiştir.
+* Böylece unseen patternler tamamen yok sayılmak yerine en benzer bilinen pattern ile ilişkilendirilmiştir.
+
+---
+
+## 11.3 Unseen Pattern Mapping Sistemi
+
+Test sırasında eğitim verisinde görülmeyen patternler ile karşılaşılabilmektedir. Bu durum unseen pattern problemi olarak ele alınmıştır.
+
+Bu problemi çözmek için unseen mapping sistemi geliştirilmiştir.
+
+Sistem aşağıdaki adımlarla çalışmaktadır:
+
+1. Gelen sequence eğitim patternleri içerisinde aranır.
+2. Eğer pattern eğitim verisinde mevcutsa doğrudan kullanılır.
+3. Eğer pattern eğitim verisinde bulunmuyorsa Levenshtein Distance hesaplanır.
+4. En yakın eğitim patterni belirlenir.
+5. Unseen pattern bu en yakın pattern ile eşleştirilir.
+6. Automata tahmini eşlenen pattern üzerinden gerçekleştirilir.
+
+Örnek:
+
+```text
+Gelen pattern:
+abd
+
+En yakın eğitim patterni:
+abc
+
+Mapping:
+abd -> abc
+```
+
+Bu yapı sayesinde sistem daha önce hiç görmediği patternler karşısında tamamen başarısız olmak yerine en yakın bilinen davranış üzerinden karar verebilmektedir.
+
+---
+
+## 11.4 Unseen Mekanizmasının Automata Modeline Entegrasyonu
+
+Geliştirilen unseen mapping yapısı automata tahmin sürecine entegre edilmiştir.
+
+Önceki yapıda automata yalnızca eğitim sırasında gördüğü patternleri tanıyabilmekteydi. Bu nedenle test sırasında yeni bir pattern geldiğinde sistem bu patterni doğrudan anomaly olarak değerlendirebilmekteydi.
+
+Yeni yapıda ise:
+
+* Sequence önce bilinen patternler arasında kontrol edilmektedir.
+* Bilinmeyen patternler için Levenshtein Distance hesaplanmaktadır.
+* En yakın eğitim patterni belirlenmektedir.
+* Unseen pattern bu pattern ile eşleştirilmektedir.
+* Automata tahmini mapped pattern üzerinden gerçekleştirilmektedir.
+
+Bu sayede model unseen patternleri de açıklanabilir şekilde işleyebilmektedir.
+
+Üretilen detaylı çıktı yapısı:
+
+```text
+sequence
+mapped_pattern
+is_unseen
+distance
+prediction
+```
+
+Bu bilgiler sayesinde tahmin sonucunun hangi pattern üzerinden verildiği ve kararın nasıl oluştuğu takip edilebilmektedir.
+
+---
+
+## 11.5 Test Süreci
+
+Automata tahmin sistemi ve unseen pattern yönetimi için kapsamlı birim testleri geliştirilmiştir.
+
+Test edilen senaryolar:
+
+* Bilinen patternin kendisine eşlenmesi
+* Unseen patternin en yakın pattern ile eşleştirilmesi
+* Yakın unseen patternlerin normal olarak değerlendirilmesi
+* Uzak unseen patternlerin anomaly olarak işaretlenmesi
+* State dosyası üzerinden tahmin yapılması
+* Unseen entegrasyonunun doğrulanması
+
+Projede pytest frameworkü kullanılmıştır.
+
+Çalıştırılan test komutları:
+
+```bash
+python3 -m pytest tests/test_automata_predict.py
+python3 -m pytest tests/test_unseen_integration.py
+python3 -m pytest tests
+```
+
+Test sonuçları automata tahmin sistemi ile unseen pattern entegrasyonunun beklenen şekilde çalıştığını göstermiştir.
+
+---
+
+## 11.6 Genel Değerlendirme
+
+Bu aşama sonucunda automata modeli yalnızca state ve transition üreten bir yapı olmaktan çıkarılmış, sequence üzerinden tahmin yapabilen bir sisteme dönüştürülmüştür.
+
+Levenshtein Distance algoritması kullanılarak unseen patternler için en yakın eğitim patternleri hesaplanmış ve bu yapı automata tahmin sürecine entegre edilmiştir.
+
+Gerçekleştirilen geliştirmeler sonucunda sistem:
+
+* Bilinen patternleri tanıyabilmektedir.
+* Bilinmeyen patternleri en yakın eğitim patternlerine eşleyebilmektedir.
+* Sequence bazlı normal/anomaly tahmini yapabilmektedir.
+* Tahmin sürecini açıklanabilir bilgiler ile sunabilmektedir.
+* Unseen veri senaryolarına karşı daha dayanıklı hale gelmiştir.
+
+Bu yapı ilerleyen aşamalarda gerçekleştirilecek olan:
+
+* Transition probability analizleri
+* Explainability çıktıları
+* Parametre duyarlılık deneyleri
+* Unseen veri davranışı analizleri
+
+için temel tahmin altyapısını oluşturmaktadır.
+
+---
