@@ -735,6 +735,7 @@ Projede:
 
 * LSTM
 * GRU
+* 1D-CNN
 
 modelleri kullanılmıştır.
 
@@ -1562,3 +1563,91 @@ Bu yapı ilerleyen aşamalarda gerçekleştirilecek olan:
 için temel tahmin altyapısını oluşturmaktadır.
 
 ---
+---
+
+# 12. Normal Veri Senaryosu Deneyleri
+
+Bu aşamada derin öğrenme modelleri ve olasılıksal automata modeli normal/orijinal veri senaryosu üzerinde test edilmiştir.
+
+Amaç, modellerin herhangi bir gürültü veya yapay unseen veri eklenmeden mevcut test verileri üzerindeki davranışlarını incelemektir.
+
+---
+
+## 12.1 Deep Learning Normal Veri Sonuçları
+
+Bu deneyde LSTM, GRU ve 1D-CNN modelleri SKAB ve BATADAL test verileri üzerinde değerlendirilmiştir.
+
+### SKAB Ortalama Sonuçları
+
+| Model | Accuracy | Precision | Recall | F1-score |
+|---|---:|---:|---:|---:|
+| LSTM | 0.674 | 0.668 | 0.093 | 0.149 |
+| GRU | 0.676 | 0.592 | 0.122 | 0.187 |
+| 1D-CNN | 0.678 | 0.637 | 0.139 | 0.215 |
+
+### BATADAL Sonuçları
+
+| Model | Accuracy | Precision | Recall | F1-score |
+|---|---:|---:|---:|---:|
+| LSTM | 0.904 | 0.000 | 0.000 | 0.000 |
+| GRU | 0.904 | 0.000 | 0.000 | 0.000 |
+| 1D-CNN | 0.904 | 0.000 | 0.000 | 0.000 |
+
+BATADAL veri setinde accuracy değeri yüksek görünmesine rağmen precision, recall ve F1-score değerlerinin sıfır olması modellerin anomaly sınıfını yakalamakta zorlandığını göstermektedir. Bu durum BATADAL veri setindeki düşük anomaly oranı ve sınıf dengesizliği ile ilişkilidir.
+
+---
+
+## 12.2 Automata Normal Veri Sonuçları
+
+Automata modeli normal veri senaryosunda transition probability tabanlı olarak değerlendirilmiştir.
+
+Bu değerlendirmede:
+
+* Geçiş olasılıkları train patternleri üzerinden hesaplanmıştır.
+* Laplace smoothing uygulanmıştır.
+* Unseen pattern durumları Levenshtein tabanlı mapping ile yönetilmiştir.
+* Düşük olasılıklı geçişler anomaly adayı olarak değerlendirilmiştir.
+* Threshold değeri test verisinden değil, eğitim verisindeki transition probability dağılımının alt %10 kuantil değeri üzerinden belirlenmiştir.
+
+### SKAB Ortalama Sonuçları
+
+| Model | Accuracy | Precision | Recall | F1-score |
+|---|---:|---:|---:|---:|
+| Automata | 0.567 | 0.308 | 0.118 | 0.156 |
+
+### BATADAL Sonuçları
+
+| Model | Accuracy | Precision | Recall | F1-score |
+|---|---:|---:|---:|---:|
+| Automata | 0.671 | 0.308 | 0.500 | 0.381 |
+
+---
+
+## 12.3 Normal Senaryo Genel Değerlendirmesi
+
+Normal veri senaryosunda deep learning modelleri SKAB veri setinde birbirine yakın sonuçlar üretmiştir. CNN modeli F1-score açısından diğer deep learning modellerine göre daha yüksek performans göstermiştir.
+
+BATADAL veri setinde deep learning modelleri yüksek accuracy değerleri üretmesine rağmen anomaly sınıfını tespit edememiştir. Bu nedenle anomaly detection problemi açısından yalnızca accuracy metriği yeterli görülmemiş, precision, recall ve F1-score değerleri birlikte değerlendirilmiştir.
+
+Automata modeli BATADAL veri setinde deep learning modellerine göre daha düşük accuracy üretmesine rağmen anomaly sınıfını kısmen yakalayabilmiştir. Bu durum automata modelinin transition probability tabanlı karar mekanizmasının anomaly davranışlarını açıklanabilir şekilde analiz edebildiğini göstermektedir.
+
+---
+
+## 12.4 Oluşturulan Çıktılar
+
+Normal veri senaryosu sonucunda aşağıdaki çıktı dosyaları oluşturulmuştur:
+
+```text
+results/normal_data/
+├── skab_normal_results.csv
+├── skab_normal_summary.csv
+└── batadal_normal_results.csv
+
+results/automata_normal_data/
+├── skab_automata_normal_results.csv
+├── skab_automata_normal_summary.csv
+└── batadal_automata_normal_results.csv
+
+logs/
+├── normal_data_experiment.log
+└── automata_normal_experiment.log
