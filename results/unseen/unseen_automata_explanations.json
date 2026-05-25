@@ -8,10 +8,13 @@
         "original_pattern": "aaaa",
         "status": "unseen",
         "mapped_to": "aaaa",
+        "nearest_pattern": "aaaa",
         "distance": 1,
-        "probability": 0.0,
+        "transition": null,
+        "transition_probability": 1.0,
+        "path_probability": 1.0,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 1.0
     },
     {
         "dataset": "SKAB",
@@ -22,10 +25,13 @@
         "original_pattern": "abba",
         "status": "unseen",
         "mapped_to": "abba",
+        "nearest_pattern": "abba",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "aaaa->abba",
+        "transition_probability": 0.0021881838074398,
+        "path_probability": 0.0021881838074398,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0021881838074398
     },
     {
         "dataset": "SKAB",
@@ -36,10 +42,13 @@
         "original_pattern": "abbb",
         "status": "unseen",
         "mapped_to": "abbb",
+        "nearest_pattern": "abbb",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "abba->abbb",
+        "transition_probability": 0.0192307692307692,
+        "path_probability": 0.0192307692307692,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0192307692307692
     },
     {
         "dataset": "SKAB",
@@ -50,10 +59,13 @@
         "original_pattern": "baaa",
         "status": "unseen",
         "mapped_to": "baaa",
+        "nearest_pattern": "baaa",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "abbb->baaa",
+        "transition_probability": 0.0144927536231884,
+        "path_probability": 0.0144927536231884,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0144927536231884
     },
     {
         "dataset": "SKAB",
@@ -64,10 +76,13 @@
         "original_pattern": "babb",
         "status": "unseen",
         "mapped_to": "babb",
+        "nearest_pattern": "babb",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "baaa->babb",
+        "transition_probability": 0.0142857142857142,
+        "path_probability": 0.0142857142857142,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0142857142857142
     },
     {
         "dataset": "SKAB",
@@ -78,10 +93,13 @@
         "original_pattern": "bbaa",
         "status": "unseen",
         "mapped_to": "bbaa",
+        "nearest_pattern": "bbaa",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "babb->bbaa",
+        "transition_probability": 0.0185185185185185,
+        "path_probability": 0.0185185185185185,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0185185185185185
     },
     {
         "dataset": "SKAB",
@@ -92,10 +110,13 @@
         "original_pattern": "bbab",
         "status": "unseen",
         "mapped_to": "bbab",
+        "nearest_pattern": "bbab",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "bbaa->bbab",
+        "transition_probability": 0.0149253731343283,
+        "path_probability": 0.0149253731343283,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0149253731343283
     },
     {
         "dataset": "SKAB",
@@ -106,10 +127,13 @@
         "original_pattern": "bbba",
         "status": "unseen",
         "mapped_to": "bbba",
+        "nearest_pattern": "bbba",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "bbab->bbba",
+        "transition_probability": 0.0188679245283018,
+        "path_probability": 0.0188679245283018,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0188679245283018
     },
     {
         "dataset": "SKAB",
@@ -120,10 +144,13 @@
         "original_pattern": "bbbb",
         "status": "unseen",
         "mapped_to": "bbbb",
+        "nearest_pattern": "bbbb",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "bbba->bbbb",
+        "transition_probability": 0.0144927536231884,
+        "path_probability": 0.0144927536231884,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0144927536231884
     },
     {
         "dataset": "SKAB",
@@ -134,10 +161,13 @@
         "original_pattern": "bbbc",
         "status": "unseen",
         "mapped_to": "baba",
+        "nearest_pattern": "baba",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "bbbb->baba",
+        "transition_probability": 0.002840909090909,
+        "path_probability": 0.002840909090909,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.002840909090909
     },
     {
         "dataset": "SKAB",
@@ -148,10 +178,13 @@
         "original_pattern": "bbcb",
         "status": "unseen",
         "mapped_to": "baba",
+        "nearest_pattern": "baba",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "baba->baba",
+        "transition_probability": 0.0238095238095238,
+        "path_probability": 0.0238095238095238,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0238095238095238
     },
     {
         "dataset": "SKAB",
@@ -162,10 +195,13 @@
         "original_pattern": "bbcc",
         "status": "unseen",
         "mapped_to": "bbca",
+        "nearest_pattern": "bbca",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "baba->bbca",
+        "transition_probability": 0.0238095238095238,
+        "path_probability": 0.0238095238095238,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0238095238095238
     },
     {
         "dataset": "SKAB",
@@ -176,10 +212,13 @@
         "original_pattern": "bcbb",
         "status": "unseen",
         "mapped_to": "baba",
+        "nearest_pattern": "baba",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "bbca->baba",
+        "transition_probability": 0.0285714285714285,
+        "path_probability": 0.0285714285714285,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0285714285714285
     },
     {
         "dataset": "SKAB",
@@ -190,10 +229,13 @@
         "original_pattern": "bcbc",
         "status": "unseen",
         "mapped_to": "baba",
+        "nearest_pattern": "baba",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "baba->baba",
+        "transition_probability": 0.0238095238095238,
+        "path_probability": 0.0238095238095238,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0238095238095238
     },
     {
         "dataset": "SKAB",
@@ -204,10 +246,13 @@
         "original_pattern": "bccb",
         "status": "unseen",
         "mapped_to": "bbca",
+        "nearest_pattern": "bbca",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "baba->bbca",
+        "transition_probability": 0.0238095238095238,
+        "path_probability": 0.0238095238095238,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0238095238095238
     },
     {
         "dataset": "SKAB",
@@ -218,10 +263,13 @@
         "original_pattern": "bccc",
         "status": "unseen",
         "mapped_to": "bbca",
+        "nearest_pattern": "bbca",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "bbca->bbca",
+        "transition_probability": 0.0285714285714285,
+        "path_probability": 0.0285714285714285,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0285714285714285
     },
     {
         "dataset": "SKAB",
@@ -232,10 +280,13 @@
         "original_pattern": "cbbb",
         "status": "unseen",
         "mapped_to": "abba",
+        "nearest_pattern": "abba",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "bbca->abba",
+        "transition_probability": 0.0285714285714285,
+        "path_probability": 0.0285714285714285,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0285714285714285
     },
     {
         "dataset": "SKAB",
@@ -246,10 +297,13 @@
         "original_pattern": "cbbc",
         "status": "unseen",
         "mapped_to": "abba",
+        "nearest_pattern": "abba",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "abba->abba",
+        "transition_probability": 0.0192307692307692,
+        "path_probability": 0.0192307692307692,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0192307692307692
     },
     {
         "dataset": "SKAB",
@@ -260,10 +314,13 @@
         "original_pattern": "cbcb",
         "status": "unseen",
         "mapped_to": "bbca",
+        "nearest_pattern": "bbca",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "abba->bbca",
+        "transition_probability": 0.0192307692307692,
+        "path_probability": 0.0192307692307692,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0192307692307692
     },
     {
         "dataset": "SKAB",
@@ -274,10 +331,13 @@
         "original_pattern": "cbcc",
         "status": "unseen",
         "mapped_to": "bbca",
+        "nearest_pattern": "bbca",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "bbca->bbca",
+        "transition_probability": 0.0285714285714285,
+        "path_probability": 0.0285714285714285,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0285714285714285
     },
     {
         "dataset": "SKAB",
@@ -288,10 +348,13 @@
         "original_pattern": "ccbb",
         "status": "unseen",
         "mapped_to": "ccbb",
+        "nearest_pattern": "ccbb",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "bbca->ccbb",
+        "transition_probability": 0.0285714285714285,
+        "path_probability": 0.0285714285714285,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0285714285714285
     },
     {
         "dataset": "SKAB",
@@ -302,10 +365,13 @@
         "original_pattern": "ccbc",
         "status": "unseen",
         "mapped_to": "ccbb",
+        "nearest_pattern": "ccbb",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "ccbb->ccbb",
+        "transition_probability": 0.0222222222222222,
+        "path_probability": 0.0222222222222222,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0222222222222222
     },
     {
         "dataset": "SKAB",
@@ -316,10 +382,13 @@
         "original_pattern": "cccb",
         "status": "unseen",
         "mapped_to": "cccb",
+        "nearest_pattern": "cccb",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "ccbb->cccb",
+        "transition_probability": 0.0222222222222222,
+        "path_probability": 0.0222222222222222,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0222222222222222
     },
     {
         "dataset": "SKAB",
@@ -330,10 +399,13 @@
         "original_pattern": "cccc",
         "status": "unseen",
         "mapped_to": "cccb",
+        "nearest_pattern": "cccb",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "cccb->cccb",
+        "transition_probability": 0.0212765957446808,
+        "path_probability": 0.0212765957446808,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0212765957446808
     },
     {
         "dataset": "SKAB",
@@ -344,10 +416,13 @@
         "original_pattern": "aaaa",
         "status": "unseen",
         "mapped_to": "aaaa",
+        "nearest_pattern": "aaaa",
         "distance": 1,
-        "probability": 0.0,
+        "transition": null,
+        "transition_probability": 1.0,
+        "path_probability": 1.0,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 1.0
     },
     {
         "dataset": "SKAB",
@@ -358,10 +433,13 @@
         "original_pattern": "aaab",
         "status": "unseen",
         "mapped_to": "aaab",
+        "nearest_pattern": "aaab",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "aaaa->aaab",
+        "transition_probability": 0.0481171548117154,
+        "path_probability": 0.0481171548117154,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0481171548117154
     },
     {
         "dataset": "SKAB",
@@ -372,10 +450,13 @@
         "original_pattern": "aaba",
         "status": "unseen",
         "mapped_to": "aaba",
+        "nearest_pattern": "aaba",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "aaab->aaba",
+        "transition_probability": 0.203125,
+        "path_probability": 0.203125,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.203125
     },
     {
         "dataset": "SKAB",
@@ -386,10 +467,13 @@
         "original_pattern": "aabb",
         "status": "unseen",
         "mapped_to": "aabb",
+        "nearest_pattern": "aabb",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "aaba->aabb",
+        "transition_probability": 0.0192307692307692,
+        "path_probability": 0.0192307692307692,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0192307692307692
     },
     {
         "dataset": "SKAB",
@@ -400,10 +484,13 @@
         "original_pattern": "abaa",
         "status": "unseen",
         "mapped_to": "abaa",
+        "nearest_pattern": "abaa",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "aabb->abaa",
+        "transition_probability": 0.0172413793103448,
+        "path_probability": 0.0172413793103448,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0172413793103448
     },
     {
         "dataset": "SKAB",
@@ -414,10 +501,13 @@
         "original_pattern": "abab",
         "status": "unseen",
         "mapped_to": "abab",
+        "nearest_pattern": "abab",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "abaa->abab",
+        "transition_probability": 0.0185185185185185,
+        "path_probability": 0.0185185185185185,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0185185185185185
     },
     {
         "dataset": "SKAB",
@@ -428,10 +518,13 @@
         "original_pattern": "abba",
         "status": "unseen",
         "mapped_to": "abba",
+        "nearest_pattern": "abba",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "abab->abba",
+        "transition_probability": 0.0222222222222222,
+        "path_probability": 0.0222222222222222,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0222222222222222
     },
     {
         "dataset": "SKAB",
@@ -442,10 +535,13 @@
         "original_pattern": "abbb",
         "status": "unseen",
         "mapped_to": "abbb",
+        "nearest_pattern": "abbb",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "abba->abbb",
+        "transition_probability": 0.0196078431372549,
+        "path_probability": 0.0196078431372549,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0196078431372549
     },
     {
         "dataset": "SKAB",
@@ -456,10 +552,13 @@
         "original_pattern": "baaa",
         "status": "unseen",
         "mapped_to": "baaa",
+        "nearest_pattern": "baaa",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "abbb->baaa",
+        "transition_probability": 0.0149253731343283,
+        "path_probability": 0.0149253731343283,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0149253731343283
     },
     {
         "dataset": "SKAB",
@@ -470,10 +569,13 @@
         "original_pattern": "baab",
         "status": "unseen",
         "mapped_to": "baab",
+        "nearest_pattern": "baab",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "baaa->baab",
+        "transition_probability": 0.015625,
+        "path_probability": 0.015625,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.015625
     },
     {
         "dataset": "SKAB",
@@ -484,10 +586,13 @@
         "original_pattern": "baba",
         "status": "unseen",
         "mapped_to": "baba",
+        "nearest_pattern": "baba",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "baab->baba",
+        "transition_probability": 0.0222222222222222,
+        "path_probability": 0.0222222222222222,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0222222222222222
     },
     {
         "dataset": "SKAB",
@@ -498,10 +603,13 @@
         "original_pattern": "babb",
         "status": "unseen",
         "mapped_to": "babb",
+        "nearest_pattern": "babb",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "baba->babb",
+        "transition_probability": 0.0212765957446808,
+        "path_probability": 0.0212765957446808,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0212765957446808
     },
     {
         "dataset": "SKAB",
@@ -512,10 +620,13 @@
         "original_pattern": "bbaa",
         "status": "unseen",
         "mapped_to": "bbaa",
+        "nearest_pattern": "bbaa",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "babb->bbaa",
+        "transition_probability": 0.0166666666666666,
+        "path_probability": 0.0166666666666666,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0166666666666666
     },
     {
         "dataset": "SKAB",
@@ -526,10 +637,13 @@
         "original_pattern": "bbab",
         "status": "unseen",
         "mapped_to": "bbab",
+        "nearest_pattern": "bbab",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "bbaa->bbab",
+        "transition_probability": 0.0181818181818181,
+        "path_probability": 0.0181818181818181,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0181818181818181
     },
     {
         "dataset": "SKAB",
@@ -540,10 +654,13 @@
         "original_pattern": "bbba",
         "status": "unseen",
         "mapped_to": "bbba",
+        "nearest_pattern": "bbba",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "bbab->bbba",
+        "transition_probability": 0.0161290322580645,
+        "path_probability": 0.0161290322580645,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0161290322580645
     },
     {
         "dataset": "SKAB",
@@ -554,10 +671,13 @@
         "original_pattern": "bbbb",
         "status": "unseen",
         "mapped_to": "bbbb",
+        "nearest_pattern": "bbbb",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "bbba->bbbb",
+        "transition_probability": 0.0149253731343283,
+        "path_probability": 0.0149253731343283,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0149253731343283
     },
     {
         "dataset": "SKAB",
@@ -568,10 +688,13 @@
         "original_pattern": "caaa",
         "status": "unseen",
         "mapped_to": "aaab",
+        "nearest_pattern": "aaab",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "bbbb->aaab",
+        "transition_probability": 0.002415458937198,
+        "path_probability": 0.002415458937198,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.002415458937198
     },
     {
         "dataset": "SKAB",
@@ -582,10 +705,13 @@
         "original_pattern": "ccaa",
         "status": "unseen",
         "mapped_to": "caab",
+        "nearest_pattern": "caab",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "aaab->caab",
+        "transition_probability": 0.015625,
+        "path_probability": 0.015625,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.015625
     },
     {
         "dataset": "SKAB",
@@ -596,10 +722,13 @@
         "original_pattern": "ccca",
         "status": "unseen",
         "mapped_to": "ccca",
+        "nearest_pattern": "ccca",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "caab->ccca",
+        "transition_probability": 0.0285714285714285,
+        "path_probability": 0.0285714285714285,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0285714285714285
     },
     {
         "dataset": "SKAB",
@@ -610,10 +739,13 @@
         "original_pattern": "cccc",
         "status": "unseen",
         "mapped_to": "cccc",
+        "nearest_pattern": "cccc",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "ccca->cccc",
+        "transition_probability": 0.0285714285714285,
+        "path_probability": 0.0285714285714285,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0285714285714285
     },
     {
         "dataset": "SKAB",
@@ -624,10 +756,13 @@
         "original_pattern": "aaaa",
         "status": "unseen",
         "mapped_to": "aaaa",
+        "nearest_pattern": "aaaa",
         "distance": 1,
-        "probability": 0.0,
+        "transition": null,
+        "transition_probability": 1.0,
+        "path_probability": 1.0,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 1.0
     },
     {
         "dataset": "SKAB",
@@ -638,10 +773,13 @@
         "original_pattern": "aaab",
         "status": "unseen",
         "mapped_to": "aaab",
+        "nearest_pattern": "aaab",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "aaaa->aaab",
+        "transition_probability": 0.0562770562770562,
+        "path_probability": 0.0562770562770562,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0562770562770562
     },
     {
         "dataset": "SKAB",
@@ -652,10 +790,13 @@
         "original_pattern": "aaba",
         "status": "unseen",
         "mapped_to": "aaba",
+        "nearest_pattern": "aaba",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "aaab->aaba",
+        "transition_probability": 0.2571428571428571,
+        "path_probability": 0.2571428571428571,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.2571428571428571
     },
     {
         "dataset": "SKAB",
@@ -666,10 +807,13 @@
         "original_pattern": "aabb",
         "status": "unseen",
         "mapped_to": "aabb",
+        "nearest_pattern": "aabb",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "aaba->aabb",
+        "transition_probability": 0.0181818181818181,
+        "path_probability": 0.0181818181818181,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0181818181818181
     },
     {
         "dataset": "SKAB",
@@ -680,10 +824,13 @@
         "original_pattern": "abaa",
         "status": "unseen",
         "mapped_to": "abaa",
+        "nearest_pattern": "abaa",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "aabb->abaa",
+        "transition_probability": 0.0158730158730158,
+        "path_probability": 0.0158730158730158,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0158730158730158
     },
     {
         "dataset": "SKAB",
@@ -694,10 +841,13 @@
         "original_pattern": "abab",
         "status": "unseen",
         "mapped_to": "abab",
+        "nearest_pattern": "abab",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "abaa->abab",
+        "transition_probability": 0.0181818181818181,
+        "path_probability": 0.0181818181818181,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0181818181818181
     },
     {
         "dataset": "SKAB",
@@ -708,10 +858,13 @@
         "original_pattern": "abba",
         "status": "unseen",
         "mapped_to": "abba",
+        "nearest_pattern": "abba",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "abab->abba",
+        "transition_probability": 0.024390243902439,
+        "path_probability": 0.024390243902439,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.024390243902439
     },
     {
         "dataset": "SKAB",
@@ -722,10 +875,13 @@
         "original_pattern": "abbb",
         "status": "unseen",
         "mapped_to": "abbb",
+        "nearest_pattern": "abbb",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "abba->abbb",
+        "transition_probability": 0.0212765957446808,
+        "path_probability": 0.0212765957446808,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0212765957446808
     },
     {
         "dataset": "SKAB",
@@ -736,10 +892,13 @@
         "original_pattern": "baaa",
         "status": "unseen",
         "mapped_to": "baaa",
+        "nearest_pattern": "baaa",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "abbb->baaa",
+        "transition_probability": 0.0144927536231884,
+        "path_probability": 0.0144927536231884,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0144927536231884
     },
     {
         "dataset": "SKAB",
@@ -750,10 +909,13 @@
         "original_pattern": "baab",
         "status": "unseen",
         "mapped_to": "baab",
+        "nearest_pattern": "baab",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "baaa->baab",
+        "transition_probability": 0.0142857142857142,
+        "path_probability": 0.0142857142857142,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0142857142857142
     },
     {
         "dataset": "SKAB",
@@ -764,10 +926,13 @@
         "original_pattern": "baba",
         "status": "unseen",
         "mapped_to": "baba",
+        "nearest_pattern": "baba",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "baab->baba",
+        "transition_probability": 0.0208333333333333,
+        "path_probability": 0.0208333333333333,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0208333333333333
     },
     {
         "dataset": "SKAB",
@@ -778,10 +943,13 @@
         "original_pattern": "babb",
         "status": "unseen",
         "mapped_to": "babb",
+        "nearest_pattern": "babb",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "baba->babb",
+        "transition_probability": 0.024390243902439,
+        "path_probability": 0.024390243902439,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.024390243902439
     },
     {
         "dataset": "SKAB",
@@ -792,10 +960,13 @@
         "original_pattern": "bbaa",
         "status": "unseen",
         "mapped_to": "bbaa",
+        "nearest_pattern": "bbaa",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "babb->bbaa",
+        "transition_probability": 0.0188679245283018,
+        "path_probability": 0.0188679245283018,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0188679245283018
     },
     {
         "dataset": "SKAB",
@@ -806,10 +977,13 @@
         "original_pattern": "bbab",
         "status": "unseen",
         "mapped_to": "bbab",
+        "nearest_pattern": "bbab",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "bbaa->bbab",
+        "transition_probability": 0.0158730158730158,
+        "path_probability": 0.0158730158730158,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0158730158730158
     },
     {
         "dataset": "SKAB",
@@ -820,10 +994,13 @@
         "original_pattern": "bbba",
         "status": "unseen",
         "mapped_to": "bbba",
+        "nearest_pattern": "bbba",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "bbab->bbba",
+        "transition_probability": 0.0192307692307692,
+        "path_probability": 0.0192307692307692,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0192307692307692
     },
     {
         "dataset": "SKAB",
@@ -834,10 +1011,13 @@
         "original_pattern": "bbbb",
         "status": "unseen",
         "mapped_to": "bbbb",
+        "nearest_pattern": "bbbb",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "bbba->bbbb",
+        "transition_probability": 0.0144927536231884,
+        "path_probability": 0.0144927536231884,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0144927536231884
     },
     {
         "dataset": "SKAB",
@@ -848,10 +1028,13 @@
         "original_pattern": "bbbc",
         "status": "unseen",
         "mapped_to": "bbaa",
+        "nearest_pattern": "bbaa",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "bbbb->bbaa",
+        "transition_probability": 0.0023866348448687,
+        "path_probability": 0.0023866348448687,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0023866348448687
     },
     {
         "dataset": "SKAB",
@@ -862,10 +1045,13 @@
         "original_pattern": "bbcb",
         "status": "unseen",
         "mapped_to": "bbaa",
+        "nearest_pattern": "bbaa",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "bbaa->bbaa",
+        "transition_probability": 0.0158730158730158,
+        "path_probability": 0.0158730158730158,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0158730158730158
     },
     {
         "dataset": "SKAB",
@@ -876,10 +1062,13 @@
         "original_pattern": "bcbb",
         "status": "unseen",
         "mapped_to": "baba",
+        "nearest_pattern": "baba",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "bbaa->baba",
+        "transition_probability": 0.0158730158730158,
+        "path_probability": 0.0158730158730158,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0158730158730158
     },
     {
         "dataset": "SKAB",
@@ -890,10 +1079,13 @@
         "original_pattern": "cbbb",
         "status": "unseen",
         "mapped_to": "abba",
+        "nearest_pattern": "abba",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "baba->abba",
+        "transition_probability": 0.024390243902439,
+        "path_probability": 0.024390243902439,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.024390243902439
     },
     {
         "dataset": "SKAB",
@@ -904,10 +1096,13 @@
         "original_pattern": "ccbb",
         "status": "unseen",
         "mapped_to": "abba",
+        "nearest_pattern": "abba",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "abba->abba",
+        "transition_probability": 0.0212765957446808,
+        "path_probability": 0.0212765957446808,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0212765957446808
     },
     {
         "dataset": "SKAB",
@@ -918,10 +1113,13 @@
         "original_pattern": "cccb",
         "status": "unseen",
         "mapped_to": "ccba",
+        "nearest_pattern": "ccba",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "abba->ccba",
+        "transition_probability": 0.0212765957446808,
+        "path_probability": 0.0212765957446808,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0212765957446808
     },
     {
         "dataset": "SKAB",
@@ -932,10 +1130,13 @@
         "original_pattern": "cccc",
         "status": "unseen",
         "mapped_to": "ccba",
+        "nearest_pattern": "ccba",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "ccba->ccba",
+        "transition_probability": 0.0294117647058823,
+        "path_probability": 0.0294117647058823,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0294117647058823
     },
     {
         "dataset": "SKAB",
@@ -946,10 +1147,13 @@
         "original_pattern": "aaaa",
         "status": "unseen",
         "mapped_to": "aaaa",
+        "nearest_pattern": "aaaa",
         "distance": 1,
-        "probability": 0.0,
+        "transition": null,
+        "transition_probability": 1.0,
+        "path_probability": 1.0,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 1.0
     },
     {
         "dataset": "SKAB",
@@ -960,10 +1164,13 @@
         "original_pattern": "aaab",
         "status": "unseen",
         "mapped_to": "aaab",
+        "nearest_pattern": "aaab",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "aaaa->aaab",
+        "transition_probability": 0.0589569160997732,
+        "path_probability": 0.0589569160997732,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0589569160997732
     },
     {
         "dataset": "SKAB",
@@ -974,10 +1181,13 @@
         "original_pattern": "aaba",
         "status": "unseen",
         "mapped_to": "aaba",
+        "nearest_pattern": "aaba",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "aaab->aaba",
+        "transition_probability": 0.2571428571428571,
+        "path_probability": 0.2571428571428571,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.2571428571428571
     },
     {
         "dataset": "SKAB",
@@ -988,10 +1198,13 @@
         "original_pattern": "aabb",
         "status": "unseen",
         "mapped_to": "aabb",
+        "nearest_pattern": "aabb",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "aaba->aabb",
+        "transition_probability": 0.0153846153846153,
+        "path_probability": 0.0153846153846153,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0153846153846153
     },
     {
         "dataset": "SKAB",
@@ -1002,10 +1215,13 @@
         "original_pattern": "abaa",
         "status": "unseen",
         "mapped_to": "abaa",
+        "nearest_pattern": "abaa",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "aabb->abaa",
+        "transition_probability": 0.0166666666666666,
+        "path_probability": 0.0166666666666666,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0166666666666666
     },
     {
         "dataset": "SKAB",
@@ -1016,10 +1232,13 @@
         "original_pattern": "abab",
         "status": "unseen",
         "mapped_to": "abab",
+        "nearest_pattern": "abab",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "abaa->abab",
+        "transition_probability": 0.0149253731343283,
+        "path_probability": 0.0149253731343283,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0149253731343283
     },
     {
         "dataset": "SKAB",
@@ -1030,10 +1249,13 @@
         "original_pattern": "abba",
         "status": "unseen",
         "mapped_to": "abba",
+        "nearest_pattern": "abba",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "abab->abba",
+        "transition_probability": 0.0192307692307692,
+        "path_probability": 0.0192307692307692,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0192307692307692
     },
     {
         "dataset": "SKAB",
@@ -1044,10 +1266,13 @@
         "original_pattern": "abbb",
         "status": "unseen",
         "mapped_to": "abbb",
+        "nearest_pattern": "abbb",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "abba->abbb",
+        "transition_probability": 0.0204081632653061,
+        "path_probability": 0.0204081632653061,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0204081632653061
     },
     {
         "dataset": "SKAB",
@@ -1058,10 +1283,13 @@
         "original_pattern": "baaa",
         "status": "unseen",
         "mapped_to": "baaa",
+        "nearest_pattern": "baaa",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "abbb->baaa",
+        "transition_probability": 0.0149253731343283,
+        "path_probability": 0.0149253731343283,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0149253731343283
     },
     {
         "dataset": "SKAB",
@@ -1072,10 +1300,13 @@
         "original_pattern": "baab",
         "status": "unseen",
         "mapped_to": "baab",
+        "nearest_pattern": "baab",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "baaa->baab",
+        "transition_probability": 0.0144927536231884,
+        "path_probability": 0.0144927536231884,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0144927536231884
     },
     {
         "dataset": "SKAB",
@@ -1086,10 +1317,13 @@
         "original_pattern": "baba",
         "status": "unseen",
         "mapped_to": "baba",
+        "nearest_pattern": "baba",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "baab->baba",
+        "transition_probability": 0.0181818181818181,
+        "path_probability": 0.0181818181818181,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0181818181818181
     },
     {
         "dataset": "SKAB",
@@ -1100,10 +1334,13 @@
         "original_pattern": "babb",
         "status": "unseen",
         "mapped_to": "babb",
+        "nearest_pattern": "babb",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "baba->babb",
+        "transition_probability": 0.0185185185185185,
+        "path_probability": 0.0185185185185185,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0185185185185185
     },
     {
         "dataset": "SKAB",
@@ -1114,10 +1351,13 @@
         "original_pattern": "bbaa",
         "status": "unseen",
         "mapped_to": "bbaa",
+        "nearest_pattern": "bbaa",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "babb->bbaa",
+        "transition_probability": 0.0178571428571428,
+        "path_probability": 0.0178571428571428,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0178571428571428
     },
     {
         "dataset": "SKAB",
@@ -1128,10 +1368,13 @@
         "original_pattern": "bbab",
         "status": "unseen",
         "mapped_to": "bbab",
+        "nearest_pattern": "bbab",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "bbaa->bbab",
+        "transition_probability": 0.0175438596491228,
+        "path_probability": 0.0175438596491228,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0175438596491228
     },
     {
         "dataset": "SKAB",
@@ -1142,10 +1385,13 @@
         "original_pattern": "bbba",
         "status": "unseen",
         "mapped_to": "bbba",
+        "nearest_pattern": "bbba",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "bbab->bbba",
+        "transition_probability": 0.0172413793103448,
+        "path_probability": 0.0172413793103448,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0172413793103448
     },
     {
         "dataset": "SKAB",
@@ -1156,10 +1402,13 @@
         "original_pattern": "bbbb",
         "status": "unseen",
         "mapped_to": "bbbb",
+        "nearest_pattern": "bbbb",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "bbba->bbbb",
+        "transition_probability": 0.0149253731343283,
+        "path_probability": 0.0149253731343283,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0149253731343283
     },
     {
         "dataset": "SKAB",
@@ -1170,10 +1419,13 @@
         "original_pattern": "caab",
         "status": "unseen",
         "mapped_to": "abab",
+        "nearest_pattern": "abab",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "bbbb->abab",
+        "transition_probability": 0.0025641025641025,
+        "path_probability": 0.0025641025641025,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0025641025641025
     },
     {
         "dataset": "SKAB",
@@ -1184,10 +1436,13 @@
         "original_pattern": "ccaa",
         "status": "unseen",
         "mapped_to": "ccaa",
+        "nearest_pattern": "ccaa",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "abab->ccaa",
+        "transition_probability": 0.0192307692307692,
+        "path_probability": 0.0192307692307692,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0192307692307692
     },
     {
         "dataset": "SKAB",
@@ -1198,10 +1453,13 @@
         "original_pattern": "ccca",
         "status": "unseen",
         "mapped_to": "caaa",
+        "nearest_pattern": "caaa",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "ccaa->caaa",
+        "transition_probability": 0.0571428571428571,
+        "path_probability": 0.0571428571428571,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0571428571428571
     },
     {
         "dataset": "SKAB",
@@ -1212,10 +1470,13 @@
         "original_pattern": "cccc",
         "status": "unseen",
         "mapped_to": "cccc",
+        "nearest_pattern": "cccc",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "caaa->cccc",
+        "transition_probability": 0.0285714285714285,
+        "path_probability": 0.0285714285714285,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0285714285714285
     },
     {
         "dataset": "SKAB",
@@ -1226,10 +1487,13 @@
         "original_pattern": "aaaa",
         "status": "unseen",
         "mapped_to": "aaaa",
+        "nearest_pattern": "aaaa",
         "distance": 1,
-        "probability": 0.0,
+        "transition": null,
+        "transition_probability": 1.0,
+        "path_probability": 1.0,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 1.0
     },
     {
         "dataset": "SKAB",
@@ -1240,10 +1504,13 @@
         "original_pattern": "aaab",
         "status": "unseen",
         "mapped_to": "aaab",
+        "nearest_pattern": "aaab",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "aaaa->aaab",
+        "transition_probability": 0.0610859728506787,
+        "path_probability": 0.0610859728506787,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0610859728506787
     },
     {
         "dataset": "SKAB",
@@ -1254,10 +1521,13 @@
         "original_pattern": "aaba",
         "status": "unseen",
         "mapped_to": "aaba",
+        "nearest_pattern": "aaba",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "aaab->aaba",
+        "transition_probability": 0.2394366197183098,
+        "path_probability": 0.2394366197183098,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.2394366197183098
     },
     {
         "dataset": "SKAB",
@@ -1268,10 +1538,13 @@
         "original_pattern": "aabb",
         "status": "unseen",
         "mapped_to": "aabb",
+        "nearest_pattern": "aabb",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "aaba->aabb",
+        "transition_probability": 0.0178571428571428,
+        "path_probability": 0.0178571428571428,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0178571428571428
     },
     {
         "dataset": "SKAB",
@@ -1282,10 +1555,13 @@
         "original_pattern": "abaa",
         "status": "unseen",
         "mapped_to": "abaa",
+        "nearest_pattern": "abaa",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "aabb->abaa",
+        "transition_probability": 0.0149253731343283,
+        "path_probability": 0.0149253731343283,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0149253731343283
     },
     {
         "dataset": "SKAB",
@@ -1296,10 +1572,13 @@
         "original_pattern": "abba",
         "status": "unseen",
         "mapped_to": "abba",
+        "nearest_pattern": "abba",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "abaa->abba",
+        "transition_probability": 0.0178571428571428,
+        "path_probability": 0.0178571428571428,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0178571428571428
     },
     {
         "dataset": "SKAB",
@@ -1310,10 +1589,13 @@
         "original_pattern": "abbb",
         "status": "unseen",
         "mapped_to": "abbb",
+        "nearest_pattern": "abbb",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "abba->abbb",
+        "transition_probability": 0.0175438596491228,
+        "path_probability": 0.0175438596491228,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0175438596491228
     },
     {
         "dataset": "SKAB",
@@ -1324,10 +1606,13 @@
         "original_pattern": "baaa",
         "status": "unseen",
         "mapped_to": "baaa",
+        "nearest_pattern": "baaa",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "abbb->baaa",
+        "transition_probability": 0.0129870129870129,
+        "path_probability": 0.0129870129870129,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0129870129870129
     },
     {
         "dataset": "SKAB",
@@ -1338,10 +1623,13 @@
         "original_pattern": "baab",
         "status": "unseen",
         "mapped_to": "baab",
+        "nearest_pattern": "baab",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "baaa->baab",
+        "transition_probability": 0.0142857142857142,
+        "path_probability": 0.0142857142857142,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0142857142857142
     },
     {
         "dataset": "SKAB",
@@ -1352,10 +1640,13 @@
         "original_pattern": "babb",
         "status": "unseen",
         "mapped_to": "abbc",
+        "nearest_pattern": "abbc",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "baab->abbc",
+        "transition_probability": 0.0192307692307692,
+        "path_probability": 0.0192307692307692,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0192307692307692
     },
     {
         "dataset": "SKAB",
@@ -1366,10 +1657,13 @@
         "original_pattern": "bbaa",
         "status": "unseen",
         "mapped_to": "bbaa",
+        "nearest_pattern": "bbaa",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "abbc->bbaa",
+        "transition_probability": 0.0277777777777777,
+        "path_probability": 0.0277777777777777,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0277777777777777
     },
     {
         "dataset": "SKAB",
@@ -1380,10 +1674,13 @@
         "original_pattern": "bbab",
         "status": "unseen",
         "mapped_to": "bbab",
+        "nearest_pattern": "bbab",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "bbaa->bbab",
+        "transition_probability": 0.0151515151515151,
+        "path_probability": 0.0151515151515151,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0151515151515151
     },
     {
         "dataset": "SKAB",
@@ -1394,10 +1691,13 @@
         "original_pattern": "bbba",
         "status": "unseen",
         "mapped_to": "bbba",
+        "nearest_pattern": "bbba",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "bbab->bbba",
+        "transition_probability": 0.0147058823529411,
+        "path_probability": 0.0147058823529411,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0147058823529411
     },
     {
         "dataset": "SKAB",
@@ -1408,10 +1708,13 @@
         "original_pattern": "bbbb",
         "status": "unseen",
         "mapped_to": "bbbb",
+        "nearest_pattern": "bbbb",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "bbba->bbbb",
+        "transition_probability": 0.0128205128205128,
+        "path_probability": 0.0128205128205128,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0128205128205128
     },
     {
         "dataset": "SKAB",
@@ -1422,10 +1725,13 @@
         "original_pattern": "bbbc",
         "status": "unseen",
         "mapped_to": "baba",
+        "nearest_pattern": "baba",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "bbbb->baba",
+        "transition_probability": 0.0027247956403269,
+        "path_probability": 0.0027247956403269,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0027247956403269
     },
     {
         "dataset": "SKAB",
@@ -1436,10 +1742,13 @@
         "original_pattern": "bbcb",
         "status": "unseen",
         "mapped_to": "baba",
+        "nearest_pattern": "baba",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "baba->baba",
+        "transition_probability": 0.02,
+        "path_probability": 0.02,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.02
     },
     {
         "dataset": "SKAB",
@@ -1450,10 +1759,13 @@
         "original_pattern": "bbcc",
         "status": "unseen",
         "mapped_to": "bbca",
+        "nearest_pattern": "bbca",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "baba->bbca",
+        "transition_probability": 0.02,
+        "path_probability": 0.02,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.02
     },
     {
         "dataset": "SKAB",
@@ -1464,10 +1776,13 @@
         "original_pattern": "bcbb",
         "status": "unseen",
         "mapped_to": "baba",
+        "nearest_pattern": "baba",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "bbca->baba",
+        "transition_probability": 0.0277777777777777,
+        "path_probability": 0.0277777777777777,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0277777777777777
     },
     {
         "dataset": "SKAB",
@@ -1478,10 +1793,13 @@
         "original_pattern": "bcbc",
         "status": "unseen",
         "mapped_to": "baba",
+        "nearest_pattern": "baba",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "baba->baba",
+        "transition_probability": 0.02,
+        "path_probability": 0.02,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.02
     },
     {
         "dataset": "SKAB",
@@ -1492,10 +1810,13 @@
         "original_pattern": "bccb",
         "status": "unseen",
         "mapped_to": "bbca",
+        "nearest_pattern": "bbca",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "baba->bbca",
+        "transition_probability": 0.02,
+        "path_probability": 0.02,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.02
     },
     {
         "dataset": "SKAB",
@@ -1506,10 +1827,13 @@
         "original_pattern": "bccc",
         "status": "unseen",
         "mapped_to": "bbca",
+        "nearest_pattern": "bbca",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "bbca->bbca",
+        "transition_probability": 0.0277777777777777,
+        "path_probability": 0.0277777777777777,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0277777777777777
     },
     {
         "dataset": "SKAB",
@@ -1520,10 +1844,13 @@
         "original_pattern": "cbba",
         "status": "unseen",
         "mapped_to": "baaa",
+        "nearest_pattern": "baaa",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "bbca->baaa",
+        "transition_probability": 0.0277777777777777,
+        "path_probability": 0.0277777777777777,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0277777777777777
     },
     {
         "dataset": "SKAB",
@@ -1534,10 +1861,13 @@
         "original_pattern": "cbbb",
         "status": "unseen",
         "mapped_to": "abba",
+        "nearest_pattern": "abba",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "baaa->abba",
+        "transition_probability": 0.0142857142857142,
+        "path_probability": 0.0142857142857142,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0142857142857142
     },
     {
         "dataset": "SKAB",
@@ -1548,10 +1878,13 @@
         "original_pattern": "cbbc",
         "status": "unseen",
         "mapped_to": "abba",
+        "nearest_pattern": "abba",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "abba->abba",
+        "transition_probability": 0.0175438596491228,
+        "path_probability": 0.0175438596491228,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0175438596491228
     },
     {
         "dataset": "SKAB",
@@ -1562,10 +1895,13 @@
         "original_pattern": "cbcb",
         "status": "unseen",
         "mapped_to": "bbca",
+        "nearest_pattern": "bbca",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "abba->bbca",
+        "transition_probability": 0.0175438596491228,
+        "path_probability": 0.0175438596491228,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0175438596491228
     },
     {
         "dataset": "SKAB",
@@ -1576,10 +1912,13 @@
         "original_pattern": "cbcc",
         "status": "unseen",
         "mapped_to": "bbca",
+        "nearest_pattern": "bbca",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "bbca->bbca",
+        "transition_probability": 0.0277777777777777,
+        "path_probability": 0.0277777777777777,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0277777777777777
     },
     {
         "dataset": "SKAB",
@@ -1590,10 +1929,13 @@
         "original_pattern": "ccbb",
         "status": "unseen",
         "mapped_to": "ccbb",
+        "nearest_pattern": "ccbb",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "bbca->ccbb",
+        "transition_probability": 0.0277777777777777,
+        "path_probability": 0.0277777777777777,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0277777777777777
     },
     {
         "dataset": "SKAB",
@@ -1604,10 +1946,13 @@
         "original_pattern": "ccbc",
         "status": "unseen",
         "mapped_to": "ccbb",
+        "nearest_pattern": "ccbb",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "ccbb->ccbb",
+        "transition_probability": 0.0238095238095238,
+        "path_probability": 0.0238095238095238,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0238095238095238
     },
     {
         "dataset": "SKAB",
@@ -1618,10 +1963,13 @@
         "original_pattern": "cccb",
         "status": "unseen",
         "mapped_to": "cccb",
+        "nearest_pattern": "cccb",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "ccbb->cccb",
+        "transition_probability": 0.0238095238095238,
+        "path_probability": 0.0238095238095238,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0238095238095238
     },
     {
         "dataset": "SKAB",
@@ -1632,10 +1980,13 @@
         "original_pattern": "cccc",
         "status": "unseen",
         "mapped_to": "cccb",
+        "nearest_pattern": "cccb",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "cccb->cccb",
+        "transition_probability": 0.0263157894736842,
+        "path_probability": 0.0263157894736842,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0263157894736842
     },
     {
         "dataset": "BATADAL_dataset04",
@@ -1646,10 +1997,13 @@
         "original_pattern": "aaba",
         "status": "unseen",
         "mapped_to": "aabc",
+        "nearest_pattern": "aabc",
         "distance": 1,
-        "probability": 0.0,
+        "transition": null,
+        "transition_probability": 1.0,
+        "path_probability": 1.0,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 1.0
     },
     {
         "dataset": "BATADAL_dataset04",
@@ -1660,10 +2014,13 @@
         "original_pattern": "aabb",
         "status": "unseen",
         "mapped_to": "aabc",
+        "nearest_pattern": "aabc",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "aabc->aabc",
+        "transition_probability": 0.015625,
+        "path_probability": 0.015625,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.015625
     },
     {
         "dataset": "BATADAL_dataset04",
@@ -1674,10 +2031,13 @@
         "original_pattern": "aabc",
         "status": "unseen",
         "mapped_to": "aabc",
+        "nearest_pattern": "aabc",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "aabc->aabc",
+        "transition_probability": 0.015625,
+        "path_probability": 0.015625,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.015625
     },
     {
         "dataset": "BATADAL_dataset04",
@@ -1688,10 +2048,13 @@
         "original_pattern": "aacb",
         "status": "unseen",
         "mapped_to": "baac",
+        "nearest_pattern": "baac",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "aabc->baac",
+        "transition_probability": 0.015625,
+        "path_probability": 0.015625,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.015625
     },
     {
         "dataset": "BATADAL_dataset04",
@@ -1702,10 +2065,13 @@
         "original_pattern": "aacc",
         "status": "unseen",
         "mapped_to": "caab",
+        "nearest_pattern": "caab",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "baac->caab",
+        "transition_probability": 0.0161290322580645,
+        "path_probability": 0.0161290322580645,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0161290322580645
     },
     {
         "dataset": "BATADAL_dataset04",
@@ -1716,10 +2082,13 @@
         "original_pattern": "abac",
         "status": "unseen",
         "mapped_to": "abac",
+        "nearest_pattern": "abac",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "caab->abac",
+        "transition_probability": 0.0158730158730158,
+        "path_probability": 0.0158730158730158,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0158730158730158
     },
     {
         "dataset": "BATADAL_dataset04",
@@ -1730,10 +2099,13 @@
         "original_pattern": "abba",
         "status": "unseen",
         "mapped_to": "abab",
+        "nearest_pattern": "abab",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "abac->abab",
+        "transition_probability": 0.0163934426229508,
+        "path_probability": 0.0163934426229508,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0163934426229508
     },
     {
         "dataset": "BATADAL_dataset04",
@@ -1744,10 +2116,13 @@
         "original_pattern": "abbc",
         "status": "unseen",
         "mapped_to": "abbc",
+        "nearest_pattern": "abbc",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "abab->abbc",
+        "transition_probability": 0.0163934426229508,
+        "path_probability": 0.0163934426229508,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0163934426229508
     },
     {
         "dataset": "BATADAL_dataset04",
@@ -1758,10 +2133,13 @@
         "original_pattern": "abca",
         "status": "unseen",
         "mapped_to": "caab",
+        "nearest_pattern": "caab",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "abbc->caab",
+        "transition_probability": 0.0153846153846153,
+        "path_probability": 0.0153846153846153,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0153846153846153
     },
     {
         "dataset": "BATADAL_dataset04",
@@ -1772,10 +2150,13 @@
         "original_pattern": "abcc",
         "status": "unseen",
         "mapped_to": "abcc",
+        "nearest_pattern": "abcc",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "caab->abcc",
+        "transition_probability": 0.0158730158730158,
+        "path_probability": 0.0158730158730158,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0158730158730158
     },
     {
         "dataset": "BATADAL_dataset04",
@@ -1786,10 +2167,13 @@
         "original_pattern": "acaa",
         "status": "unseen",
         "mapped_to": "aaca",
+        "nearest_pattern": "aaca",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "abcc->aaca",
+        "transition_probability": 0.0161290322580645,
+        "path_probability": 0.0161290322580645,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0161290322580645
     },
     {
         "dataset": "BATADAL_dataset04",
@@ -1800,10 +2184,13 @@
         "original_pattern": "acab",
         "status": "unseen",
         "mapped_to": "aabc",
+        "nearest_pattern": "aabc",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "aaca->aabc",
+        "transition_probability": 0.0153846153846153,
+        "path_probability": 0.0153846153846153,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0153846153846153
     },
     {
         "dataset": "BATADAL_dataset04",
@@ -1814,10 +2201,13 @@
         "original_pattern": "acac",
         "status": "unseen",
         "mapped_to": "acac",
+        "nearest_pattern": "acac",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "aabc->acac",
+        "transition_probability": 0.015625,
+        "path_probability": 0.015625,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.015625
     },
     {
         "dataset": "BATADAL_dataset04",
@@ -1828,10 +2218,13 @@
         "original_pattern": "acbb",
         "status": "unseen",
         "mapped_to": "abbc",
+        "nearest_pattern": "abbc",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "acac->abbc",
+        "transition_probability": 0.0151515151515151,
+        "path_probability": 0.0151515151515151,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0151515151515151
     },
     {
         "dataset": "BATADAL_dataset04",
@@ -1842,10 +2235,13 @@
         "original_pattern": "acbc",
         "status": "unseen",
         "mapped_to": "abcc",
+        "nearest_pattern": "abcc",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "abbc->abcc",
+        "transition_probability": 0.0153846153846153,
+        "path_probability": 0.0153846153846153,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0153846153846153
     },
     {
         "dataset": "BATADAL_dataset04",
@@ -1856,10 +2252,13 @@
         "original_pattern": "accb",
         "status": "unseen",
         "mapped_to": "abaa",
+        "nearest_pattern": "abaa",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "abcc->abaa",
+        "transition_probability": 0.0161290322580645,
+        "path_probability": 0.0161290322580645,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0161290322580645
     },
     {
         "dataset": "BATADAL_dataset04",
@@ -1870,10 +2269,13 @@
         "original_pattern": "baab",
         "status": "unseen",
         "mapped_to": "baac",
+        "nearest_pattern": "baac",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "abaa->baac",
+        "transition_probability": 0.0327868852459016,
+        "path_probability": 0.0327868852459016,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0327868852459016
     },
     {
         "dataset": "BATADAL_dataset04",
@@ -1884,10 +2286,13 @@
         "original_pattern": "baac",
         "status": "unseen",
         "mapped_to": "baac",
+        "nearest_pattern": "baac",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "baac->baac",
+        "transition_probability": 0.0161290322580645,
+        "path_probability": 0.0161290322580645,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0161290322580645
     },
     {
         "dataset": "BATADAL_dataset04",
@@ -1898,10 +2303,13 @@
         "original_pattern": "babb",
         "status": "unseen",
         "mapped_to": "babb",
+        "nearest_pattern": "babb",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "baac->babb",
+        "transition_probability": 0.0161290322580645,
+        "path_probability": 0.0161290322580645,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0161290322580645
     },
     {
         "dataset": "BATADAL_dataset04",
@@ -1912,10 +2320,13 @@
         "original_pattern": "babc",
         "status": "unseen",
         "mapped_to": "babb",
+        "nearest_pattern": "babb",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "babb->babb",
+        "transition_probability": 0.0158730158730158,
+        "path_probability": 0.0158730158730158,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0158730158730158
     },
     {
         "dataset": "BATADAL_dataset04",
@@ -1926,10 +2337,13 @@
         "original_pattern": "baca",
         "status": "unseen",
         "mapped_to": "acac",
+        "nearest_pattern": "acac",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "babb->acac",
+        "transition_probability": 0.0158730158730158,
+        "path_probability": 0.0158730158730158,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0158730158730158
     },
     {
         "dataset": "BATADAL_dataset04",
@@ -1940,10 +2354,13 @@
         "original_pattern": "bacb",
         "status": "unseen",
         "mapped_to": "acbc",
+        "nearest_pattern": "acbc",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "acac->acbc",
+        "transition_probability": 0.0151515151515151,
+        "path_probability": 0.0151515151515151,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0151515151515151
     },
     {
         "dataset": "BATADAL_dataset04",
@@ -1954,10 +2371,13 @@
         "original_pattern": "bbaa",
         "status": "unseen",
         "mapped_to": "abab",
+        "nearest_pattern": "abab",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "acbc->abab",
+        "transition_probability": 0.0147058823529411,
+        "path_probability": 0.0147058823529411,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0147058823529411
     },
     {
         "dataset": "BATADAL_dataset04",
@@ -1968,10 +2388,13 @@
         "original_pattern": "bbab",
         "status": "unseen",
         "mapped_to": "babb",
+        "nearest_pattern": "babb",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "abab->babb",
+        "transition_probability": 0.0327868852459016,
+        "path_probability": 0.0327868852459016,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0327868852459016
     },
     {
         "dataset": "BATADAL_dataset04",
@@ -1982,10 +2405,13 @@
         "original_pattern": "bbac",
         "status": "unseen",
         "mapped_to": "bacc",
+        "nearest_pattern": "bacc",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "babb->bacc",
+        "transition_probability": 0.0158730158730158,
+        "path_probability": 0.0158730158730158,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0158730158730158
     },
     {
         "dataset": "BATADAL_dataset04",
@@ -1996,10 +2422,13 @@
         "original_pattern": "bbba",
         "status": "unseen",
         "mapped_to": "babb",
+        "nearest_pattern": "babb",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "bacc->babb",
+        "transition_probability": 0.0161290322580645,
+        "path_probability": 0.0161290322580645,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0161290322580645
     },
     {
         "dataset": "BATADAL_dataset04",
@@ -2010,10 +2439,13 @@
         "original_pattern": "bbca",
         "status": "unseen",
         "mapped_to": "bbac",
+        "nearest_pattern": "bbac",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "babb->bbac",
+        "transition_probability": 0.0158730158730158,
+        "path_probability": 0.0158730158730158,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0158730158730158
     },
     {
         "dataset": "BATADAL_dataset04",
@@ -2024,10 +2456,13 @@
         "original_pattern": "bbcb",
         "status": "unseen",
         "mapped_to": "bbbc",
+        "nearest_pattern": "bbbc",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "bbac->bbbc",
+        "transition_probability": 0.0151515151515151,
+        "path_probability": 0.0151515151515151,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0151515151515151
     },
     {
         "dataset": "BATADAL_dataset04",
@@ -2038,10 +2473,13 @@
         "original_pattern": "bcaa",
         "status": "unseen",
         "mapped_to": "caab",
+        "nearest_pattern": "caab",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "bbbc->caab",
+        "transition_probability": 0.0151515151515151,
+        "path_probability": 0.0151515151515151,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0151515151515151
     },
     {
         "dataset": "BATADAL_dataset04",
@@ -2052,10 +2490,13 @@
         "original_pattern": "bcac",
         "status": "unseen",
         "mapped_to": "bacc",
+        "nearest_pattern": "bacc",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "caab->bacc",
+        "transition_probability": 0.0158730158730158,
+        "path_probability": 0.0158730158730158,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0158730158730158
     },
     {
         "dataset": "BATADAL_dataset04",
@@ -2066,10 +2507,13 @@
         "original_pattern": "bcba",
         "status": "unseen",
         "mapped_to": "abaa",
+        "nearest_pattern": "abaa",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "bacc->abaa",
+        "transition_probability": 0.0161290322580645,
+        "path_probability": 0.0161290322580645,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0161290322580645
     },
     {
         "dataset": "BATADAL_dataset04",
@@ -2080,10 +2524,13 @@
         "original_pattern": "bcbb",
         "status": "unseen",
         "mapped_to": "bbbc",
+        "nearest_pattern": "bbbc",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "abaa->bbbc",
+        "transition_probability": 0.0163934426229508,
+        "path_probability": 0.0163934426229508,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0163934426229508
     },
     {
         "dataset": "BATADAL_dataset04",
@@ -2094,10 +2541,13 @@
         "original_pattern": "bcca",
         "status": "unseen",
         "mapped_to": "bcac",
+        "nearest_pattern": "bcac",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "bbbc->bcac",
+        "transition_probability": 0.0151515151515151,
+        "path_probability": 0.0151515151515151,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0151515151515151
     },
     {
         "dataset": "BATADAL_dataset04",
@@ -2108,10 +2558,13 @@
         "original_pattern": "caab",
         "status": "unseen",
         "mapped_to": "caab",
+        "nearest_pattern": "caab",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "bcac->caab",
+        "transition_probability": 0.0147058823529411,
+        "path_probability": 0.0147058823529411,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0147058823529411
     },
     {
         "dataset": "BATADAL_dataset04",
@@ -2122,10 +2575,13 @@
         "original_pattern": "caac",
         "status": "unseen",
         "mapped_to": "caab",
+        "nearest_pattern": "caab",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "caab->caab",
+        "transition_probability": 0.0158730158730158,
+        "path_probability": 0.0158730158730158,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0158730158730158
     },
     {
         "dataset": "BATADAL_dataset04",
@@ -2136,10 +2592,13 @@
         "original_pattern": "cabb",
         "status": "unseen",
         "mapped_to": "abbc",
+        "nearest_pattern": "abbc",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "caab->abbc",
+        "transition_probability": 0.0158730158730158,
+        "path_probability": 0.0158730158730158,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0158730158730158
     },
     {
         "dataset": "BATADAL_dataset04",
@@ -2150,10 +2609,13 @@
         "original_pattern": "cabc",
         "status": "unseen",
         "mapped_to": "abcc",
+        "nearest_pattern": "abcc",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "abbc->abcc",
+        "transition_probability": 0.0153846153846153,
+        "path_probability": 0.0153846153846153,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0153846153846153
     },
     {
         "dataset": "BATADAL_dataset04",
@@ -2164,10 +2626,13 @@
         "original_pattern": "caca",
         "status": "unseen",
         "mapped_to": "acac",
+        "nearest_pattern": "acac",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "abcc->acac",
+        "transition_probability": 0.0161290322580645,
+        "path_probability": 0.0161290322580645,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0161290322580645
     },
     {
         "dataset": "BATADAL_dataset04",
@@ -2178,10 +2643,13 @@
         "original_pattern": "cbaa",
         "status": "unseen",
         "mapped_to": "baac",
+        "nearest_pattern": "baac",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "acac->baac",
+        "transition_probability": 0.0151515151515151,
+        "path_probability": 0.0151515151515151,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0151515151515151
     },
     {
         "dataset": "BATADAL_dataset04",
@@ -2192,10 +2660,13 @@
         "original_pattern": "cbba",
         "status": "unseen",
         "mapped_to": "bbac",
+        "nearest_pattern": "bbac",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "baac->bbac",
+        "transition_probability": 0.0161290322580645,
+        "path_probability": 0.0161290322580645,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0161290322580645
     },
     {
         "dataset": "BATADAL_dataset04",
@@ -2206,10 +2677,13 @@
         "original_pattern": "cbbb",
         "status": "unseen",
         "mapped_to": "bbbc",
+        "nearest_pattern": "bbbc",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "bbac->bbbc",
+        "transition_probability": 0.0151515151515151,
+        "path_probability": 0.0151515151515151,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0151515151515151
     },
     {
         "dataset": "BATADAL_dataset04",
@@ -2220,10 +2694,13 @@
         "original_pattern": "cbca",
         "status": "unseen",
         "mapped_to": "bcac",
+        "nearest_pattern": "bcac",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "bbbc->bcac",
+        "transition_probability": 0.0151515151515151,
+        "path_probability": 0.0151515151515151,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0151515151515151
     },
     {
         "dataset": "BATADAL_dataset04",
@@ -2234,10 +2711,13 @@
         "original_pattern": "cbcb",
         "status": "unseen",
         "mapped_to": "bcbc",
+        "nearest_pattern": "bcbc",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "bcac->bcbc",
+        "transition_probability": 0.0147058823529411,
+        "path_probability": 0.0147058823529411,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0147058823529411
     },
     {
         "dataset": "BATADAL_dataset04",
@@ -2248,10 +2728,13 @@
         "original_pattern": "cbcc",
         "status": "unseen",
         "mapped_to": "acca",
+        "nearest_pattern": "acca",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "bcbc->acca",
+        "transition_probability": 0.0153846153846153,
+        "path_probability": 0.0153846153846153,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0153846153846153
     },
     {
         "dataset": "BATADAL_dataset04",
@@ -2262,10 +2745,13 @@
         "original_pattern": "ccab",
         "status": "unseen",
         "mapped_to": "cabc",
+        "nearest_pattern": "cabc",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "acca->cabc",
+        "transition_probability": 0.0161290322580645,
+        "path_probability": 0.0161290322580645,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0161290322580645
     },
     {
         "dataset": "BATADAL_dataset04",
@@ -2276,9 +2762,12 @@
         "original_pattern": "ccba",
         "status": "unseen",
         "mapped_to": "abaa",
+        "nearest_pattern": "abaa",
         "distance": 1,
-        "probability": 0.0,
+        "transition": "cabc->abaa",
+        "transition_probability": 0.0140845070422535,
+        "path_probability": 0.0140845070422535,
         "decision": "anomaly",
-        "confidence_score": 0.5
+        "confidence_score": 0.0140845070422535
     }
 ]
