@@ -1,0 +1,4 @@
+dataset,fold,model,accuracy,precision,recall,f1,scenario
+BATADAL_dataset04,-,LSTM,0.9043062200956937,0,0.0,0,unseen
+BATADAL_dataset04,-,GRU,0.9043062200956937,0,0.0,0,unseen
+BATADAL_dataset04,-,CNN,0.9043062200956937,0,0.0,0,unseen

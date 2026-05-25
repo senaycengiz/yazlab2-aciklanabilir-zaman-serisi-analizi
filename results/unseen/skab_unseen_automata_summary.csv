@@ -1,0 +1,5 @@
+dataset,model,metric,mean,std,scenario
+SKAB,Automata,accuracy,1.0,0.0,unseen
+SKAB,Automata,precision,1.0,0.0,unseen
+SKAB,Automata,recall,1.0,0.0,unseen
+SKAB,Automata,f1,1.0,0.0,unseen

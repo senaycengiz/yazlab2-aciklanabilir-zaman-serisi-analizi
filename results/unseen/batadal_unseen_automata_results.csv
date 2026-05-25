@@ -1,0 +1,2 @@
+dataset,fold,model,accuracy,precision,recall,f1,scenario,total_rows,unseen_rows
+BATADAL_dataset04,-,Automata,1.0,1.0,1.0,1.0,unseen,46,46
