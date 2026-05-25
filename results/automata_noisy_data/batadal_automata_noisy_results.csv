@@ -1,0 +1,2 @@
+dataset,fold,model,accuracy,precision,recall,f1,scenario,window_size,smoothing_alpha,threshold_quantile,probability_threshold,train_pattern_count,test_pattern_count,normal_pattern_count,anomaly_pattern_count,unseen_transition_count,low_probability_count,average_transition_probability
+BATADAL_dataset04,-,Automata,0.2848557692307692,0.1029641185647426,0.7674418604651163,0.1815680880330124,noisy,4,1.0,0.1,0.03225806451612903,60,833,747,86,579,641,0.021634736183892653
