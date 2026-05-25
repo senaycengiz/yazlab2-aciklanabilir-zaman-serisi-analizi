@@ -12,6 +12,7 @@ from src.automata_predict import (
 RESULTS_DIR = "results/unseen"
 LOGS_DIR = "logs"
 AUTOMATA_STATE_DIR = "data/processed/automata/states"
+PROBABILITY_DIR = "results/transition_probabilities"
 
 os.makedirs(RESULTS_DIR, exist_ok=True)
 os.makedirs(LOGS_DIR, exist_ok=True)
@@ -42,13 +43,37 @@ def calculate_metrics(y_true, y_pred):
     }
 
 
-def evaluate_unseen_file(dataset, fold, train_state_path, unseen_path):
+def load_probability_matrix(path):
+    if not os.path.exists(path):
+        return None
+
+    return pd.read_csv(path, index_col=0)
+
+
+def get_transition_probability(probability_df, from_pattern, to_pattern):
+    if probability_df is None:
+        return 0.0
+
+    if from_pattern not in probability_df.index:
+        return 0.0
+
+    if to_pattern not in probability_df.columns:
+        return 0.0
+
+    return float(probability_df.loc[from_pattern, to_pattern])
+
+
+def evaluate_unseen_file(dataset, fold, train_state_path, unseen_path, probability_path):
     known_patterns = load_known_patterns_from_states(train_state_path)
+    probability_df = load_probability_matrix(probability_path)
+
     unseen_df = pd.read_csv(unseen_path)
 
     y_true = []
     y_pred = []
     explanations = []
+
+    previous_mapped_pattern = None
 
     for index, row in unseen_df.iterrows():
         pattern = str(row["pattern"])
@@ -61,12 +86,28 @@ def evaluate_unseen_file(dataset, fold, train_state_path, unseen_path):
             return_details=True
         )
 
-        # Unseen senaryosunda train sözlüğünde görülmeyen pattern anomaly kabul edilir.
-        prediction = 1 if details["is_unseen"] else int(details["prediction"])
+        mapped_pattern = details["mapped_pattern"]
+        is_unseen = bool(details["is_unseen"])
+        distance = int(details["distance"])
 
-        # Bu dosyalar özel olarak unseen senaryosu olduğu için gerçek etiket:
-        # is_unseen=True ise anomaly(1), değilse normal(0) kabul edilir.
-        true_label = 1 if bool(row.get("is_unseen", True)) else 0
+        # Kontrollü unseen senaryosunda train sözlüğünde olmayan pattern anomaly kabul edilir.
+        prediction = 1 if is_unseen else int(details["prediction"])
+        true_label = 1 if bool(row.get("is_unseen", is_unseen)) else 0
+
+        if previous_mapped_pattern is None:
+            transition = None
+            transition_probability = 1.0
+            path_probability = 1.0
+        else:
+            transition = f"{previous_mapped_pattern}->{mapped_pattern}"
+            transition_probability = get_transition_probability(
+                probability_df,
+                previous_mapped_pattern,
+                mapped_pattern
+            )
+            path_probability = transition_probability
+
+        confidence_score = path_probability
 
         y_true.append(true_label)
         y_pred.append(prediction)
@@ -78,13 +119,18 @@ def evaluate_unseen_file(dataset, fold, train_state_path, unseen_path):
             "state": str(row.get("state", "-")),
             "pattern": pattern,
             "original_pattern": original_pattern,
-            "status": "unseen" if details["is_unseen"] else "seen",
-            "mapped_to": details["mapped_pattern"],
-            "distance": int(details["distance"]),
-            "probability": 0.0 if details["is_unseen"] else 1.0,
+            "status": "unseen" if is_unseen else "seen",
+            "mapped_to": mapped_pattern,
+            "nearest_pattern": mapped_pattern,
+            "distance": distance,
+            "transition": transition,
+            "transition_probability": transition_probability,
+            "path_probability": path_probability,
             "decision": "anomaly" if prediction == 1 else "normal",
-            "confidence_score": 1.0 / (1.0 + float(details["distance"]))
+            "confidence_score": confidence_score
         })
+
+        previous_mapped_pattern = mapped_pattern
 
     metrics = calculate_metrics(y_true, y_pred)
 
@@ -174,7 +220,11 @@ def write_log(rows):
         file.write("=" * 60 + "\n\n")
         file.write(
             "Unseen patternlar train sözlüğünde aranmış, bulunmayan patternlar "
-            "Levenshtein mesafesi ile en yakın train patternına eşlenmiştir.\n\n"
+            "Levenshtein Distance ile en yakın train patternine eşlenmiştir.\n"
+        )
+        file.write(
+            "Transition probability, path probability ve confidence score "
+            "train transition probability matrisinden hesaplanmıştır.\n\n"
         )
 
         for row in rows:
@@ -198,6 +248,7 @@ def evaluate_skab():
     for fold in range(1, 6):
         train_state_path = f"{AUTOMATA_STATE_DIR}/SKAB/fold_{fold}/train.csv"
         unseen_path = f"{RESULTS_DIR}/skab_fold_{fold}_unseen.csv"
+        probability_path = f"{PROBABILITY_DIR}/SKAB/fold_{fold}/train.csv"
 
         print(f"SKAB Fold {fold} - Automata unseen testi başlatıldı.")
 
@@ -205,7 +256,8 @@ def evaluate_skab():
             dataset="SKAB",
             fold=fold,
             train_state_path=train_state_path,
-            unseen_path=unseen_path
+            unseen_path=unseen_path,
+            probability_path=probability_path
         )
 
         rows.append(result_row)
@@ -219,6 +271,7 @@ def evaluate_batadal():
 
     train_state_path = f"{AUTOMATA_STATE_DIR}/BATADAL/{dataset_name}/train.csv"
     unseen_path = f"{RESULTS_DIR}/batadal_unseen.csv"
+    probability_path = f"{PROBABILITY_DIR}/BATADAL/{dataset_name}/train.csv"
 
     print(f"{dataset_name} - Automata unseen testi başlatıldı.")
 
@@ -226,7 +279,8 @@ def evaluate_batadal():
         dataset=dataset_name,
         fold="-",
         train_state_path=train_state_path,
-        unseen_path=unseen_path
+        unseen_path=unseen_path,
+        probability_path=probability_path
     )
 
     return [result_row], explanations
@@ -253,7 +307,11 @@ if __name__ == "__main__":
     all_rows = skab_rows + batadal_rows
     all_explanations = skab_explanations + batadal_explanations
 
-    with open(f"{RESULTS_DIR}/unseen_automata_explanations.json", "w", encoding="utf-8") as file:
+    with open(
+        f"{RESULTS_DIR}/unseen_automata_explanations.json",
+        "w",
+        encoding="utf-8"
+    ) as file:
         json.dump(all_explanations, file, indent=4, ensure_ascii=False)
 
     write_log(all_rows)
