@@ -1651,3 +1651,538 @@ results/automata_normal_data/
 logs/
 ├── normal_data_experiment.log
 └── automata_normal_experiment.log
+---
+
+# 13. Gürültü Eklenmiş Veri Senaryosu Deneyleri
+
+Bu aşamada modellerin gürültülü veri karşısındaki dayanıklılığını analiz etmek amacıyla Gaussian noise senaryosu uygulanmıştır.
+
+Amaç, modellerin yalnızca temiz/orijinal veri üzerindeki performansını değil, bozulmuş veri koşullarında nasıl davrandığını da incelemektir.
+
+---
+
+## 13.1 Gürültülü Veri Oluşturma
+
+Gaussian noise senaryosunda test verileri üzerinde kontrollü gürültü ekleme işlemi gerçekleştirilmiştir.
+
+Bu süreçte:
+
+* Orijinal test verileri korunmuştur.
+* Gürültülü test verileri ayrıca oluşturulmuştur.
+* Eğitim verileri değiştirilmemiştir.
+* Modeller yeniden eğitilmeden mevcut ağırlıklar ile gürültülü veri üzerinde test edilmiştir.
+
+Bu yaklaşım sayesinde modellerin daha önce öğrendiği örüntüleri bozulmuş veri koşullarında ne kadar koruyabildiği analiz edilmiştir.
+
+---
+
+## 13.2 Gürültü Senaryosu Deney Akışı
+
+```mermaid
+flowchart TD
+
+A[Orijinal Test Verisi]
+--> B[Gaussian Noise Ekleme]
+
+B --> C[Gürültülü Test Verisi]
+
+C --> D[LSTM Modeli]
+C --> E[GRU Modeli]
+C --> F[1D-CNN Modeli]
+C --> G[Automata Modeli]
+
+D --> H[Accuracy Precision Recall F1]
+E --> H
+F --> H
+
+G --> I[Pattern ve State Analizi]
+I --> J[Transition Probability Değerlendirmesi]
+
+H --> K[Deep Learning Sonuçları]
+J --> L[Automata Sonuçları]
+
+K --> M[Gürültü Senaryosu Karşılaştırması]
+L --> M
+```
+
+---
+
+## 13.3 Deep Learning Gürültü Testleri
+
+Gürültülü veri senaryosunda daha önce eğitilmiş olan derin öğrenme modelleri test edilmiştir.
+
+Kullanılan modeller:
+
+* LSTM
+* GRU
+* 1D-CNN
+
+Bu aşamada modeller yeniden eğitilmemiştir. Amaç, mevcut modellerin gürültülü test verisi üzerindeki genelleme performansını gözlemlemektir.
+
+Hesaplanan metrikler:
+
+* Accuracy
+* Precision
+* Recall
+* F1-score
+
+Oluşturulan dosyalar:
+
+```text
+src/add_noise.py
+src/evaluate_noisy_deep_learning.py
+results/noise/
+```
+
+---
+
+## 13.4 Automata Gürültü Testleri
+
+Automata modeli de gürültülü veri senaryosu üzerinde değerlendirilmiştir.
+
+Bu süreçte:
+
+* Gürültü sonrası oluşan sembolik pattern değişimleri incelenmiştir.
+* Patternlerin state yapısına etkisi analiz edilmiştir.
+* Transition probability davranışı değerlendirilmiştir.
+* Gürültü altında düşük olasılıklı geçişlerin anomaly davranışı oluşturup oluşturmadığı incelenmiştir.
+
+Oluşturulan dosyalar:
+
+```text
+src/evaluate_noisy_automata.py
+results/automata_noisy_data/
+logs/automata_noisy_experiment.log
+```
+
+---
+
+## 13.5 Gürültü Senaryosu Genel Değerlendirmesi
+
+Gürültü eklenmiş veri senaryosu, modellerin gerçek hayatta karşılaşabileceği bozulmuş veri koşullarına karşı dayanıklılığını test etmek için uygulanmıştır.
+
+Bu deney sonucunda:
+
+* Deep learning modellerinin gürültülü veri üzerindeki performansı ölçülmüştür.
+* Automata modelinin gürültü sonrası oluşan pattern değişimlerine verdiği tepki analiz edilmiştir.
+* Temiz veri ve gürültülü veri sonuçlarının karşılaştırılabilmesi için gerekli çıktı dosyaları oluşturulmuştur.
+* Model dayanıklılığı deneysel olarak incelenebilir hale getirilmiştir.
+
+---
+
+# 14. Unseen Veri Senaryosu Deneyleri
+
+Bu aşamada eğitim verisinde görülmeyen patternlerin test sırasında ortaya çıkması durumu analiz edilmiştir.
+
+Amaç, modellerin train sözlüğünde bulunmayan yeni patternler karşısında nasıl davrandığını incelemek ve deep learning modelleri ile automata modelini karşılaştırmalı olarak değerlendirmektir.
+
+---
+
+## 14.1 Unseen Veri Senaryosunun Amacı
+
+Unseen veri senaryosu, test sırasında daha önce eğitim verisinde görülmemiş sembolik örüntülerin oluşması durumunu temsil etmektedir.
+
+Bu senaryoda:
+
+* Train pattern sözlüğü çıkarılmıştır.
+* Test patternleri train sözlüğü ile karşılaştırılmıştır.
+* Train sözlüğünde bulunmayan patternler unseen olarak kabul edilmiştir.
+* Doğal unseen pattern bulunmadığı durumda kontrollü unseen veri üretilmiştir.
+
+İlk kontrolde SKAB Fold 1 için doğal unseen pattern bulunmamıştır:
+
+```text
+Train unique pattern sayısı: 34
+Test unique pattern sayısı: 24
+Doğal unseen pattern sayısı: 0
+```
+
+Bu nedenle kontrollü unseen veri oluşturulmuştur.
+
+---
+
+## 14.2 Unseen Veri Üretim Akışı
+
+```mermaid
+flowchart TD
+
+A[Train State Dosyası]
+--> B[Train Pattern Sözlüğü]
+
+C[Test State Dosyası]
+--> D[Test Patternleri]
+
+B --> E{Test Pattern Train Sözlüğünde Var mı?}
+D --> E
+
+E -->|Evet| F[Seen Pattern]
+E -->|Hayır| G[Unseen Pattern]
+
+F --> H[Normal Pattern Olarak İşaretle]
+G --> I[Unseen Pattern Olarak İşaretle]
+
+I --> J[Kontrollü Unseen Dataset]
+H --> J
+
+J --> K[results/unseen]
+```
+
+---
+
+## 14.3 Oluşturulan Unseen Veri Dosyaları
+
+Unseen veri üretimi sonucunda SKAB için fold bazlı, BATADAL için zaman sıralı test yapısına uygun dosyalar oluşturulmuştur.
+
+Oluşturulan dosyalar:
+
+```text
+results/unseen/
+├── skab_fold_1_unseen.csv
+├── skab_fold_2_unseen.csv
+├── skab_fold_3_unseen.csv
+├── skab_fold_4_unseen.csv
+├── skab_fold_5_unseen.csv
+├── batadal_unseen.csv
+└── unseen_dataset_summary.csv
+```
+
+Unseen veri özeti:
+
+| Veri | Toplam Satır | Unseen Satır | Unseen Oranı |
+|---|---:|---:|---:|
+| SKAB Fold 1 | 24 | 24 | 1.0 |
+| SKAB Fold 2 | 20 | 20 | 1.0 |
+| SKAB Fold 3 | 23 | 23 | 1.0 |
+| SKAB Fold 4 | 20 | 20 | 1.0 |
+| SKAB Fold 5 | 30 | 30 | 1.0 |
+| BATADAL | 46 | 46 | 1.0 |
+
+Bu sonuçlar, oluşturulan unseen veri setlerinde tüm test patternlerinin train sözlüğü dışında kaldığını göstermektedir.
+
+---
+
+## 14.4 Deep Learning Modellerinin Unseen Senaryosunda Test Edilmesi
+
+Deep learning modelleri sembolik pattern/state yapısını doğrudan kullanmadığı için unseen senaryosunda PCA tabanlı test verisi üzerinden değerlendirilmiştir.
+
+Bu aşamada:
+
+* LSTM
+* GRU
+* 1D-CNN
+
+modelleri unseen senaryosu etiketiyle test edilmiştir.
+
+Oluşturulan dosyalar:
+
+```text
+src/evaluate_unseen_deep_learning.py
+
+results/unseen/
+├── skab_unseen_deep_learning_results.csv
+├── skab_unseen_deep_learning_summary.csv
+└── batadal_unseen_deep_learning_results.csv
+
+logs/unseen_deep_learning_experiment.log
+```
+
+---
+
+## 14.5 SKAB Deep Learning Unseen Sonuçları
+
+SKAB veri setinde 5 fold sonucunun ortalaması alınarak modeller karşılaştırılmıştır.
+
+| Model | Accuracy | Precision | Recall | F1-score |
+|---|---:|---:|---:|---:|
+| LSTM | 0.674 | 0.668 | 0.093 | 0.149 |
+| GRU | 0.676 | 0.592 | 0.122 | 0.187 |
+| 1D-CNN | 0.678 | 0.637 | 0.139 | 0.215 |
+
+SKAB unseen senaryosunda deep learning modelleri birbirine yakın accuracy değerleri üretmiştir. F1-score açısından en yüksek sonucu 1D-CNN modeli vermiştir.
+
+Ancak recall değerlerinin düşük olması, modellerin anomaly sınıfını yakalamakta zorlandığını göstermektedir.
+
+---
+
+## 14.6 BATADAL Deep Learning Unseen Sonuçları
+
+BATADAL veri setinde deep learning modellerinin unseen senaryosu sonuçları aşağıdaki gibidir:
+
+| Model | Accuracy | Precision | Recall | F1-score |
+|---|---:|---:|---:|---:|
+| LSTM | 0.904 | 0.000 | 0.000 | 0.000 |
+| GRU | 0.904 | 0.000 | 0.000 | 0.000 |
+| 1D-CNN | 0.904 | 0.000 | 0.000 | 0.000 |
+
+BATADAL veri setinde accuracy değeri yüksek görünmesine rağmen precision, recall ve F1-score değerlerinin sıfır olması modellerin anomaly sınıfını tahmin edemediğini göstermektedir.
+
+Bu durum, BATADAL veri setindeki düşük anomaly oranı nedeniyle accuracy metriğinin tek başına yeterli olmadığını göstermektedir.
+
+---
+
+## 14.7 Automata Modelinin Unseen Senaryosunda Test Edilmesi
+
+Automata modeli unseen patternler üzerinde Levenshtein Distance tabanlı eşleme mekanizması ile test edilmiştir.
+
+Bu süreçte:
+
+1. Gelen pattern train sözlüğünde aranmıştır.
+2. Pattern train sözlüğünde yoksa unseen olarak işaretlenmiştir.
+3. Levenshtein Distance ile en yakın train patterni bulunmuştur.
+4. Unseen pattern en yakın train patternine eşlenmiştir.
+5. Karar sonucu anomaly/normal olarak kaydedilmiştir.
+6. Karar süreci JSON formatında açıklanabilir şekilde raporlanmıştır.
+
+---
+
+## 14.8 Automata Unseen Mapping Akışı
+
+```mermaid
+flowchart TD
+
+A[Gelen Test Pattern]
+--> B{Train Sözlüğünde Var mı?}
+
+B -->|Evet| C[Seen Pattern]
+C --> D[Doğrudan Kullan]
+
+B -->|Hayır| E[Unseen Pattern]
+E --> F[Levenshtein Distance Hesapla]
+F --> G[En Yakın Train Patterni Bul]
+G --> H[Pattern Mapping Yap]
+
+H --> I[Mapped Pattern ile Automata Kararı]
+D --> I
+
+I --> J{Karar}
+
+J -->|0| K[Normal]
+J -->|1| L[Anomaly]
+
+K --> M[Explainability JSON]
+L --> M
+```
+
+---
+
+## 14.9 Automata Unseen Sonuçları
+
+Automata modeli unseen veri senaryosunda tüm unseen patternleri başarıyla anomaly olarak işaretlemiştir.
+
+### SKAB Ortalama Sonuçları
+
+| Model | Accuracy | Precision | Recall | F1-score |
+|---|---:|---:|---:|---:|
+| Automata | 1.000 | 1.000 | 1.000 | 1.000 |
+
+### BATADAL Sonuçları
+
+| Model | Accuracy | Precision | Recall | F1-score |
+|---|---:|---:|---:|---:|
+| Automata | 1.000 | 1.000 | 1.000 | 1.000 |
+
+Bu sonuçlar, kontrollü olarak oluşturulan unseen veri senaryosunda automata modelinin train sözlüğünde bulunmayan patternleri doğrudan yakalayabildiğini göstermektedir.
+
+---
+
+## 14.10 Automata Açıklanabilirlik Çıktısı
+
+Automata modeli yalnızca karar üretmekle kalmamış, aynı zamanda kararın nasıl oluştuğunu da açıklanabilir şekilde raporlamıştır.
+
+Örnek JSON çıktısı:
+
+```json
+{
+    "dataset": "SKAB",
+    "fold": 1,
+    "time_step": 0,
+    "state": "q0",
+    "pattern": "aaaac",
+    "original_pattern": "aaaa",
+    "status": "unseen",
+    "mapped_to": "aaaa",
+    "distance": 1,
+    "probability": 0.0,
+    "decision": "anomaly",
+    "confidence_score": 0.5
+}
+```
+
+Bu çıktı sayesinde:
+
+* Patternin unseen olup olmadığı
+* Hangi orijinal patternden üretildiği
+* En yakın hangi train patternine eşlendiği
+* Levenshtein distance değeri
+* Model kararı
+* Güven skoru
+
+takip edilebilmektedir.
+
+Oluşturulan dosya:
+
+```text
+results/unseen/unseen_automata_explanations.json
+```
+
+---
+
+## 14.11 Unseen Senaryosu Karşılaştırmalı Model Analizi
+
+Unseen senaryosu sonucunda SKAB veri seti üzerinde deep learning modelleri ve automata modeli karşılaştırılmıştır.
+
+| Model | Accuracy | Precision | Recall | F1-score |
+|---|---:|---:|---:|---:|
+| LSTM | 0.674 | 0.668 | 0.093 | 0.149 |
+| GRU | 0.676 | 0.592 | 0.122 | 0.187 |
+| 1D-CNN | 0.678 | 0.637 | 0.139 | 0.215 |
+| Automata | 1.000 | 1.000 | 1.000 | 1.000 |
+
+Karşılaştırmalı sonuç dosyası:
+
+```text
+results/unseen/skab_unseen_model_comparison.csv
+```
+
+---
+
+## 14.12 Unseen Senaryosu Karşılaştırma Akışı
+
+```mermaid
+flowchart LR
+
+A[Unseen Dataset]
+--> B[LSTM]
+A --> C[GRU]
+A --> D[1D-CNN]
+A --> E[Automata]
+
+B --> F[Accuracy Precision Recall F1]
+C --> F
+D --> F
+
+E --> G[Levenshtein Mapping]
+G --> H[Explainability JSON]
+H --> I[Automata Metrics]
+
+F --> J[Deep Learning Sonuçları]
+I --> K[Automata Sonuçları]
+
+J --> L[Karşılaştırmalı Analiz]
+K --> L
+
+L --> M[skab_unseen_model_comparison.csv]
+```
+
+---
+
+## 14.13 Unseen Senaryosu Genel Değerlendirmesi
+
+Unseen veri senaryosu sonucunda deep learning modelleri ile automata modeli arasında belirgin bir davranış farkı gözlemlenmiştir.
+
+Deep learning modelleri PCA tabanlı sayısal girdiler üzerinden çalıştığı için sembolik unseen patternleri doğrudan yorumlamamaktadır. Bu nedenle unseen senaryosunda performansları normal test davranışlarına benzer şekilde kalmıştır.
+
+Automata modeli ise pattern/state tabanlı çalıştığı için train sözlüğünde bulunmayan patternleri doğrudan tespit edebilmiştir. Levenshtein Distance kullanılarak her unseen pattern en yakın train patternine eşlenmiş ve karar süreci açıklanabilir şekilde JSON formatında kaydedilmiştir.
+
+Bu sonuçlar, automata yaklaşımının özellikle sembolik örüntü tabanlı açıklanabilirlik ve unseen pattern yönetimi açısından avantaj sağladığını göstermektedir.
+
+Ancak automata modelinin unseen senaryosunda 1.000 performans üretmesi, veri setinin kontrollü şekilde tamamen unseen patternlerden oluşturulmasından kaynaklanmaktadır. Bu nedenle sonuçlar modelin gerçek dünyadaki mutlak başarısı olarak değil, oluşturulan kontrollü unseen senaryosundaki davranışı olarak yorumlanmalıdır.
+
+---
+
+## 14.14 GENEL PİPELİNE
+
+```mermaid
+flowchart TD
+
+A[Transition Probability Hesaplama]
+--> B[Laplace Smoothing]
+
+B --> C[Automata Tahmin Sistemi]
+
+C --> D[Levenshtein Distance]
+
+D --> E[Unseen Pattern Mapping]
+
+E --> F[Normal Veri Senaryosu]
+E --> G[Gürültülü Veri Senaryosu]
+E --> H[Unseen Veri Senaryosu]
+
+F --> I[Normal Sonuçlar]
+G --> J[Noise Sonuçları]
+H --> K[Unseen Sonuçları]
+
+K --> L[LSTM]
+K --> M[GRU]
+K --> N[1D-CNN]
+K --> O[Automata]
+
+L --> P[Karşılaştırmalı Performans]
+M --> P
+N --> P
+O --> P
+
+O --> Q[Explainability JSON]
+
+P --> R[README Analizi]
+Q --> R
+```
+
+---
+
+## 14.15 Oluşturulan Script ve Sonuç Dosyaları
+
+Unseen veri senaryosu kapsamında oluşturulan temel script dosyaları:
+
+```text
+src/create_unseen_dataset.py
+src/evaluate_unseen_deep_learning.py
+src/evaluate_unseen_automata.py
+src/compare_unseen_results.py
+```
+
+Oluşturulan sonuç dosyaları:
+
+```text
+results/unseen/
+├── skab_fold_1_unseen.csv
+├── skab_fold_2_unseen.csv
+├── skab_fold_3_unseen.csv
+├── skab_fold_4_unseen.csv
+├── skab_fold_5_unseen.csv
+├── batadal_unseen.csv
+├── unseen_dataset_summary.csv
+├── skab_unseen_deep_learning_results.csv
+├── skab_unseen_deep_learning_summary.csv
+├── batadal_unseen_deep_learning_results.csv
+├── skab_unseen_automata_results.csv
+├── skab_unseen_automata_summary.csv
+├── batadal_unseen_automata_results.csv
+├── unseen_automata_explanations.json
+└── skab_unseen_model_comparison.csv
+```
+
+Oluşturulan log dosyaları:
+
+```text
+logs/
+├── unseen_deep_learning_experiment.log
+└── unseen_automata_experiment.log
+```
+
+---
+
+## 14.16 Genel Sonuç
+
+Gürültü ve unseen veri senaryoları ile proje yalnızca orijinal veri üzerinde model değerlendiren bir yapı olmaktan çıkarılmıştır.
+
+Bu aşamalar sonucunda:
+
+* Modeller farklı veri koşulları altında test edilmiştir.
+* Deep learning modellerinin gürültü ve unseen senaryolarındaki davranışı analiz edilmiştir.
+* Automata modelinin pattern tabanlı yorumlanabilirliği güçlendirilmiştir.
+* Levenshtein Distance ile unseen pattern yönetimi uygulanmıştır.
+* JSON formatında açıklanabilir karar çıktıları üretilmiştir.
+* Karşılaştırmalı performans tabloları oluşturulmuştur.
+
+Bu çalışmalar, projenin black-box modeller ile açıklanabilir automata yaklaşımını yalnızca performans açısından değil, aynı zamanda genellenebilirlik ve açıklanabilirlik açısından da karşılaştırmasını sağlamıştır.
