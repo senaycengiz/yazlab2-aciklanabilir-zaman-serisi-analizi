@@ -1,0 +1,2 @@
+test_name,comparison,statistic,p_value,interpretation
+Wilcoxon,SKAB fold accuracy mean vs SKAB fold f1 mean,0.0,0.0625,p_value < 0.05 ise iki metrik dağılımı arasında istatistiksel olarak anlamlı fark olduğu kabul edilir.
