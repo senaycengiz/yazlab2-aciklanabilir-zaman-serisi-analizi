@@ -2186,3 +2186,478 @@ Bu aşamalar sonucunda:
 * Karşılaştırmalı performans tabloları oluşturulmuştur.
 
 Bu çalışmalar, projenin black-box modeller ile açıklanabilir automata yaklaşımını yalnızca performans açısından değil, aynı zamanda genellenebilirlik ve açıklanabilirlik açısından da karşılaştırmasını sağlamıştır.
+
+---
+
+# 15. Parametre Duyarlılık Analizi
+
+Bu aşamada automata modelinin farklı parametre değerleri altında nasıl davrandığı incelenmiştir.
+
+Amaç;
+
+* Window size değişiminin performansa etkisini incelemek
+* Alphabet size değişiminin performansa etkisini incelemek
+* State sayısındaki değişimi analiz etmek
+* Transition yoğunluğundaki değişimi analiz etmek
+
+olmuştur.
+
+---
+
+## 15.1 Window Size Analizi
+
+Bu deneyde alphabet size değeri sabit tutulmuştur.
+
+```text
+Alphabet Size = 3
+```
+
+Window size değerleri:
+
+```text
+3
+4
+5
+6
+```
+
+olarak test edilmiştir.
+
+---
+
+### Window Size Sonuçları
+
+| Window Size | Dataset | Accuracy | Precision | Recall | F1-score | State Sayısı | Transition Sayısı | Transition Density |
+|------------|------------|------------|------------|------------|------------|------------|------------|------------|
+| 3 | SKAB | 0.608 | 0.287 | 0.085 | 0.125 | 27.0 | 71.2 | 0.0977 |
+| 4 | SKAB | 0.600 | 0.276 | 0.104 | 0.137 | 71.2 | 161.0 | 0.0317 |
+| 5 | SKAB | 0.594 | 0.263 | 0.106 | 0.130 | 161.0 | 330.4 | 0.0128 |
+| 6 | SKAB | 0.588 | 0.246 | 0.112 | 0.129 | 330.4 | 615.0 | 0.0056 |
+| 3 | BATADAL | 0.798 | 0.063 | 0.071 | 0.067 | 26 | 71 | 0.1050 |
+| 4 | BATADAL | 0.780 | 0.047 | 0.058 | 0.052 | 71 | 165 | 0.0327 |
+| 5 | BATADAL | 0.771 | 0.089 | 0.125 | 0.104 | 165 | 312 | 0.0115 |
+| 6 | BATADAL | 0.745 | 0.099 | 0.167 | 0.124 | 312 | 507 | 0.0052 |
+
+---
+
+### Window Size Analizi Değerlendirmesi
+
+Sonuçlar incelendiğinde:
+
+* Window size arttıkça state sayısı önemli ölçüde artmıştır.
+* Transition sayısı da benzer şekilde yükselmiştir.
+* Transition yoğunluğu azalmıştır.
+* Daha büyük patternler daha fazla state üretmiştir.
+* Accuracy değerlerinde hafif düşüş gözlemlenmiştir.
+
+Bu durum daha büyük pattern yapılarının modeli daha karmaşık hale getirdiğini göstermektedir.
+
+---
+
+## 15.2 Alphabet Size Analizi
+
+Bu deneyde window size sabit tutulmuştur.
+
+```text
+Window Size = 4
+```
+
+Alphabet size değerleri:
+
+```text
+3
+4
+5
+6
+```
+
+olarak test edilmiştir.
+
+---
+
+### Alphabet Size Sonuçları
+
+| Alphabet Size | Dataset | Accuracy | Precision | Recall | F1-score | State Sayısı | Transition Sayısı | Transition Density |
+|------------|------------|------------|------------|------------|------------|------------|------------|------------|
+| 3 | SKAB | 0.600 | 0.276 | 0.104 | 0.137 | 71.2 | 161.0 | 0.0317 |
+| 4 | SKAB | 0.615 | 0.334 | 0.097 | 0.148 | 130.6 | 343.8 | 0.0204 |
+| 5 | SKAB | 0.613 | 0.343 | 0.116 | 0.170 | 275.2 | 803.2 | 0.0106 |
+| 6 | SKAB | 0.600 | 0.299 | 0.110 | 0.157 | 474.4 | 1467.8 | 0.0065 |
+| 3 | BATADAL | 0.780 | 0.047 | 0.058 | 0.052 | 71 | 165 | 0.0327 |
+| 4 | BATADAL | 0.785 | 0.161 | 0.256 | 0.197 | 169 | 397 | 0.0139 |
+| 5 | BATADAL | 0.734 | 0.110 | 0.221 | 0.147 | 334 | 763 | 0.0068 |
+| 6 | BATADAL | 0.623 | 0.090 | 0.291 | 0.137 | 522 | 1073 | 0.0039 |
+
+---
+
+### Alphabet Size Analizi Değerlendirmesi
+
+Alphabet size arttıkça:
+
+* State sayısı önemli ölçüde artmıştır.
+* Transition sayısı yükselmiştir.
+* Daha fazla sembol kullanılması nedeniyle pattern çeşitliliği artmıştır.
+* Transition yoğunluğu azalmıştır.
+* Çok yüksek alphabet size değerlerinde performans düşüşü gözlemlenmiştir.
+
+Bu sonuçlar alphabet size parametresinin automata karmaşıklığı üzerinde doğrudan etkili olduğunu göstermektedir.
+
+---
+
+# 16. Cross Dataset Analizi
+
+Bu aşamada modelin farklı veri setleri arasında genellenebilirliği incelenmiştir.
+
+Amaç;
+
+* SKAB üzerinde öğrenilen davranışların BATADAL üzerinde çalışıp çalışmadığını incelemek
+* BATADAL üzerinde öğrenilen davranışların SKAB üzerinde çalışıp çalışmadığını incelemek
+* Veri setleri arası transfer başarısını ölçmek
+
+olmuştur.
+
+Ortak temsil olarak PCA sonrası elde edilen:
+
+```text
+PC1
+```
+
+değeri kullanılmıştır.
+
+---
+
+## 16.1 SKAB → BATADAL Testi
+
+Bu deneyde:
+
+* Eğitim verisi SKAB
+* Test verisi BATADAL
+
+olarak kullanılmıştır.
+
+### Sonuçlar
+
+| Source Dataset | Target Dataset | Accuracy | Precision | Recall | F1-score |
+|------------|------------|------------|------------|------------|------------|
+| SKAB | BATADAL | 0.519 | 0.104 | 0.477 | 0.170 |
+
+Bu deneyde yüksek recall değeri elde edilmesine rağmen precision düşük kalmıştır.
+
+Bu durum farklı veri setlerinin farklı davranış örüntülerine sahip olduğunu göstermektedir.
+
+---
+
+## 16.2 BATADAL → SKAB Testi
+
+Bu deneyde:
+
+* Eğitim verisi BATADAL
+* Test verisi SKAB
+
+olarak kullanılmıştır.
+
+SKAB üzerinde 5 fold değerlendirmesi gerçekleştirilmiştir.
+
+### Ortalama Sonuçlar
+
+| Source Dataset | Target Dataset | Accuracy | Precision | Recall | F1-score |
+|------------|------------|------------|------------|------------|------------|
+| BATADAL | SKAB | 0.590 | 0.362 | 0.170 | 0.222 |
+
+---
+
+## 16.3 Cross Dataset Genel Değerlendirme
+
+Cross dataset deneyleri sonucunda:
+
+* Veri setleri arasında doğrudan transfer başarısının sınırlı olduğu görülmüştür.
+* SKAB ve BATADAL farklı anomaly davranışları içermektedir.
+* Veri setleri arasındaki dağılım farkları performansı etkilemiştir.
+* Automata modeli yeni veri setlerinde kısmen genelleme yapabilmiştir.
+
+Bu sonuçlar modelin veri setine özgü davranış örüntülerini öğrendiğini göstermektedir.
+
+---
+
+
+# 17. İstatistiksel Analiz ve Tekrarlanabilirlik Deneyleri
+
+Bu aşamada automata modelinin farklı random seed değerleri altında kararlılığı ve istatistiksel davranışı incelenmiştir.
+
+Amaç;
+
+* Sonuçların rastlantısal etkilerden bağımsız olup olmadığını incelemek
+* Farklı seed değerlerinde performans değişimini ölçmek
+* Ortalama ve standart sapma değerlerini hesaplamak
+* İstatistiksel anlamlılık analizi gerçekleştirmek
+
+olmuştur.
+
+---
+
+## 17.1 Seed Deneyleri
+
+Deneyler aşağıdaki random seed değerleri ile tekrar çalıştırılmıştır.
+
+```text
+42
+123
+2026
+7
+999
+```
+
+Her seed değeri için:
+
+* SKAB veri setinde 5 fold değerlendirmesi yapılmıştır.
+* BATADAL veri setinde zaman sıralı test uygulanmıştır.
+* Accuracy
+* Precision
+* Recall
+* F1-score
+
+değerleri kaydedilmiştir.
+
+---
+
+## 17.2 Ortalama ve Standart Sapma Sonuçları
+
+### Genel Sonuçlar
+
+| Dataset | Accuracy Mean | Accuracy Std | Precision Mean | Precision Std | Recall Mean | Recall Std | F1-score Mean | F1-score Std |
+|----------|----------|----------|----------|----------|----------|----------|----------|----------|
+| BATADAL | 0.780 | 0.000 | 0.047 | 0.000 | 0.058 | 0.000 | 0.052 | 0.000 |
+| SKAB | 0.600 | 0.029 | 0.276 | 0.059 | 0.104 | 0.099 | 0.137 | 0.096 |
+
+---
+
+### SKAB Fold Sonuçları
+
+SKAB veri setinde fold bazlı ortalama ve standart sapma hesaplanmıştır.
+
+Bu analiz sayesinde:
+
+* Foldlar arası performans değişimi
+* Veri grupları arası farklılıklar
+* Model kararlılığı
+
+incelenmiştir.
+
+---
+
+### BATADAL Seed Sonuçları
+
+BATADAL veri setinde farklı seed değerleri altında elde edilen sonuçların ortalaması alınmıştır.
+
+Bu sonuçlar modelin zaman sıralı veri üzerindeki kararlılığını göstermektedir.
+
+---
+
+## 17.3 BATADAL Zaman Sıralı Sonuçları
+
+BATADAL veri setinde zaman sırası korunarak değerlendirme yapılmıştır.
+
+Bu amaçla:
+
+```text
+results/statistical_analysis/batadal_time_ordered_seed_results.csv
+```
+
+dosyası oluşturulmuştur.
+
+Bu çıktı sayesinde:
+
+* Seed bazlı performans değişimi
+* Zaman sıralı anomaly davranışı
+* Tahmin kararlılığı
+
+incelenebilir hale getirilmiştir.
+
+---
+
+## 17.4 Wilcoxon İstatistiksel Anlamlılık Testi
+
+Model sonuçlarının istatistiksel olarak anlamlı olup olmadığını incelemek amacıyla Wilcoxon Signed-Rank testi uygulanmıştır.
+
+Bu test parametrik olmayan veri yapıları için tercih edilmektedir.
+
+---
+
+### Test Sonucu
+
+| Test | Karşılaştırma | Statistic | p-value |
+|------|------|------|------|
+| Wilcoxon | SKAB Fold Accuracy vs SKAB Fold F1-score | 0.0 | 0.0625 |
+
+---
+
+### Sonuç Yorumu
+
+Genel kabul:
+
+```text
+p < 0.05
+```
+
+olduğunda iki dağılım arasında istatistiksel olarak anlamlı fark olduğu kabul edilir.
+
+Bu deneyde:
+
+```text
+p = 0.0625
+```
+
+elde edilmiştir.
+
+Bu nedenle:
+
+* Accuracy ve F1-score dağılımları arasında istatistiksel olarak anlamlı fark gözlemlenmemiştir.
+* Sonuçlar kararlı bir dağılım göstermektedir.
+
+---
+
+## 17.5 Oluşturulan Çıktılar
+
+Bu deneyler sonucunda aşağıdaki dosyalar oluşturulmuştur.
+
+```text
+results/statistical_analysis/
+├── seed_experiment_results.csv
+├── skab_fold_seed_summary.csv
+├── batadal_seed_summary.csv
+├── overall_seed_summary.csv
+├── batadal_time_ordered_seed_results.csv
+└── statistical_significance_results.csv
+```
+
+Oluşturulan log dosyası:
+
+```text
+logs/statistical_analysis_experiment.log
+```
+
+---
+
+## 17.6 Genel Değerlendirme
+
+İstatistiksel analizler sonucunda:
+
+* Model farklı seed değerlerinde benzer sonuçlar üretmiştir.
+* Sonuçların büyük ölçüde kararlı olduğu görülmüştür.
+* Ortalama ve standart sapma değerleri hesaplanmıştır.
+* Wilcoxon testi ile istatistiksel değerlendirme gerçekleştirilmiştir.
+* Deneylerin tekrarlanabilir olduğu doğrulanmıştır.
+
+---
+
+# 18. Genel Sonuç ve Tartışma
+
+Bu proje kapsamında zaman serisi anomaly detection problemi üzerinde:
+
+* LSTM
+* GRU
+* 1D-CNN
+* Olasılıksal Automata
+
+yaklaşımları karşılaştırılmıştır.
+
+Amaç yalnızca yüksek performans elde etmek değil, aynı zamanda model kararlarının açıklanabilirliğini incelemek olmuştur.
+
+---
+
+## 18.1 Deep Learning Modelleri
+
+Derin öğrenme modelleri:
+
+* Karmaşık örüntüleri öğrenebilmiştir.
+* SKAB veri setinde benzer performanslar üretmiştir.
+* CNN modeli bazı senaryolarda daha yüksek F1-score elde etmiştir.
+
+Ancak:
+
+* Karar mekanizmaları doğrudan yorumlanamamaktadır.
+* Model neden belirli bir kararı verdiğini açıklayamamaktadır.
+* Unseen pattern davranışı doğrudan izlenememektedir.
+
+Bu nedenle modeller black-box yaklaşım olarak değerlendirilmiştir.
+
+---
+
+## 18.2 Automata Yaklaşımı
+
+Automata modeli:
+
+* Pattern tabanlı çalışmaktadır.
+* State geçişlerini açık şekilde göstermektedir.
+* Transition probability değerleri üretmektedir.
+* Karar sürecini yorumlanabilir hale getirmektedir.
+
+Bu yaklaşım sayesinde:
+
+* Pattern davranışları izlenebilmiştir.
+* State geçişleri analiz edilebilmiştir.
+* Anomaly kararları açıklanabilir hale gelmiştir.
+
+---
+
+## 18.3 Unseen Pattern Yönetimi
+
+Levenshtein Distance tabanlı eşleme mekanizması sayesinde:
+
+* Eğitim sırasında görülmeyen patternler tespit edilmiştir.
+* En yakın bilinen pattern bulunmuştur.
+* Karar süreci açıklanabilir şekilde raporlanmıştır.
+
+Bu yapı automata modelinin unseen veri karşısındaki dayanıklılığını artırmıştır.
+
+---
+
+## 18.4 Parametre Duyarlılık Sonuçları
+
+Parametre analizleri sonucunda:
+
+* Window size arttıkça state sayısı artmıştır.
+* Alphabet size arttıkça pattern çeşitliliği yükselmiştir.
+* Daha karmaşık automata yapıları oluşmuştur.
+* Çok yüksek parametre değerlerinde performans düşüşleri gözlemlenmiştir.
+
+Bu sonuçlar automata modelinin parametre seçimlerine duyarlı olduğunu göstermektedir.
+
+---
+
+## 18.5 Cross Dataset Sonuçları
+
+Cross dataset deneylerinde:
+
+* Veri setleri arasında doğrudan transfer başarısının sınırlı olduğu görülmüştür.
+* Farklı veri dağılımlarının performansı etkilediği gözlemlenmiştir.
+* Automata modeli farklı veri setlerinde kısmi genellenebilirlik göstermiştir.
+
+---
+
+## 18.6 İstatistiksel Sonuçlar
+
+Seed deneyleri sonucunda:
+
+* Sonuçların kararlı olduğu görülmüştür.
+* Büyük performans sapmaları oluşmamıştır.
+* Ortalama ve standart sapma değerleri hesaplanmıştır.
+* Wilcoxon testi uygulanmıştır.
+
+Bu durum deneylerin tekrarlanabilir olduğunu göstermektedir.
+
+---
+
+## 18.7 Nihai Sonuç
+
+Bu proje sonucunda:
+
+* Deep learning modelleri ile automata yaklaşımı karşılaştırılmıştır.
+* Açıklanabilir anomaly detection yapısı geliştirilmiştir.
+* State ve transition tabanlı yorumlanabilir model oluşturulmuştur.
+* Unseen pattern yönetimi uygulanmıştır.
+* Parametre duyarlılık deneyleri gerçekleştirilmiştir.
+* Cross dataset analizleri yapılmıştır.
+* İstatistiksel değerlendirmeler tamamlanmıştır.
+
+Elde edilen sonuçlar, olasılıksal automata yaklaşımının yalnızca performans açısından değil, aynı zamanda açıklanabilirlik ve karar mekanizmasının yorumlanabilirliği açısından da önemli avantajlar sunduğunu göstermektedir.
