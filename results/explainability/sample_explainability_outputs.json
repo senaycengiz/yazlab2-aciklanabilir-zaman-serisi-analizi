@@ -1,0 +1,52 @@
+[
+    {
+        "time_step": 5,
+        "state": "aab",
+        "pattern": "adc",
+        "status": "unseen",
+        "mapped_to": "abc",
+        "levenshtein_distance": 1,
+        "transitions": [
+            {
+                "from": "aab",
+                "to": "abc",
+                "probability": 0.72
+            },
+            {
+                "from": "abc",
+                "to": "bcc",
+                "probability": 0.15
+            }
+        ],
+        "path_probability": 0.108,
+        "probability": 0.108,
+        "decision": "anomaly",
+        "confidence_score": 0.108,
+        "anomaly_threshold": 0.2
+    },
+    {
+        "time_step": 10,
+        "state": "aab",
+        "pattern": "abc",
+        "status": "seen",
+        "mapped_to": "abc",
+        "levenshtein_distance": 0,
+        "transitions": [
+            {
+                "from": "aab",
+                "to": "abc",
+                "probability": 0.72
+            },
+            {
+                "from": "abc",
+                "to": "bcc",
+                "probability": 0.15
+            }
+        ],
+        "path_probability": 0.108,
+        "probability": 0.108,
+        "decision": "anomaly",
+        "confidence_score": 0.108,
+        "anomaly_threshold": 0.2
+    }
+]
