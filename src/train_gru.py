@@ -62,7 +62,7 @@ def train_batadal():
     batadal_results = []
 
     datasets = [
-        "BATADAL_dataset03",
+        "BATADAL_dataset04",
         "BATADAL_dataset04"
     ]
 

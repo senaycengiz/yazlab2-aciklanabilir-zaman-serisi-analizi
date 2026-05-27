@@ -1,0 +1,4 @@
+model,task,runtime_seconds,return_code
+Automata,prediction_output,1.4721,0
+Automata,visualization,3.0823,0
+Explainability,unit_test,0.1981,0
