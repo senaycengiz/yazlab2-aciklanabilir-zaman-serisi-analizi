@@ -1,0 +1,5 @@
+model,task,runtime_seconds,return_code
+LSTM,training,62.5738,0
+GRU,training,92.1695,0
+1D-CNN,training,81.7611,0
+Automata,inference,1.3585,0
