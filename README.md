@@ -384,7 +384,7 @@ Aşağıdaki çıktı proje kapsamında geliştirilen testlerin başarıyla çal
 - Başarı Oranı: **%100**
 
 <p align="center">
-<img src="results/figures/tests/pytest_results.png" width="900">
+<img src="results/figures/tests/pytest_results.png.jpeg" width="900">
 </p>
 
 *Pytest çıktısı (47/47 test başarılı).*
