@@ -2,7 +2,7 @@ import os
 import csv
 import pandas as pd
 import numpy as np
-
+from config.config import WINDOW_SIZE, ALPHABET_SIZE
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 
 from src.evaluate_automata_normal_data import (
@@ -33,8 +33,7 @@ LOGS_DIR = "logs"
 os.makedirs(RESULTS_DIR, exist_ok=True)
 os.makedirs(LOGS_DIR, exist_ok=True)
 
-WINDOW_SIZE = 4
-ALPHABET_SIZE = 3
+
 
 
 def load_pc1_values(path):

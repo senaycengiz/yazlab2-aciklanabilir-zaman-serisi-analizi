@@ -3,7 +3,7 @@ import csv
 import random
 import pandas as pd
 import numpy as np
-
+from config.config import WINDOW_SIZE, ALPHABET_SIZE
 from scipy.stats import wilcoxon
 
 SCIPY_AVAILABLE = True
@@ -19,8 +19,7 @@ os.makedirs(LOGS_DIR, exist_ok=True)
 
 SEEDS = [42, 123, 2026, 7, 999]
 
-WINDOW_SIZE = 4
-ALPHABET_SIZE = 3
+
 
 
 def set_seed(seed):
