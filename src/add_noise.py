@@ -1,10 +1,10 @@
 import os
 import numpy as np
 import pandas as pd
-
+from config.config import RANDOM_SEED
 
 NOISE_STD = 0.05
-RANDOM_SEED = 42
+
 
 
 def add_gaussian_noise_to_numeric_columns(df, label_columns=None):

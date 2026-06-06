@@ -1,0 +1,4 @@
+test_name,comparison,statistic,p_value
+Wilcoxon,LSTM vs GRU (F1),1.0,0.125
+Wilcoxon,LSTM vs CNN (F1),0.0,0.0625
+Wilcoxon,GRU vs CNN (F1),1.0,0.125
