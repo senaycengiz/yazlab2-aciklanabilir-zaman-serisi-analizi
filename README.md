@@ -108,7 +108,19 @@ Prediction
    ▼
 Explainability
 ```
+# Merkezi Konfigürasyon Yapısı
 
+Projedeki temel parametreler `config/config.py` dosyasında merkezi olarak tutulmaktadır.
+
+Örnek parametreler:
+
+- `WINDOW_SIZE`
+- `ALPHABET_SIZE`
+- `RANDOM_SEED`
+- `WINDOW_SIZE_OPTIONS`
+- `ALPHABET_SIZE_OPTIONS`
+
+Bu sayede parametre değişiklikleri pipeline ve deney scriptleri tarafından ortak şekilde kullanılmaktadır.
 ---
 
 # Kurulum
@@ -343,11 +355,21 @@ Automata modeli kararlarını açıklayabilmektedir.
 
 ```json
 {
-  "pattern": "aaaac",
-  "mapped_to": "aaaa",
+  "dataset": "SKAB",
+  "fold": 1,
+  "time_step": 1,
+  "state": "q1",
+  "pattern": "abbac",
+  "original_pattern": "abba",
+  "status": "unseen",
+  "mapped_to": "abba",
+  "nearest_pattern": "abba",
   "distance": 1,
+  "transition": "aaaa->abba",
+  "transition_probability": 0.002188,
+  "path_probability": 0.002188,
   "decision": "anomaly",
-  "confidence_score": 0.5
+  "confidence_score": 0.002188
 }
 ```
 
@@ -692,11 +714,17 @@ Deneyler farklı random seed değerleri ile tekrar çalıştırılmıştır.
 
 ---
 
-## Wilcoxon Testi
+## Wilcoxon Model Karşılaştırması
 
-```text
-p-value = 0.0625
-```
+SKAB veri setinde 5 fold üzerinden elde edilen F1-score değerleri kullanılarak modeller arası Wilcoxon Signed-Rank testi uygulanmıştır.
+
+| Karşılaştırma | Statistic | p-value | Yorum |
+|---|---:|---:|---|
+| LSTM vs GRU | 1.0 | 0.125 | Anlamlı fark yok |
+| LSTM vs CNN | 0.0 | 0.0625 | Anlamlı fark yok, sınıra yakın |
+| GRU vs CNN | 1.0 | 0.125 | Anlamlı fark yok |
+
+Tüm p-value değerleri 0.05’in üzerinde olduğu için modeller arasında istatistiksel olarak anlamlı bir fark gözlemlenmemiştir.
 
 ### Sonuç
 
