@@ -1,6 +1,6 @@
-dataset,fold,model,accuracy,precision,recall,f1,scenario,total_rows,unseen_rows
-SKAB,1,Automata,1.0,1.0,1.0,1.0,unseen,24,24
-SKAB,2,Automata,1.0,1.0,1.0,1.0,unseen,20,20
-SKAB,3,Automata,1.0,1.0,1.0,1.0,unseen,23,23
-SKAB,4,Automata,1.0,1.0,1.0,1.0,unseen,20,20
-SKAB,5,Automata,1.0,1.0,1.0,1.0,unseen,30,30
+dataset,fold,model,accuracy,precision,recall,f1,scenario,total_rows,unseen_rows,total_unseen_patterns,detected_unseen_patterns,mapped_patterns,detection_rate,mapping_accuracy
+SKAB,1,Automata,1.0,1.0,1.0,1.0,unseen,24,24,24,24,24,1.0,1.0
+SKAB,2,Automata,1.0,1.0,1.0,1.0,unseen,20,20,20,20,20,1.0,1.0
+SKAB,3,Automata,1.0,1.0,1.0,1.0,unseen,23,23,23,23,23,1.0,1.0
+SKAB,4,Automata,1.0,1.0,1.0,1.0,unseen,20,20,20,20,20,1.0,1.0
+SKAB,5,Automata,1.0,1.0,1.0,1.0,unseen,30,30,30,30,30,1.0,1.0

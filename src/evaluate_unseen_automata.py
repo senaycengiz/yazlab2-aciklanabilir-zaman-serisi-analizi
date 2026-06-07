@@ -74,6 +74,9 @@ def evaluate_unseen_file(dataset, fold, train_state_path, unseen_path, probabili
     explanations = []
 
     previous_mapped_pattern = None
+    total_unseen_patterns = 0
+    detected_unseen_patterns = 0
+    mapped_patterns = 0
 
     for index, row in unseen_df.iterrows():
         pattern = str(row["pattern"])
@@ -92,8 +95,18 @@ def evaluate_unseen_file(dataset, fold, train_state_path, unseen_path, probabili
 
         # Kontrollü unseen senaryosunda train sözlüğünde olmayan pattern anomaly kabul edilir.
         prediction = 1 if is_unseen else int(details["prediction"])
-        true_label = 1 if bool(row.get("is_unseen", is_unseen)) else 0
 
+        expected_unseen = bool(row.get("is_unseen", is_unseen))
+        true_label = 1 if expected_unseen else 0
+
+        if expected_unseen:
+            total_unseen_patterns += 1
+
+            if is_unseen:
+                detected_unseen_patterns += 1
+
+            if mapped_pattern is not None and distance <= 1:
+                mapped_patterns += 1
         if previous_mapped_pattern is None:
             transition = None
             transition_probability = 1.0
@@ -133,7 +146,17 @@ def evaluate_unseen_file(dataset, fold, train_state_path, unseen_path, probabili
         previous_mapped_pattern = mapped_pattern
 
     metrics = calculate_metrics(y_true, y_pred)
+    detection_rate = (
+        detected_unseen_patterns / total_unseen_patterns
+        if total_unseen_patterns
+        else 0
+    )
 
+    mapping_accuracy = (
+        mapped_patterns / total_unseen_patterns
+        if total_unseen_patterns
+        else 0
+    )
     result_row = {
         "dataset": dataset,
         "fold": fold,
@@ -144,7 +167,12 @@ def evaluate_unseen_file(dataset, fold, train_state_path, unseen_path, probabili
         "f1": metrics["f1"],
         "scenario": "unseen",
         "total_rows": len(unseen_df),
-        "unseen_rows": int(sum(y_true))
+        "unseen_rows": int(sum(y_true)),
+        "total_unseen_patterns": total_unseen_patterns,
+        "detected_unseen_patterns": detected_unseen_patterns,
+        "mapped_patterns": mapped_patterns,
+        "detection_rate": detection_rate,
+        "mapping_accuracy": mapping_accuracy
     }
 
     return result_row, explanations
@@ -161,7 +189,12 @@ def save_csv(path, rows):
         "f1",
         "scenario",
         "total_rows",
-        "unseen_rows"
+        "unseen_rows",
+        "total_unseen_patterns",
+        "detected_unseen_patterns",
+        "mapped_patterns",
+        "detection_rate",
+        "mapping_accuracy"
     ]
 
     with open(path, "w", newline="") as file:
