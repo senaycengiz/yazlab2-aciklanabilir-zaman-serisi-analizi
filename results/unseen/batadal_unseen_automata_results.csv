@@ -1,2 +1,2 @@
-dataset,fold,model,accuracy,precision,recall,f1,scenario,total_rows,unseen_rows
-BATADAL_dataset04,-,Automata,1.0,1.0,1.0,1.0,unseen,46,46
+dataset,fold,model,accuracy,precision,recall,f1,scenario,total_rows,unseen_rows,total_unseen_patterns,detected_unseen_patterns,mapped_patterns,detection_rate,mapping_accuracy
+BATADAL_dataset04,-,Automata,1.0,1.0,1.0,1.0,unseen,46,46,46,46,46,1.0,1.0
