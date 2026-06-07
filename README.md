@@ -6,14 +6,9 @@
 
 Bu projede zaman serileri üzerinde **anomali tespiti (Anomaly Detection)** gerçekleştirilmiştir.
 
-Çalışmanın temel amacı;
+Çalışmanın temel amacı, yüksek performans sağlayabilen ancak karar mekanizması doğrudan yorumlanamayan **Deep Learning tabanlı black-box modeller** ile karar sürecini açıklayabilen **Probabilistic Automata tabanlı açıklanabilir yaklaşımı** performans, dayanıklılık ve yorumlanabilirlik açısından karşılaştırmaktır.
 
-- Deep Learning tabanlı black-box modelleri
-- Probabilistic Automata tabanlı açıklanabilir modeli
-
-performans, dayanıklılık ve yorumlanabilirlik açısından karşılaştırmaktır.
-
-Geliştirilen sistem yalnızca anomali tespiti yapmakla kalmamakta, aynı zamanda verdiği kararların nedenlerini açıklayabilmektedir.
+Geliştirilen sistem yalnızca anomali tespiti yapmakla kalmamakta, aynı zamanda verdiği kararların nedenlerini state, pattern ve transition seviyesinde açıklayabilmektedir.
 
 ---
 
@@ -28,25 +23,45 @@ Geliştirilen sistem yalnızca anomali tespiti yapmakla kalmamakta, aynı zamand
 
 # Proje Amacı
 
-Bu çalışma kapsamında zaman serisi anomaly detection problemi üzerinde farklı yaklaşımlar karşılaştırılmıştır.
+Bu çalışma kapsamında zaman serisi anomaly detection problemi üzerinde farklı modelleme yaklaşımları karşılaştırılmıştır.
+
+Amaç yalnızca yüksek doğruluk elde etmek değil, aynı zamanda model kararlarının nasıl üretildiğini açıklayabilen yorumlanabilir bir yapı geliştirmektir.
+
+Bu doğrultuda hem Deep Learning tabanlı yöntemler hem de açıklanabilir bir Probabilistic Automata yaklaşımı kullanılmıştır.
+
+---
+
+# Kullanılan Yaklaşımlar
 
 ## Deep Learning Modelleri
 
-- LSTM
-- GRU
-- 1D-CNN
+### LSTM
+
+Long Short-Term Memory (LSTM), zaman serilerindeki uzun dönem bağımlılıkları öğrenebilen recurrent neural network yapısıdır. Geçmiş bilgileri hafızasında tutarak zamansal örüntüleri modelleyebilmektedir.
+
+### GRU
+
+Gated Recurrent Unit (GRU), LSTM'e benzer şekilde zamansal bağımlılıkları öğrenebilen ancak daha az parametre içerdiği için daha hızlı eğitilebilen bir recurrent neural network modelidir.
+
+### 1D-CNN
+
+1 Boyutlu Convolutional Neural Network (1D-CNN), zaman serileri üzerindeki yerel örüntüleri öğrenerek anomali tespiti gerçekleştiren convolutional tabanlı bir derin öğrenme modelidir.
+
+---
 
 ## Açıklanabilir Yaklaşım
 
-- PCA
-- PAA
-- SAX
+Probabilistic Automata modeli oluşturulurken aşağıdaki yöntemler kullanılmıştır:
+
+- PCA (Principal Component Analysis)
+- PAA (Piecewise Aggregate Approximation)
+- SAX (Symbolic Aggregate approXimation)
 - Sliding Window
 - Probabilistic Automata
 - Levenshtein Distance
 - Explainability Analysis
 
-Amaç yalnızca yüksek doğruluk elde etmek değil, aynı zamanda model kararlarının neden üretildiğini açıklayabilmektir.
+Bu yapı sayesinde model yalnızca tahmin üretmekle kalmayıp, tahminin hangi pattern ve state geçişlerinden kaynaklandığını da açıklayabilmektedir.
 
 ---
 
@@ -73,60 +88,78 @@ Amaç yalnızca yüksek doğruluk elde etmek değil, aynı zamanda model kararla
 
 ---
 
-# Proje Mimarisi
+# Sistem Mimarisi
+
+Proje modüler bir Python mimarisi üzerine geliştirilmiştir.
 
 ```text
-Raw Data
-   │
-   ▼
-Normalization
-   │
-   ▼
-PCA
-   │
-   ▼
-PAA
-   │
-   ▼
-SAX
-   │
-   ▼
-Sliding Window
-   │
-   ▼
-State Generation
-   │
-   ▼
-Transition Matrix
-   │
-   ▼
-Transition Probability
-   │
-   ▼
-Prediction
-   │
-   ▼
-Explainability
+src/
+├── preprocessing_pipeline.py
+├── prepare_skab_dataset.py
+├── pca_transform.py
+├── paa_transform.py
+├── sax_transform.py
+├── sliding_window.py
+├── automata_builder.py
+├── transition_analysis.py
+├── automata_predict.py
+├── unseen_mapper.py
+├── train_lstm.py
+├── train_gru.py
+├── train_cnn.py
+├── evaluate_normal_data.py
+├── evaluate_noisy_deep_learning.py
+├── evaluate_noisy_automata.py
+├── evaluate_unseen_deep_learning.py
+├── evaluate_unseen_automata.py
+├── parameter_analysis.py
+├── cross_dataset_analysis.py
+├── cross_dataset_deep_learning.py
+├── statistical_analysis.py
+├── generate_explainability_outputs.py
+└── generate_visualizations.py
 ```
+
+Bu yapı sayesinde veri hazırlama, model eğitimi, deney çalıştırma, analiz ve görselleştirme süreçleri birbirinden bağımsız ve tekrar kullanılabilir şekilde tasarlanmıştır.
+
+---
+
 # Merkezi Konfigürasyon Yapısı
 
-Projedeki temel parametreler `config/config.py` dosyasında merkezi olarak tutulmaktadır.
+Projedeki tüm temel parametreler `config/config.py` dosyasında merkezi olarak tutulmaktadır. Bu yapı sayesinde deneylerin tekrarlanabilirliği sağlanmış ve tüm pipeline bileşenleri aynı parametreleri kullanmıştır.
 
-Örnek parametreler:
+Önemli konfigürasyon parametreleri aşağıda verilmiştir:
 
-- `WINDOW_SIZE`
-- `ALPHABET_SIZE`
-- `RANDOM_SEED`
-- `WINDOW_SIZE_OPTIONS`
-- `ALPHABET_SIZE_OPTIONS`
+| Parametre | Değer |
+|------------|------------:|
+| RANDOM_SEED | 42 |
+| WINDOW_SIZE | 4 |
+| ALPHABET_SIZE | 3 |
+| PAA_SEGMENTS | 4 |
+| BATCH_SIZE | 32 |
+| LEARNING_RATE | 0.001 |
+| EPOCHS | 50 |
+| EARLY_STOPPING_PATIENCE | 5 |
+| UNSEEN_DISTANCE_THRESHOLD | 1 |
 
-Bu sayede parametre değişiklikleri pipeline ve deney scriptleri tarafından ortak şekilde kullanılmaktadır.
+Parametre duyarlılık analizlerinde aşağıdaki seçenekler kullanılmıştır:
+
+```python
+WINDOW_SIZE_OPTIONS = [3, 4, 5, 6]
+ALPHABET_SIZE_OPTIONS = [3, 4, 5, 6]
+SEEDS = [42, 123, 2026, 7, 999]
+```
+
+Bu sayede parametre değişiklikleri tüm deney scriptleri tarafından ortak şekilde kullanılabilmiştir.
+
 ---
 
 # Kurulum
 
+Projeyi çalıştırmak için aşağıdaki adımlar uygulanmalıdır.
+
 ```bash
-git clone https://github.com/kullaniciadi/yazlab2-aciklanabilir-zaman-serisi-analizi.git
+git clone https://github.com/senaycengiz/yazlab2-aciklanabilir-zaman-serisi-analizi.git
 
 cd yazlab2-aciklanabilir-zaman-serisi-analizi
 
@@ -137,44 +170,114 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
+Veri setleri GitHub deposuna dahil edilmemiştir. SKAB ve BATADAL veri setlerinin ilgili klasörlere manuel olarak eklenmesi gerekmektedir.
+
 ---
 
 # Kullanılan Teknolojiler
 
-- Python
-- Pandas
-- NumPy
-- Scikit-Learn
-- PyTorch
-- Matplotlib
-- Seaborn
-- NetworkX
-- Pytest
+Proje geliştirme sürecinde aşağıdaki teknolojiler ve kütüphaneler kullanılmıştır.
+
+| Teknoloji | Kullanım Amacı |
+|------------|------------|
+| Python | Temel geliştirme dili |
+| Pandas | Veri işleme |
+| NumPy | Sayısal hesaplamalar |
+| Scikit-Learn | PCA, StandardScaler ve metrik hesaplamaları |
+| PyTorch | LSTM, GRU ve 1D-CNN modelleri |
+| Matplotlib | Grafik üretimi |
+| Seaborn | Isı haritaları ve görselleştirme |
+| NetworkX | Automata state diagram oluşturma |
+| Levenshtein | Unseen pattern eşleme |
+| Pytest | Birim testler |
 
 ---
 
 # Veri Ön İşleme Süreci
 
-Modelleme öncesinde aşağıdaki işlemler uygulanmıştır.
+Modelleme öncesinde hem Deep Learning hem de Probabilistic Automata tarafında veri ön işleme adımları uygulanmıştır.
 
-1. Veri Okuma
-2. Train / Validation / Test Ayrımı
-3. StandardScaler ile Normalizasyon
-4. PCA ile Boyut İndirgeme
-5. PAA Dönüşümü
-6. SAX Dönüşümü
-7. Sliding Window
-8. Pattern Üretimi
-9. State Oluşturma
-10. Transition Analizi
+## Ortak Ön İşleme Adımları
 
-Veri sızıntısını önlemek amacıyla tüm dönüşümler yalnızca train verisi üzerinde öğrenilmiş ve test verisine yalnızca transform uygulanmıştır.
+1. Veri setinin okunması
+2. Feature ve label ayrımı
+3. Train / Validation / Test bölünmesi
+4. StandardScaler ile normalizasyon
+5. Veri sızıntısını önlemek için yalnızca train üzerinde fit işlemi uygulanması
+
+---
+
+## Deep Learning Pipeline
+
+```text
+Raw Data
+   │
+   ▼
+Train/Test Split
+   │
+   ▼
+Normalization
+   │
+   ▼
+Sequence Generation
+   │
+   ▼
+LSTM / GRU / CNN
+```
+
+Deep Learning modelleri çok değişkenli sensör verileri üzerinde doğrudan çalışmaktadır.
+
+---
+
+## Probabilistic Automata Pipeline
+
+```text
+Raw Data
+   │
+   ▼
+Normalization
+   │
+   ▼
+PCA (PC1)
+   │
+   ▼
+PAA
+   │
+   ▼
+SAX
+   │
+   ▼
+Sliding Window
+   │
+   ▼
+Pattern Generation
+   │
+   ▼
+State Generation
+   │
+   ▼
+Transition Analysis
+   │
+   ▼
+Prediction
+   │
+   ▼
+Explainability
+```
+
+Automata modeli için PCA yalnızca eğitim verisi üzerinde öğrenilmiş ve tüm dönüşümler eğitimden elde edilen parametreler kullanılarak uygulanmıştır.
 
 ---
 
 # Veri Bölme Stratejisi
 
+Veri sızıntısını önlemek ve gerçek dünya senaryolarını daha doğru temsil etmek amacıyla veri setlerine özel bölme stratejileri uygulanmıştır.
+
+---
+
 ## BATADAL
+
+BATADAL veri setinde zaman serisi yapısının korunabilmesi için kronolojik bölme uygulanmıştır.
 
 | Bölüm | Oran | Satır |
 |---------|---------:|---------:|
@@ -182,16 +285,27 @@ Veri sızıntısını önlemek amacıyla tüm dönüşümler yalnızca train ver
 | Validation | %20 | 835 |
 | Test | %20 | 836 |
 
-### Not
+### Uygulanan Kurallar
 
 - Shuffle uygulanmamıştır.
 - Zaman sırası korunmuştur.
+- Normalizasyon yalnızca train üzerinde fit edilmiştir.
+- PCA yalnızca train üzerinde fit edilmiştir.
+- Validation ve test verileri yalnızca transform edilmiştir.
 
 ---
 
 ## SKAB
 
-SKAB veri setinde GroupKFold yaklaşımı kullanılmıştır.
+SKAB veri setinde aynı dosyaya ait kayıtların hem eğitim hem test tarafına düşmesini önlemek amacıyla GroupKFold yaklaşımı uygulanmıştır.
+
+Gruplama değişkeni:
+
+```text
+source_file
+```
+
+olarak belirlenmiştir.
 
 | Fold | Train | Test |
 |---------|---------:|---------:|
@@ -201,24 +315,50 @@ SKAB veri setinde GroupKFold yaklaşımı kullanılmıştır.
 | Fold 4 | 18040 | 4434 |
 | Fold 5 | 17931 | 4543 |
 
-### Not
+### Uygulanan Kurallar
 
-- Aynı kaynak dosya hem train hem test içerisinde bulunmamaktadır.
+- Aynı CSV dosyası hem train hem test tarafında yer almamaktadır.
 - Veri sızıntısı engellenmiştir.
+- Her fold bağımsız değerlendirilmiştir.
+- Sonuçlar fold ortalamaları şeklinde raporlanmıştır.
 
 ---
 
+# Veri Sızıntısını Önleme Yaklaşımı
+
+Proje boyunca aşağıdaki kurallar uygulanmıştır:
+
+| İşlem | Uygulama |
+|---------|---------|
+| StandardScaler | Yalnızca train üzerinde fit edilmiştir |
+| PCA | Yalnızca train üzerinde fit edilmiştir |
+| Validation Dönüşümü | Train parametreleri ile transform |
+| Test Dönüşümü | Train parametreleri ile transform |
+| SKAB Split | source_file bazlı GroupKFold |
+| BATADAL Split | Zaman sıralı ayrım |
+
+Bu yaklaşım sayesinde test verisinin eğitim sürecine doğrudan veya dolaylı şekilde sızması engellenmiştir.
+
+---
 # Kullanılan Modeller
 
-Bu proje kapsamında Deep Learning tabanlı modeller ile açıklanabilir bir Probabilistic Automata yaklaşımı karşılaştırılmıştır.
+Bu proje kapsamında Deep Learning tabanlı black-box modeller ile açıklanabilir bir Probabilistic Automata yaklaşımı karşılaştırılmıştır.
 
-## Deep Learning Modelleri
+---
 
-| Model | Tür | Açıklama |
-|---------|---------|---------|
-| LSTM | Deep Learning | Uzun dönem bağımlılıkları öğrenebilen recurrent neural network |
-| GRU | Deep Learning | LSTM'e göre daha hafif ve hızlı recurrent yapı |
-| 1D-CNN | Deep Learning | Yerel zaman serisi örüntülerini öğrenen convolutional yapı |
+### Kullanılan Eğitim Parametreleri
+
+| Parametre | Değer |
+|------------|------------:|
+| Epoch | 50 |
+| Batch Size | 32 |
+| Learning Rate | 0.001 |
+| Early Stopping Patience | 5 |
+| Optimizer | Adam |
+| Loss Function | BCEWithLogitsLoss |
+| Random Seed | 42 |
+
+Deep Learning modelleri normalize edilmiş çok değişkenli sensör verileri üzerinde eğitilmiş ve Accuracy, Precision, Recall ve F1-score metrikleri ile değerlendirilmiştir.
 
 ---
 
@@ -226,48 +366,61 @@ Bu proje kapsamında Deep Learning tabanlı modeller ile açıklanabilir bir Pro
 
 | Model | Tür | Açıklama |
 |---------|---------|---------|
-| Probabilistic Automata | Explainable AI | State ve transition probability tabanlı açıklanabilir model |
+| Probabilistic Automata | Explainable AI | State ve transition probability tabanlı açıklanabilir anomali tespit modeli |
 
----
-
-# Deep Learning Eğitim Parametreleri
-
-| Parametre | Değer |
-|------------|------------:|
-| Epoch | 50 |
-| Batch Size | 32 |
-| Learning Rate | 0.001 |
-| Early Stopping | 5 |
-| Optimizer | Adam |
-| Loss Function | BCEWithLogitsLoss |
+Probabilistic Automata yaklaşımı, zaman serisini sembolik örüntülere dönüştürerek karar üretmektedir. Model yalnızca anomali tahmini yapmakla kalmamakta, aynı zamanda bu kararın hangi durum geçişleri ve hangi olasılıklar üzerinden oluştuğunu da açıklayabilmektedir.
 
 ---
 
 # Açıklanabilir Automata Yaklaşımı
 
-Bu çalışmada PCA ile tek boyuta indirgenen zaman serileri sembolik hale getirilerek açıklanabilir bir otomata modeli oluşturulmuştur.
+Bu çalışmada çok değişkenli sensör verileri önce normalize edilmiş, ardından PCA ile tek boyuta indirgenmiştir. İlk temel bileşen (PC1) kullanılarak zaman serisi sembolik forma dönüştürülmüş ve Probabilistic Automata modeli oluşturulmuştur.
+
+### Kullanılan Temel Parametreler
+
+| Parametre | Değer |
+|------------|------------:|
+| PCA Component | PC1 |
+| PAA Segments | 4 |
+| Window Size | 4 |
+| Alphabet Size | 3 |
+| Unseen Distance Threshold | 1 |
+
+---
 
 ## Dönüşüm Zinciri
 
 ```text
-PCA
- ↓
+Normalize Data
+      │
+      ▼
+PCA (PC1)
+      │
+      ▼
 PAA
- ↓
+      │
+      ▼
 SAX
- ↓
+      │
+      ▼
 Sliding Window
- ↓
-Pattern Üretimi
- ↓
-State Oluşturma
- ↓
+      │
+      ▼
+Pattern Generation
+      │
+      ▼
+State Creation
+      │
+      ▼
 Transition Matrix
- ↓
+      │
+      ▼
 Transition Probability
- ↓
+      │
+      ▼
 Prediction
- ↓
+      │
+      ▼
 Explainability
 ```
 
@@ -278,8 +431,8 @@ Explainability
 ```mermaid
 flowchart TD
 
-A[Normalize Data]
---> B[PCA]
+A[Normalized Features]
+--> B[PCA PC1]
 
 B --> C[PAA]
 C --> D[SAX]
@@ -287,144 +440,208 @@ D --> E[Sliding Window]
 
 E --> F[Pattern Generation]
 F --> G[State Creation]
+
 G --> H[Transition Matrix]
-
 H --> I[Transition Probability]
-I --> J[Laplace Smoothing]
 
+I --> J[Laplace Smoothing]
 J --> K[Prediction]
-K --> L[Explainability]
+
+K --> L[Path Probability]
+L --> M[Confidence Score]
+
+M --> N[Explainability Output]
 ```
 
 ---
 
 ## Transition Probability Hesaplama
 
-State geçiş olasılıkları aşağıdaki yöntem ile hesaplanmıştır.
+Bir durumdan başka bir duruma geçiş olasılığı aşağıdaki şekilde hesaplanmaktadır:
 
 ```text
 P(Si → Sj)
-
 =
-Transition Count
-
+Transition Count(Si → Sj)
 /
-
-Total Outgoing Count
+Total Outgoing Transitions(Si)
 ```
 
 Sıfır olasılık problemini azaltmak amacıyla Laplace Smoothing uygulanmıştır.
 
 ---
 
+## Açıklanabilirlik Çıktıları
+
+Automata modeli aşağıdaki bilgileri üretebilmektedir:
+
+- State bilgisi
+- Pattern bilgisi
+- State geçişleri
+- Transition probability değerleri
+- Path probability
+- Log path probability
+- Average transition probability
+- Confidence score
+- Unseen pattern eşlemeleri
+- Nihai karar (Normal / Anomaly)
+
+Bu yapı sayesinde model yalnızca bir tahmin üretmekle kalmamakta, tahminin hangi geçişler ve hangi olasılıklar sonucunda oluştuğunu da açıklayabilmektedir.
+
+---
+
 # Unseen Pattern Yönetimi
 
-Model eğitim sırasında görülmeyen patternleri yönetebilmek için Levenshtein Distance kullanmaktadır.
+Probabilistic Automata modeli, eğitim sırasında görülmeyen sembolik örüntüleri (unseen patterns) yönetebilmek için Levenshtein Distance tabanlı bir eşleme mekanizması kullanmaktadır.
+
+Bu mekanizma sayesinde model, daha önce hiç karşılaşmadığı pattern'lar için de açıklanabilir ve deterministik kararlar üretebilmektedir.
+
+---
 
 ## İşleyiş
 
-1. Gelen pattern sözlükte aranır.
-2. Bulunursa doğrudan kullanılır.
-3. Bulunamazsa unseen olarak işaretlenir.
-4. Levenshtein Distance hesaplanır.
-5. En yakın pattern bulunur.
-6. Mapping işlemi gerçekleştirilir.
-7. Tahmin üretilir.
+1. Test sırasında gelen pattern eğitim sözlüğünde aranır.
+2. Pattern sözlükte bulunuyorsa doğrudan ilgili state kullanılır.
+3. Pattern sözlükte bulunmuyorsa **unseen** olarak işaretlenir.
+4. Eğitim sözlüğündeki tüm pattern'lar ile Levenshtein Distance hesaplanır.
+5. En küçük edit distance değerine sahip pattern bulunur.
+6. Gelen pattern bu state'e eşlenir.
+7. Transition analizi ve tahmin süreci eşlenen state üzerinden devam eder.
+8. Açıklanabilirlik çıktısında eşleme bilgisi raporlanır.
 
 ---
 
 ## Örnek
 
 ```text
-Train Pattern : abc
+Train Pattern : abca
 
-Incoming Pattern : abd
+Incoming Pattern : abcb
 
-Distance = 1
+Levenshtein Distance = 1
 
-abd → abc
+abcb → abca
 ```
+
+Bu örnekte test sırasında gelen `abcb` pattern'i eğitim sırasında görülmemiştir. Sistem en yakın pattern olarak `abca` state'ini belirleyerek tahmin sürecine devam etmektedir.
 
 ---
 
 # Explainability Çıktıları
 
-Automata modeli kararlarını açıklayabilmektedir.
+Probabilistic Automata modeli yalnızca anomali kararı üretmekle kalmamakta, aynı zamanda kararın hangi state geçişleri ve hangi olasılıklar sonucunda oluştuğunu da raporlayabilmektedir.
 
-Örnek açıklama çıktısı:
+Üretilen açıklama çıktılarında aşağıdaki bilgiler yer almaktadır:
+
+- State bilgisi
+- Pattern bilgisi
+- Pattern durumu (seen / unseen)
+- Eşlenen pattern bilgisi
+- Levenshtein distance değeri
+- Transition listesi
+- Transition probability değerleri
+- Path probability
+- Log path probability
+- Average transition probability
+- Confidence score
+- Nihai karar (Normal / Anomaly)
+
+---
+
+## Örnek Açıklama Çıktısı
 
 ```json
 {
-  "dataset": "SKAB",
-  "fold": 1,
   "time_step": 1,
-  "state": "q1",
-  "pattern": "abbac",
-  "original_pattern": "abba",
+  "state": "abca",
+  "pattern": "abcb",
   "status": "unseen",
-  "mapped_to": "abba",
-  "nearest_pattern": "abba",
-  "distance": 1,
-  "transition": "aaaa->abba",
-  "transition_probability": 0.002188,
-  "path_probability": 0.002188,
-  "decision": "anomaly",
-  "confidence_score": 0.002188
+  "mapped_to": "abca",
+  "levenshtein_distance": 1,
+  "transitions": [
+    {
+      "from": "abca",
+      "to": "bcab",
+      "probability": 0.2188
+    }
+  ],
+  "path_probability": 0.2188,
+  "confidence_score": 0.2188,
+  "decision": "anomaly"
 }
 ```
 
-Bu sayede modelin hangi pattern nedeniyle anomali kararı verdiği takip edilebilmektedir.
+---
+
+## Açıklanabilirlik Avantajları
+
+Probabilistic Automata modeli aşağıdaki nedenlerle açıklanabilir bir yapı sunmaktadır:
+
+- Karar süreci state bazında takip edilebilir.
+- Hangi pattern'in anomaliye neden olduğu görülebilir.
+- State geçişleri ve geçiş olasılıkları incelenebilir.
+- Unseen pattern eşlemeleri açık şekilde raporlanabilir.
+- Confidence score ile karar güveni yorumlanabilir.
+- Transition probability yapısı görselleştirilebilir.
+
+Bu özellikler sayesinde model yalnızca bir tahmin üretmekle kalmaz, aynı zamanda bu tahminin neden üretildiğini de açıklayabilir.
 
 ---
 
 # Testler
 
-Proje kapsamında veri ön işleme, automata oluşturma, tahmin sistemi, unseen pattern yönetimi, açıklanabilirlik ve derin öğrenme bileşenleri için birim testler geliştirilmiştir.
+Proje kapsamında veri ön işleme, PCA dönüşümü, PAA-SAX dönüşümleri, automata oluşturma, transition analizi, unseen pattern yönetimi, açıklanabilirlik modülü ve derin öğrenme bileşenleri için kapsamlı birim testler geliştirilmiştir.
 
 Tüm testleri çalıştırmak için:
 
 ```bash
-python -m pytest tests
+python -m pytest
 ```
 
 Belirli testleri çalıştırmak için:
 
 ```bash
-python -m pytest tests/test_transition_analysis.py
-
 python -m pytest tests/test_automata_predict.py
 
-python -m pytest tests/test_levenshtein.py
+python -m pytest tests/test_automata_prediction_accuracy.py
+
+python -m pytest tests/test_explainability.py
 ```
+
+---
 
 ## Test Sonuçları
 
-Aşağıdaki çıktı proje kapsamında geliştirilen testlerin başarıyla çalıştığını göstermektedir.
+Son doğrulama çalıştırmasında tüm testler başarıyla tamamlanmıştır.
 
-- Toplam Test Sayısı: **47**
-- Başarılı Test Sayısı: **47**
-- Başarı Oranı: **%100**
+| Ölçüt | Değer |
+|--------|--------:|
+| Toplam Test Sayısı | 47 |
+| Başarılı Test Sayısı | 47 |
+| Başarı Oranı | %100 |
 
 <p align="center">
 <img src="results/figures/tests/pytest_results.png.jpeg" width="900">
 </p>
 
-*Pytest çıktısı (47/47 test başarılı).*
+*Pytest sonuç ekranı (47/47 test başarılı).*
 
 ---
 
 # Normal Veri Senaryosu Sonuçları
 
-Bu senaryoda modeller orijinal veri üzerinde değerlendirilmiştir.
+Bu deneyde modeller herhangi bir gürültü eklenmeden orijinal test verileri üzerinde değerlendirilmiştir.
 
-## SKAB Sonuçları
+---
+
+## SKAB Sonuçları (5 Fold Ortalama)
 
 | Model | Accuracy | Precision | Recall | F1-score |
 |---------|---------:|---------:|---------:|---------:|
-| LSTM | 0.674 | 0.668 | 0.093 | 0.149 |
-| GRU | 0.676 | 0.592 | 0.122 | 0.187 |
-| 1D-CNN | 0.678 | 0.637 | 0.139 | 0.215 |
-| Automata | 0.567 | 0.308 | 0.118 | 0.156 |
+| LSTM | 0.670 | 0.564 | 0.063 | 0.099 |
+| GRU | 0.673 | 0.574 | 0.087 | 0.135 |
+| 1D-CNN | 0.675 | 0.596 | 0.104 | 0.160 |
+| Automata | 0.600 | 0.276 | 0.104 | 0.137 |
 
 ---
 
@@ -435,13 +652,13 @@ Bu senaryoda modeller orijinal veri üzerinde değerlendirilmiştir.
 | LSTM | 0.904 | 0.000 | 0.000 | 0.000 |
 | GRU | 0.904 | 0.000 | 0.000 | 0.000 |
 | 1D-CNN | 0.904 | 0.000 | 0.000 | 0.000 |
-| Automata | 0.671 | 0.308 | 0.500 | 0.381 |
+| Automata | 0.780 | 0.047 | 0.058 | 0.052 |
 
 ---
 
 # Confusion Matrix
 
-Aşağıdaki confusion matrix automata modelinin sınıflandırma performansını göstermektedir.
+Aşağıdaki confusion matrix örneği Probabilistic Automata modelinin normal veri senaryosundaki sınıflandırma performansını göstermektedir.
 
 <p align="center">
 <img src="results/figures/confusion_matrix/confusion_matrix.png" width="700">
@@ -449,9 +666,9 @@ Aşağıdaki confusion matrix automata modelinin sınıflandırma performansın�
 
 ---
 
-# Precision Recall Curve
+# Precision-Recall Curve
 
-Precision ve Recall arasındaki ilişki aşağıdaki grafikte gösterilmiştir.
+Precision ve Recall arasındaki ilişki aşağıdaki grafikte gösterilmektedir.
 
 <p align="center">
 <img src="results/figures/pr_curve/precision_recall_curve.png" width="700">
@@ -461,11 +678,15 @@ Precision ve Recall arasındaki ilişki aşağıdaki grafikte gösterilmiştir.
 
 ## Normal Veri Sonuçlarının Değerlendirilmesi
 
-- Deep Learning modelleri daha yüksek accuracy değerleri üretmiştir.
-- CNN modeli SKAB veri setinde en yüksek F1 skoruna ulaşmıştır.
-- BATADAL veri setinde sınıf dengesizliği nedeniyle deep learning modelleri anomaly sınıfını yakalamakta zorlanmıştır.
-- Automata modeli daha düşük doğruluk üretmesine rağmen karar mekanizmasını açıklayabilmektedir.
-- Explainability açısından automata yaklaşımı önemli avantajlar sunmaktadır.
+Elde edilen sonuçlar incelendiğinde Deep Learning modellerinin özellikle accuracy metriğinde Automata modelinden daha yüksek sonuçlar ürettiği görülmektedir.
+
+SKAB veri setinde en yüksek F1-score değeri 1D-CNN modeli tarafından elde edilmiştir. CNN modeli zaman serilerindeki yerel örüntüleri öğrenmede başarılı sonuçlar vermiştir.
+
+BATADAL veri setinde ise sınıf dengesizliği nedeniyle tüm Deep Learning modelleri yüksek accuracy üretmelerine rağmen anomali sınıfını yakalamakta zorlanmıştır. Bu durum precision, recall ve F1-score değerlerinin sıfıra yakın olmasına neden olmuştur.
+
+Probabilistic Automata modeli Deep Learning modellerine kıyasla daha düşük performans metrikleri üretmesine rağmen karar mekanizmasını state geçişleri ve transition olasılıkları üzerinden açıklayabilmektedir.
+
+Bu nedenle Automata yaklaşımının temel avantajı performanstan çok açıklanabilirlik ve karar izlenebilirliği olarak değerlendirilmiştir.
 
 ---
 
@@ -473,12 +694,19 @@ Precision ve Recall arasındaki ilişki aşağıdaki grafikte gösterilmiştir.
 
 Modellerin veri bozulmalarına karşı dayanıklılığını ölçmek amacıyla test verilerine Gaussian Noise eklenmiştir.
 
+Bu deneyde eğitim verileri değiştirilmemiş, yalnızca test verilerine belirli seviyede Gaussian Noise uygulanmıştır. Amaç modellerin daha gerçekçi ve gürültülü ortamlardaki davranışlarını incelemektir.
+
+---
+
 ## Uygulanan Yaklaşım
 
 - Eğitim verileri değiştirilmemiştir.
 - Modeller yeniden eğitilmemiştir.
-- Yalnızca test verilerine gürültü eklenmiştir.
-- Performans kayıpları incelenmiştir.
+- Yalnızca test verilerine Gaussian Noise eklenmiştir.
+- Deep Learning ve Automata modelleri aynı gürültülü veri üzerinde değerlendirilmiştir.
+- Accuracy, Precision, Recall ve F1-score değişimleri incelenmiştir.
+
+---
 
 ## Gürültü Senaryosu Akışı
 
@@ -505,59 +733,143 @@ H --> I[Karşılaştırma]
 
 ---
 
+## SKAB Gürültü Sonuçları
+
+| Model | Accuracy | Precision | Recall | F1-score |
+|---------|---------:|---------:|---------:|---------:|
+| LSTM | 0.655 | 0.441 | 0.110 | 0.179 |
+| GRU | 0.655 | 0.412 | 0.099 | 0.160 |
+| 1D-CNN | 0.403 | 0.355 | 0.519 | 0.422 |
+| Automata | 0.598 | 0.275 | 0.102 | 0.135 |
+
+---
+
+## BATADAL Gürültü Sonuçları
+
+| Model | Accuracy | Precision | Recall | F1-score |
+|---------|---------:|---------:|---------:|---------:|
+| LSTM | 0.000 | 0.000 | 0.000 | 0.000 |
+| GRU | 0.000 | 0.000 | 0.000 | 0.000 |
+| 1D-CNN | 0.000 | 0.000 | 0.000 | 0.000 |
+| Automata | 0.600 | 0.000 | 0.000 | 0.000 |
+
+---
+
 ## Gürültü Senaryosu Değerlendirmesi
 
-- Gürültü eklenmesi tüm modellerde performans düşüşüne neden olmuştur.
-- Deep Learning modelleri gürültüden etkilenmiştir.
-- Automata modeli sembolik dönüşüm nedeniyle belirli seviyeye kadar dayanıklılık göstermiştir.
-- Gürültü arttıkça transition yapılarında bozulmalar gözlemlenmiştir.
+- Gaussian Noise eklenmesi tüm modelleri etkilemiştir.
+- SKAB veri setinde CNN modeli en yüksek Recall değerini üretmiştir.
+- LSTM ve GRU modellerinde F1-score değerlerinde düşüş gözlemlenmiştir.
+- Automata modeli sembolik dönüşüm yapısı sayesinde belirli seviyede dayanıklılık göstermiştir.
+- BATADAL veri setinde Deep Learning modellerinin performansı ciddi şekilde düşmüştür.
+- Gürültü arttıkça transition yapılarında bozulmalar meydana gelmiş ve confidence score değerleri azalmıştır.
 
 ---
 
 # Unseen Veri Senaryosu
 
-Bu deneyde eğitim sırasında görülmeyen yeni patternler oluşturulmuştur.
+Bu deneyde eğitim sırasında görülmeyen yeni pattern'lar oluşturulmuştur.
 
-Amaç modelin daha önce karşılaşmadığı örüntüler karşısındaki davranışını incelemektir.
+Amaç, Automata modelinin daha önce karşılaşmadığı örüntüler karşısındaki davranışını incelemektir.
 
----
-
-## SKAB Sonuçları
-
-| Model | Accuracy | Precision | Recall | F1-score |
-|---------|---------:|---------:|---------:|---------:|
-| LSTM | 0.674 | 0.668 | 0.093 | 0.149 |
-| GRU | 0.676 | 0.592 | 0.122 | 0.187 |
-| 1D-CNN | 0.678 | 0.637 | 0.139 | 0.215 |
-| Automata | 1.000 | 1.000 | 1.000 | 1.000 |
+Modelin unseen pattern'ları yönetebilmesi için Levenshtein Distance tabanlı eşleme mekanizması kullanılmıştır.
 
 ---
 
-## BATADAL Sonuçları
+## Unseen Senaryosu Akışı
 
-| Model | Accuracy | Precision | Recall | F1-score |
-|---------|---------:|---------:|---------:|---------:|
-| Automata | 1.000 | 1.000 | 1.000 | 1.000 |
+```mermaid
+flowchart TD
+
+A[Test Pattern]
+--> B{Pattern Seen?}
+
+B -->|Yes| C[Direct State Mapping]
+
+B -->|No| D[Levenshtein Distance]
+
+D --> E[Nearest Pattern]
+
+E --> F[State Mapping]
+
+C --> G[Prediction]
+F --> G
+
+G --> H[Explainability Output]
+```
+
+---
+
+## Unseen Veri Seti Özeti
+
+| Veri Seti | Unseen Ratio | Açıklama |
+|------------|------------:|------------|
+| SKAB | 1.00 | Test patternlarının tamamı eğitimde görülmemiştir |
+| BATADAL | 1.00 | Test patternlarının tamamı eğitimde görülmemiştir |
+
+---
+
+## Unseen Pattern Eşleme Sonuçları
+
+| Veri Seti | Pattern Yönetimi | Eşleme Yöntemi | Karar Üretimi |
+|------------|------------|------------|------------|
+| SKAB | Başarılı | Levenshtein Distance | Devam etti |
+| BATADAL | Başarılı | Levenshtein Distance | Devam etti |
+
+---
+
+## Açıklanabilirlik Çıktıları
+
+| Veri Seti | Unseen Pattern Tespiti | Mapping Bilgisi | Transition Açıklaması | Confidence Score |
+|------------|------------|------------|------------|------------|
+| SKAB | Var | Var | Var | Var |
+| BATADAL | Var | Var | Var | Var |
+
+---
+
+## Örnek Unseen Pattern Eşlemesi
+
+| Gelen Pattern | En Yakın Eğitim Pattern'ı | Levenshtein Distance |
+|--------------|--------------------------|----------------------:|
+| abdc | abbc | 1 |
+| cbad | cbcd | 1 |
+| acbd | acad | 1 |
 
 ---
 
 ## Değerlendirme
 
-- Automata modeli unseen patternleri başarılı şekilde tespit etmiştir.
-- Levenshtein Distance mekanizması yeni patternlerin eşlenmesini sağlamıştır.
-- Karar süreci explainability çıktılarıyla açıklanabilmiştir.
+- Eğitim sırasında görülmeyen pattern'lar başarıyla tespit edilmiştir.
+- Levenshtein Distance kullanılarak en yakın eğitim pattern'ına eşleme yapılmıştır.
+- State geçişleri korunmuştur.
+- Karar süreci kesintiye uğramadan devam etmiştir.
+- Mapping işlemleri explainability çıktılarında raporlanmıştır.
+- Model tamamen yeni örüntüler için de açıklanabilir karar üretebilmiştir.
+
+Bu sonuçlar, Probabilistic Automata yaklaşımının unseen pattern durumlarında deterministik ve açıklanabilir davranış sergileyebildiğini göstermektedir.
 
 ---
 
 # Explainability Analizi
 
-Automata modelinin yorumlanabilirliği state ve transition yapıları üzerinden incelenmiştir.
+Probabilistic Automata modelinin en önemli avantajı yalnızca tahmin üretmesi değil, aynı zamanda karar sürecini açıklayabilmesidir.
+
+Model;
+
+- State bilgisi
+- Pattern bilgisi
+- Transition olasılıkları
+- Path probability
+- Confidence score
+- Unseen pattern eşlemeleri
+
+üreterek kararın nasıl oluştuğunu takip edilebilir hale getirmektedir.
 
 ---
 
 ## Automata State Diagram
 
-Aşağıdaki grafik automata tarafından öğrenilen durumları ve geçişleri göstermektedir.
+Aşağıdaki grafik eğitim verisinden oluşturulan state yapısını ve state geçişlerini göstermektedir.
 
 <p align="center">
 <img src="results/figures/state_diagram/automata_state_diagram.png" width="700">
@@ -567,11 +879,40 @@ Aşağıdaki grafik automata tarafından öğrenilen durumları ve geçişleri g
 
 ## Transition Probability Heatmap
 
-Geçiş olasılıklarının yoğunluğu aşağıdaki heatmap üzerinde gösterilmiştir.
+Geçiş olasılıklarının yoğunluğu aşağıdaki heatmap üzerinde gösterilmektedir.
 
 <p align="center">
 <img src="results/figures/heatmap/transition_probability_heatmap.png" width="700">
 </p>
+
+---
+
+## Örnek Açıklanabilirlik Çıktısı
+
+```json
+{
+  "time_step": 25,
+  "state": "abca",
+  "pattern": "abca",
+  "status": "seen",
+  "path_probability": 0.00318,
+  "confidence_score": 0.412,
+  "decision": "normal"
+}
+```
+
+Unseen pattern durumunda ise:
+
+```json
+{
+  "pattern": "abda",
+  "status": "unseen",
+  "mapped_to": "abca",
+  "levenshtein_distance": 1,
+  "confidence_score": 0.287,
+  "decision": "anomaly"
+}
+```
 
 ---
 
@@ -581,7 +922,9 @@ Automata modeli:
 
 - State bazlı çalışmaktadır.
 - Geçiş olasılıklarını raporlayabilmektedir.
-- Unseen patternleri açıklayabilmektedir.
+- Confidence score üretebilmektedir.
+- Unseen pattern'ları açıklayabilmektedir.
+- Levenshtein Distance ile pattern eşlemesi yapabilmektedir.
 - Karar sürecini JSON çıktıları ile sunabilmektedir.
 
 Bu özellikler deep learning modellerine kıyasla önemli yorumlanabilirlik avantajları sağlamaktadır.
@@ -590,20 +933,20 @@ Bu özellikler deep learning modellerine kıyasla önemli yorumlanabilirlik avan
 
 # Parametre Duyarlılık Analizi
 
-Parametre değişimlerinin model performansı üzerindeki etkileri incelenmiştir.
+Automata modelinin davranışını incelemek amacıyla Window Size ve Alphabet Size parametreleri üzerinde duyarlılık analizi gerçekleştirilmiştir.
 
 ---
 
 # Window Size Analizi
 
-## Sonuçlar
+## SKAB Sonuçları
 
-| Window Size | Dataset | Accuracy | Precision | Recall | F1-score |
-|------------:|----------|----------:|----------:|----------:|----------:|
-| 3 | SKAB | 0.608 | 0.287 | 0.085 | 0.125 |
-| 4 | SKAB | 0.600 | 0.276 | 0.104 | 0.137 |
-| 5 | SKAB | 0.594 | 0.263 | 0.106 | 0.130 |
-| 6 | SKAB | 0.588 | 0.246 | 0.112 | 0.129 |
+| Window Size | Accuracy | F1-score | State Count | Transition Density |
+|------------:|----------:|----------:|------------:|-------------------:|
+| 3 | 0.608 | 0.125 | 27.0 | 0.0977 |
+| 4 | 0.600 | 0.137 | 71.2 | 0.0317 |
+| 5 | 0.594 | 0.130 | Artış | Azalış |
+| 6 | 0.588 | 0.129 | Artış | Azalış |
 
 ---
 
@@ -623,25 +966,25 @@ Parametre değişimlerinin model performansı üzerindeki etkileri incelenmişti
 
 ---
 
-### Değerlendirme
+## Değerlendirme
 
-- Window size arttıkça state sayısı artmıştır.
+- Window Size arttıkça state sayısı artmıştır.
 - Transition yoğunluğu azalmıştır.
 - Model karmaşıklığı yükselmiştir.
-- En dengeli sonuçlar window size = 4 için elde edilmiştir.
+- En dengeli sonuçlar Window Size = 4 için elde edilmiştir.
 
 ---
 
 # Alphabet Size Analizi
 
-## Sonuçlar
+## SKAB Sonuçları
 
-| Alphabet Size | Dataset | Accuracy | Precision | Recall | F1-score |
-|--------------:|----------|----------:|----------:|----------:|----------:|
-| 3 | SKAB | 0.600 | 0.276 | 0.104 | 0.137 |
-| 4 | SKAB | 0.615 | 0.334 | 0.097 | 0.148 |
-| 5 | SKAB | 0.613 | 0.343 | 0.116 | 0.170 |
-| 6 | SKAB | 0.600 | 0.299 | 0.110 | 0.157 |
+| Alphabet Size | Accuracy | F1-score | State Count |
+|--------------:|----------:|----------:|------------:|
+| 3 | 0.600 | 0.137 | 71.2 |
+| 4 | 0.615 | 0.148 | 130.6 |
+| 5 | 0.613 | 0.170 | Artış |
+| 6 | 0.600 | 0.157 | Artış |
 
 ---
 
@@ -661,37 +1004,56 @@ Parametre değişimlerinin model performansı üzerindeki etkileri incelenmişti
 
 ---
 
-### Değerlendirme
+## Değerlendirme
 
-- Alphabet size arttıkça pattern çeşitliliği yükselmiştir.
+- Alphabet Size arttıkça pattern çeşitliliği yükselmiştir.
 - State sayısı artmıştır.
 - Çok büyük alphabet değerlerinde performans düşüşü gözlemlenmiştir.
-- En yüksek F1 skorları alphabet size = 5 civarında elde edilmiştir.
+- En yüksek F1-score değerleri Alphabet Size = 5 civarında elde edilmiştir.
 
 ---
 
 # Cross Dataset Analizi
 
-Bu deneyde modelin farklı veri setlerine genellenebilirliği incelenmiştir.
+Bu deneyde modellerin bir veri setinde eğitilip farklı veri setinde test edilmesiyle genellenebilirlikleri incelenmiştir.
 
-| Kaynak Veri Seti | Hedef Veri Seti | Accuracy | Precision | Recall | F1-score |
-|------------------|----------------|----------:|----------:|----------:|----------:|
+---
+
+## Probabilistic Automata Sonuçları
+
+| Train Dataset | Test Dataset | Accuracy | Precision | Recall | F1-score |
+|--------------|-------------|----------:|----------:|----------:|----------:|
 | SKAB | BATADAL | 0.519 | 0.104 | 0.477 | 0.170 |
 | BATADAL | SKAB | 0.590 | 0.362 | 0.170 | 0.222 |
 
 ---
 
-## Değerlendirme
+## Deep Learning Cross Dataset Sonuçları
+
+| Model | Train Dataset | Test Dataset | Accuracy | Precision | Recall | F1-score |
+|---------|---------|---------|---------:|---------:|---------:|---------:|
+| LSTM | SKAB | BATADAL | 0.751 | 0.150 | 0.333 | 0.204 |
+| GRU | SKAB | BATADAL | 0.702 | 0.137 | 0.398 | 0.203 |
+| CNN | SKAB | BATADAL | 0.737 | 0.140 | 0.335 | 0.195 |
+| LSTM | BATADAL | SKAB | 0.652 | 0.000 | 0.000 | 0.000 |
+| GRU | BATADAL | SKAB | 0.652 | 0.000 | 0.000 | 0.000 |
+| CNN | BATADAL | SKAB | 0.652 | 0.000 | 0.000 | 0.000 |
+
+---
+
+## Cross Dataset Değerlendirmesi
 
 - Veri setleri arasında doğrudan transfer başarısı sınırlı kalmıştır.
-- Sensör yapılarındaki farklılıklar performansı etkilemiştir.
-- Automata modeli kısmi genellenebilirlik göstermiştir.
+- SKAB üzerinde öğrenilen örüntüler BATADAL'a kısmen aktarılabilmiştir.
+- BATADAL üzerinde öğrenilen modeller SKAB üzerinde başarılı sonuç verememiştir.
+- Sensör yapılarındaki farklılıklar performansı önemli ölçüde etkilemiştir.
+- Automata modeli de benzer şekilde veri setine bağımlı davranmıştır.
 
 ---
 
 # İstatistiksel Analiz
 
-Deneyler farklı random seed değerleri ile tekrar çalıştırılmıştır.
+Deneyler aşağıdaki random seed değerleri ile tekrarlanmıştır.
 
 ## Kullanılan Seed Değerleri
 
@@ -705,32 +1067,23 @@ Deneyler farklı random seed değerleri ile tekrar çalıştırılmıştır.
 
 ---
 
-## Ortalama Sonuçlar
+## Wilcoxon Signed-Rank Testi
 
-| Dataset | Accuracy Mean | Accuracy Std | Precision Mean | Recall Mean | F1-score Mean |
-|----------|----------:|----------:|----------:|----------:|----------:|
-| BATADAL | 0.780 | 0.000 | 0.047 | 0.058 | 0.052 |
-| SKAB | 0.600 | 0.029 | 0.276 | 0.104 | 0.137 |
+Modeller arasındaki performans farklarını incelemek amacıyla Wilcoxon Signed-Rank testi uygulanmıştır.
+
+| Karşılaştırma | Statistic | p-value | Yorum |
+|-------------|----------:|---------:|---------|
+| LSTM vs GRU | 1.0 | 0.125 | Anlamlı fark yok |
+| LSTM vs CNN | 0.0 | 0.0625 | Sınıra yakın |
+| GRU vs CNN | 1.0 | 0.125 | Anlamlı fark yok |
 
 ---
 
-## Wilcoxon Model Karşılaştırması
+## Sonuç
 
-SKAB veri setinde 5 fold üzerinden elde edilen F1-score değerleri kullanılarak modeller arası Wilcoxon Signed-Rank testi uygulanmıştır.
-
-| Karşılaştırma | Statistic | p-value | Yorum |
-|---|---:|---:|---|
-| LSTM vs GRU | 1.0 | 0.125 | Anlamlı fark yok |
-| LSTM vs CNN | 0.0 | 0.0625 | Anlamlı fark yok, sınıra yakın |
-| GRU vs CNN | 1.0 | 0.125 | Anlamlı fark yok |
-
-Tüm p-value değerleri 0.05’in üzerinde olduğu için modeller arasında istatistiksel olarak anlamlı bir fark gözlemlenmemiştir.
-
-### Sonuç
-
-- İstatistiksel olarak anlamlı fark gözlemlenmemiştir.
-- Deneyler kararlı sonuçlar üretmiştir.
-- Farklı seed değerlerinde benzer performans elde edilmiştir.
+- p-value değerleri 0.05'in üzerinde bulunmuştur.
+- Modeller arasında istatistiksel olarak anlamlı fark gözlemlenmemiştir.
+- Sonuçlar farklı random seed değerlerinde kararlı davranış göstermiştir.
 
 ---
 
@@ -743,19 +1096,23 @@ Bu proje kapsamında:
 - 1D-CNN
 - Probabilistic Automata
 
-yaklaşımları karşılaştırılmıştır.
+yaklaşımları zaman serisi anomali tespiti problemi üzerinde karşılaştırılmıştır.
 
-Deep Learning modelleri daha yüksek doğruluk değerleri üretebilmesine rağmen karar mekanizmaları doğrudan yorumlanamamaktadır.
+Deep Learning modelleri özellikle SKAB veri setinde daha yüksek performans göstermiştir. CNN modeli SKAB üzerinde en yüksek F1-score değerini üretmiştir.
+
+BATADAL veri setinde sınıf dengesizliği nedeniyle Accuracy değerleri yüksek olmasına rağmen Recall ve F1-score değerleri düşük kalmıştır.
 
 Probabilistic Automata yaklaşımı ise:
 
 - State yapıları
 - Transition olasılıkları
-- Pattern tabanlı karar mekanizması
-- Unseen pattern yönetimi
-- Levenshtein Distance
-- Explainability çıktıları
+- Confidence Score
+- Path Probability
+- Unseen Pattern Yönetimi
+- Levenshtein Distance Eşlemesi
+- Explainability Çıktıları
 
 sayesinde karar sürecini açıklanabilir hale getirmiştir.
 
-Çalışma sonucunda açıklanabilir yapay zeka perspektifinden Probabilistic Automata yaklaşımının önemli avantajlar sunduğu görülmüştür.
+Sonuç olarak Deep Learning modelleri performans açısından avantaj sağlarken, Probabilistic Automata modeli yorumlanabilirlik açısından önemli avantajlar sunmuştur. Bu çalışma, zaman serisi anomali tespitinde performans ve açıklanabilirlik arasındaki dengeyi göstermektedir.
+---
