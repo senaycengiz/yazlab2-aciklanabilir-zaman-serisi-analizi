@@ -634,6 +634,17 @@ Bu deneyde modeller herhangi bir gürültü eklenmeden orijinal test verileri ü
 
 ---
 
+## Model Performansı ve Stabilitesi
+
+| Model | SKAB F1-score | BATADAL F1-score |
+|---------|-------------:|----------------:|
+| LSTM | 0.356 ± 0.156 | 0.000 ± 0.000 |
+| GRU | 0.387 ± 0.171 | 0.000 ± 0.000 |
+| 1D-CNN | 0.401 ± 0.188 | 0.000 ± 0.000 |
+| Automata | 0.137 ± 0.096 | 0.052 ± 0.000 |
+
+---
+
 ## SKAB Sonuçları (5 Fold Ortalama)
 
 | Model | Accuracy | Precision | Recall | F1-score |
@@ -1048,6 +1059,29 @@ Bu deneyde modellerin bir veri setinde eğitilip farklı veri setinde test edilm
 - BATADAL üzerinde öğrenilen modeller SKAB üzerinde başarılı sonuç verememiştir.
 - Sensör yapılarındaki farklılıklar performansı önemli ölçüde etkilemiştir.
 - Automata modeli de benzer şekilde veri setine bağımlı davranmıştır.
+
+---
+
+# Runtime Analizi
+
+Modellerin çalışma süreleri eğitim ve çıkarım süreçleri açısından karşılaştırılmıştır.
+
+| Model | Training Time (sn) | Inference Time (sn) |
+|---------|-------------------:|--------------------:|
+| LSTM | 62.574 | - |
+| GRU | 92.170 | - |
+| 1D-CNN | 81.761 | - |
+| Automata | - | 1.359 |
+
+---
+
+## Runtime Değerlendirmesi
+
+Runtime sonuçlarına göre en kısa eğitim süresi 62.574 saniye ile LSTM modelinde gözlemlenmiştir. GRU modeli 92.170 saniye ile en uzun eğitim süresine sahip olurken, 1D-CNN modeli 81.761 saniyede eğitimini tamamlamıştır.
+
+Automata modeli klasik epoch tabanlı bir eğitim süreci kullanmadığı için training time değeri verilmemiştir. Buna karşılık inference süresi yalnızca 1.359 saniye olarak ölçülmüştür.
+
+Bu sonuçlar, Deep Learning modellerinin daha yüksek hesaplama maliyetine sahip olduğunu; Probabilistic Automata yaklaşımının ise daha hızlı çıkarım yapabildiğini göstermektedir.
 
 ---
 
