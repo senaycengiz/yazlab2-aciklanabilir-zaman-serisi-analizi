@@ -627,6 +627,188 @@ Son doğrulama çalıştırmasında tüm testler başarıyla tamamlanmıştır.
 *Pytest sonuç ekranı (47/47 test başarılı).*
 
 ---
+# Deney Sonuçları ve Karşılaştırmalı Analiz Tabloları
+---
+Bu bölümde proje kapsamında gerçekleştirilen deneylerin özet sonuçları sunulmaktadır. Sonuçlar normal veri, gürültülü veri, unseen pattern senaryoları, parametre duyarlılık analizleri ve cross-dataset deneylerinden elde edilmiştir.
+---
+## Tablo 1: Model Performansı ve Stabilitesi (F1-score ± Std)
+
+| Model | SKAB | BATADAL |
+|---------|---------|---------|
+| LSTM | 0.149 ± 0.167 | 0.000 ± 0.000 |
+| GRU | 0.187 ± 0.181 | 0.000 ± 0.000 |
+| 1D-CNN | 0.215 ± 0.162 | 0.000 ± 0.000 |
+| Automata | 0.137 ± 0.105 | 0.381 ± 0.000 |
+---
+### Değerlendirme
+
+- SKAB veri setinde en yüksek F1-score değeri 1D-CNN modeli tarafından elde edilmiştir.
+
+- GRU modeli ikinci sırada yer almıştır.
+
+- Automata modeli SKAB üzerinde derin öğrenme modellerinin gerisinde kalmıştır.
+
+- BATADAL veri setinde sınıf dengesizliği nedeniyle LSTM, GRU ve CNN modelleri anomaly sınıfını tespit edememiştir.
+
+- Automata modeli BATADAL veri setinde F1-score = 0.381 değeri ile en başarılı sonucu üretmiştir.
+---
+## Tablo 2: Gürültü Etkisi ve Unseen Senaryo Analizi
+
+| Veri Seti | Model | Orijinal F1 | Gürültülü F1 | Det. Rate | Map. Acc. |
+|------------|---------|------------:|-------------:|----------:|----------:|
+| SKAB | LSTM | 0.149 | 0.179 | - | - |
+| SKAB | GRU | 0.187 | 0.160 | - | - |
+| SKAB | 1D-CNN | 0.215 | 0.422 | - | - |
+| SKAB | Automata | 0.137 | 0.237 | 1.000 | 1.000 |
+| BATADAL | LSTM | 0.000 | 0.000 | - | - |
+| BATADAL | GRU | 0.000 | 0.000 | - | - |
+| BATADAL | 1D-CNN | 0.000 | 0.000 | - | - |
+| BATADAL | Automata | 0.381 | 0.182 | 1.000 | 1.000 |
+
+### Tablo 2 Değerlendirmesi
+
+Bu tabloda modellerin gürültülü veri ve eğitim sırasında görülmeyen örüntüler karşısındaki davranışları karşılaştırılmıştır.
+
+Deep Learning modelleri için unseen pattern yönetimi doğrudan pattern eşleme mekanizmasına dayanmadığından Det. Rate ve Map. Acc. değerleri raporlanmamıştır. Bu nedenle ilgili alanlar `-` ile gösterilmiştir.
+
+SKAB veri setinde gürültülü senaryoda en yüksek F1-score değeri 1D-CNN modeli tarafından elde edilmiştir. CNN modeli özellikle recall değerindeki artış sayesinde gürültülü veri üzerinde daha yüksek F1-score üretmiştir.
+
+Probabilistic Automata modeli SKAB veri setinde normal senaryoda F1-score = 0.137 üretirken gürültülü senaryoda F1-score = 0.237 elde etmiştir. Unseen senaryoda ise Detection Rate = 1.000 ve Mapping Accuracy = 1.000 değerlerine ulaşmıştır.
+
+BATADAL veri setinde Deep Learning modelleri sınıf dengesizliği nedeniyle anomaly sınıfını tespit edememiştir. Automata modeli ise normal senaryoda F1-score = 0.381, gürültülü senaryoda F1-score = 0.182 elde etmiş ve unseen pattern senaryosunda tüm örüntüleri başarıyla tespit edip eşleyebilmiştir.
+
+Bu sonuçlar, Probabilistic Automata yaklaşımının özellikle unseen pattern yönetimi ve açıklanabilir karar üretimi açısından önemli avantajlar sunduğunu göstermektedir.
+
+---
+## Tablo 3: Veri Setleri Arası Genellenebilirlik (Cross-Dataset Analysis)
+
+| Eğitim Veri Seti | Test Veri Seti | Model | Accuracy | Precision | Recall | F1-score |
+|------------------|----------------|--------|----------:|----------:|----------:|----------:|
+| SKAB | BATADAL | LSTM | 0.751 ± 0.051 | 0.150 ± 0.015 | 0.333 ± 0.067 | 0.204 ± 0.013 |
+| SKAB | BATADAL | GRU | 0.702 ± 0.020 | 0.137 ± 0.003 | 0.398 ± 0.038 | 0.203 ± 0.006 |
+| SKAB | BATADAL | CNN | 0.737 ± 0.038 | 0.140 ± 0.009 | 0.335 ± 0.057 | 0.195 ± 0.006 |
+| SKAB | BATADAL | Automata | 0.519 | 0.104 | 0.477 | 0.170 |
+| BATADAL | SKAB | LSTM | 0.652 ± 0.009 | 0.000 ± 0.000 | 0.000 ± 0.000 | 0.000 ± 0.000 |
+| BATADAL | SKAB | GRU | 0.652 ± 0.009 | 0.000 ± 0.000 | 0.000 ± 0.000 | 0.000 ± 0.000 |
+| BATADAL | SKAB | CNN | 0.652 ± 0.009 | 0.000 ± 0.000 | 0.000 ± 0.000 | 0.000 ± 0.000 |
+| BATADAL | SKAB | Automata | 0.590 ± 0.049 | 0.362 ± 0.101 | 0.170 ± 0.058 | 0.222 ± 0.049 |
+---
+### Tablo 3 Değerlendirmesi
+
+Cross-dataset deneylerinde modeller bir veri setinde eğitilip farklı bir veri setinde test edilmiştir. Amaç modellerin veri setine bağımlılığını ve genellenebilirlik yeteneklerini incelemektir.
+
+SKAB üzerinde eğitilen Deep Learning modelleri BATADAL veri setinde sınırlı da olsa anlamlı sonuçlar üretmiştir. En yüksek Accuracy değeri LSTM modeli tarafından (0.751 ± 0.051), en yüksek Recall değeri ise GRU modeli tarafından (0.398 ± 0.038) elde edilmiştir.
+
+Probabilistic Automata modeli SKAB → BATADAL geçişinde F1-score = 0.170 elde etmiştir. Bu sonuç Deep Learning modellerinin gerisinde kalmasına rağmen modelin açıklanabilirlik avantajı korunmuştur.
+
+BATADAL üzerinde eğitilen modeller SKAB veri setine aktarıldığında tüm Deep Learning modelleri anomaly sınıfını tespit edememiş ve F1-score = 0.000 üretmiştir. Buna karşılık Automata modeli F1-score = 0.222 ± 0.049 elde ederek iki veri seti arasında daha dengeli bir performans göstermiştir.
+
+Sonuçlar, sensör yapıları ve veri dağılımları arasındaki farklılıkların model performansını önemli ölçüde etkilediğini göstermektedir. Veri setleri arası doğrudan transfer başarısı genel olarak düşük kalmıştır.
+---
+## Tablo 4: Window Size Parametre Duyarlılık Analizi
+
+### SKAB Veri Seti
+
+| Window Size | Accuracy (Mean ± Std) | F1-score (Mean ± Std) | State Count | Transition Density |
+|------------:|----------------------:|----------------------:|------------:|-------------------:|
+| 3 | 0.608 ± 0.022 | 0.125 ± 0.065 | 27.0 | 0.0977 |
+| 4 | 0.600 ± 0.032 | 0.137 ± 0.105 | 71.2 | 0.0317 |
+| 5 | 0.594 ± 0.047 | 0.130 ± 0.115 | 161.0 | 0.0128 |
+| 6 | 0.588 ± 0.054 | 0.129 ± 0.128 | 330.4 | 0.0056 |
+
+### BATADAL Veri Seti
+
+| Window Size | Accuracy | F1-score | State Count | Transition Density |
+|------------:|----------:|----------:|------------:|-------------------:|
+| 3 | 0.798 | 0.067 | 26 | 0.1050 |
+| 4 | 0.780 | 0.052 | 71 | 0.0327 |
+| 5 | 0.771 | 0.104 | 165 | 0.0115 |
+| 6 | 0.745 | 0.124 | 312 | 0.0052 |
+
+### Tablo 4 Değerlendirmesi
+
+Window Size arttıkça state sayısında üstel büyüme gözlenmiştir. SKAB veri setinde state sayısı Window Size=3 için 27 iken Window Size=6 için 330.4 seviyesine ulaşmıştır.
+
+Buna karşılık transition density sürekli azalmıştır. Daha büyük pencere boyutları daha karmaşık automata yapıları üretmesine rağmen performans artışı sağlamamıştır.
+
+SKAB veri setinde en dengeli sonuçlar Window Size=4 için elde edilmiştir. Bu nedenle proje boyunca varsayılan pencere boyutu olarak Window Size=4 kullanılmıştır.
+
+---
+
+### SKAB
+
+<p align="center">
+<img src="results/figures/parameter_analysis/window_size_f1_sensitivity_SKAB.png" width="700">
+</p>
+
+---
+
+### BATADAL
+
+<p align="center">
+<img src="results/figures/parameter_analysis/window_size_f1_sensitivity_BATADAL_dataset04.png" width="700">
+</p>
+---
+
+## Tablo 5: Alphabet Size Parametre Duyarlılık Analizi
+
+### SKAB Veri Seti
+
+| Alphabet Size | Accuracy (Mean ± Std) | F1-score (Mean ± Std) | State Count |
+|--------------:|----------------------:|----------------------:|------------:|
+| 3 | 0.600 ± 0.032 | 0.137 ± 0.105 | 71.2 |
+| 4 | 0.615 ± 0.032 | 0.148 ± 0.075 | 130.6 |
+| 5 | 0.613 ± 0.036 | 0.170 ± 0.090 | 275.2 |
+| 6 | 0.600 ± 0.033 | 0.157 ± 0.081 | 474.4 |
+
+### BATADAL Veri Seti
+
+| Alphabet Size | Accuracy | F1-score | State Count |
+|--------------:|----------:|----------:|------------:|
+| 3 | 0.780 | 0.052 | 71 |
+| 4 | 0.785 | 0.197 | 169 |
+| 5 | 0.734 | 0.147 | 334 |
+| 6 | 0.623 | 0.137 | 522 |
+
+### Tablo 5 Değerlendirmesi
+
+Alphabet Size arttıkça sembolik temsilin çözünürlüğü yükselmiş ve state sayısı önemli ölçüde artmıştır.
+
+SKAB veri setinde en yüksek F1-score değeri Alphabet Size=5 için (0.170 ± 0.090) elde edilmiştir. Ancak state sayısı da 275.2 seviyesine yükselmiştir.
+
+Alphabet Size=6 durumunda model karmaşıklığı artmasına rağmen performans iyileşmesi sınırlı kalmıştır. Bu nedenle doğruluk ve model karmaşıklığı arasındaki denge göz önünde bulundurularak varsayılan değer olarak Alphabet Size=3 tercih edilmiştir.
+---
+
+### SKAB
+
+<p align="center">
+<img src="results/figures/parameter_analysis/alphabet_size_f1_sensitivity_SKAB.png" width="700">
+</p>
+
+---
+
+### BATADAL
+
+<p align="center">
+<img src="results/figures/parameter_analysis/alphabet_size_f1_sensitivity_BATADAL_dataset04.png" width="700">
+</p>
+
+
+---
+## Tablo 6: Modellerin Çalışma Süresi (Runtime) Karşılaştırması
+
+| Model | Training Time (sn) | Inference Time (sn) |
+|--------|-------------------:|--------------------:|
+| LSTM | 67.658 | - |
+| GRU | 102.948 | - |
+| 1D-CNN | 91.134 | - |
+| Automata | - | 2.103 |
+
+---
+### Tablo 6 Değerlendirmesi
+Tablo 6'da modellerin çalışma süreleri karşılaştırılmıştır. Derin öğrenme tabanlı modeller için eğitim (training) süreleri, probabilistic automata modeli için ise çıkarım (inference) süresi raporlanmıştır. Sonuçlara göre en kısa eğitim süresi 67.658 saniye ile LSTM modelinde elde edilirken, GRU modeli 102.948 saniye ile en yüksek eğitim maliyetine sahip olmuştur. 1D-CNN modeli ise 91.134 saniyede eğitimini tamamlamıştır. Probabilistic automata yaklaşımı yalnızca 2.103 saniyelik çıkarım süresiyle çalışmış ve diğer yöntemlere kıyasla oldukça düşük hesaplama maliyeti göstermiştir. Bu sonuçlar, önerilen automata tabanlı yaklaşımın yalnızca açıklanabilirlik açısından değil, aynı zamanda çalışma süresi ve hesaplama verimliliği açısından da avantaj sağladığını göstermektedir.
+
+---
 
 # Normal Veri Senaryosu Sonuçları
 
@@ -634,24 +816,14 @@ Bu deneyde modeller herhangi bir gürültü eklenmeden orijinal test verileri ü
 
 ---
 
-## Model Performansı ve Stabilitesi
-
-| Model | SKAB F1-score | BATADAL F1-score |
-|---------|-------------:|----------------:|
-| LSTM | 0.356 ± 0.156 | 0.000 ± 0.000 |
-| GRU | 0.387 ± 0.171 | 0.000 ± 0.000 |
-| 1D-CNN | 0.401 ± 0.188 | 0.000 ± 0.000 |
-| Automata | 0.137 ± 0.096 | 0.052 ± 0.000 |
-
----
 
 ## SKAB Sonuçları (5 Fold Ortalama)
 
 | Model | Accuracy | Precision | Recall | F1-score |
 |---------|---------:|---------:|---------:|---------:|
-| LSTM | 0.670 | 0.564 | 0.063 | 0.099 |
-| GRU | 0.673 | 0.574 | 0.087 | 0.135 |
-| 1D-CNN | 0.675 | 0.596 | 0.104 | 0.160 |
+| LSTM | 0.674 | 0.668 | 0.093 | 0.149 |
+| GRU | 0.676 | 0.592 | 0.122 | 0.187 |
+| 1D-CNN | 0.678 | 0.637 | 0.139 | 0.215 |
 | Automata | 0.600 | 0.276 | 0.104 | 0.137 |
 
 ---
@@ -663,7 +835,7 @@ Bu deneyde modeller herhangi bir gürültü eklenmeden orijinal test verileri ü
 | LSTM | 0.904 | 0.000 | 0.000 | 0.000 |
 | GRU | 0.904 | 0.000 | 0.000 | 0.000 |
 | 1D-CNN | 0.904 | 0.000 | 0.000 | 0.000 |
-| Automata | 0.780 | 0.047 | 0.058 | 0.052 |
+| Automata | 0.671 | 0.308 | 0.500 | 0.381 |
 
 ---
 
@@ -689,15 +861,15 @@ Precision ve Recall arasındaki ilişki aşağıdaki grafikte gösterilmektedir.
 
 ## Normal Veri Sonuçlarının Değerlendirilmesi
 
-Elde edilen sonuçlar incelendiğinde Deep Learning modellerinin özellikle accuracy metriğinde Automata modelinden daha yüksek sonuçlar ürettiği görülmektedir.
+Elde edilen sonuçlar incelendiğinde Deep Learning modellerinin özellikle SKAB veri setinde daha yüksek accuracy ve F1-score değerleri ürettiği görülmektedir.
 
-SKAB veri setinde en yüksek F1-score değeri 1D-CNN modeli tarafından elde edilmiştir. CNN modeli zaman serilerindeki yerel örüntüleri öğrenmede başarılı sonuçlar vermiştir.
+SKAB veri setinde en yüksek F1-score değeri 1D-CNN modeli tarafından elde edilmiştir. CNN modeli F1-score = 0.215 değeri ile en başarılı model olmuştur. CNN modelini sırasıyla GRU, LSTM ve Automata takip etmiştir.
 
-BATADAL veri setinde ise sınıf dengesizliği nedeniyle tüm Deep Learning modelleri yüksek accuracy üretmelerine rağmen anomali sınıfını yakalamakta zorlanmıştır. Bu durum precision, recall ve F1-score değerlerinin sıfıra yakın olmasına neden olmuştur.
+BATADAL veri setinde ise sınıf dengesizliği nedeniyle LSTM, GRU ve 1D-CNN modelleri yüksek accuracy üretmelerine rağmen anomaly sınıfını yakalayamamıştır. Bu nedenle precision, recall ve F1-score değerleri 0.000 olarak gerçekleşmiştir.
 
-Probabilistic Automata modeli Deep Learning modellerine kıyasla daha düşük performans metrikleri üretmesine rağmen karar mekanizmasını state geçişleri ve transition olasılıkları üzerinden açıklayabilmektedir.
+Probabilistic Automata modeli SKAB veri setinde Deep Learning modellerinin gerisinde kalmasına rağmen BATADAL veri setinde anomaly sınıfını daha dengeli yakalayarak F1-score = 0.381 değerine ulaşmıştır.
 
-Bu nedenle Automata yaklaşımının temel avantajı performanstan çok açıklanabilirlik ve karar izlenebilirliği olarak değerlendirilmiştir.
+Bu sonuçlar, model performansının veri setinin anomali oranı ve veri yapısından doğrudan etkilendiğini göstermektedir. Deep Learning modelleri SKAB üzerinde daha başarılı olurken, Automata yaklaşımı özellikle yorumlanabilirlik ve anomaly sınıfını açıklanabilir şekilde tespit etme açısından avantaj sağlamaktadır.
 
 ---
 
@@ -719,7 +891,7 @@ Bu deneyde eğitim verileri değiştirilmemiş, yalnızca test verilerine belirl
 
 ---
 
-## Gürültü Senaryosu Akışı
+## Gürültü(Noise) Senaryosu Akışı
 
 ```mermaid
 flowchart TD
@@ -744,36 +916,35 @@ H --> I[Karşılaştırma]
 
 ---
 
-## SKAB Gürültü Sonuçları
+## SKAB Gürültü(Noise) Sonuçları
 
 | Model | Accuracy | Precision | Recall | F1-score |
 |---------|---------:|---------:|---------:|---------:|
 | LSTM | 0.655 | 0.441 | 0.110 | 0.179 |
 | GRU | 0.655 | 0.412 | 0.099 | 0.160 |
 | 1D-CNN | 0.403 | 0.355 | 0.519 | 0.422 |
-| Automata | 0.598 | 0.275 | 0.102 | 0.135 |
+| Automata | 0.516 | 0.265 | 0.233 | 0.237 |
 
 ---
 
-## BATADAL Gürültü Sonuçları
+## BATADAL Gürültü(Noise) Sonuçları
 
 | Model | Accuracy | Precision | Recall | F1-score |
 |---------|---------:|---------:|---------:|---------:|
 | LSTM | 0.000 | 0.000 | 0.000 | 0.000 |
 | GRU | 0.000 | 0.000 | 0.000 | 0.000 |
 | 1D-CNN | 0.000 | 0.000 | 0.000 | 0.000 |
-| Automata | 0.600 | 0.000 | 0.000 | 0.000 |
+| Automata | 0.285 | 0.103 | 0.767 | 0.182 |
 
 ---
 
-## Gürültü Senaryosu Değerlendirmesi
+## Gürültü(Noise) Senaryosu Değerlendirmesi
 
-- Gaussian Noise eklenmesi tüm modelleri etkilemiştir.
-- SKAB veri setinde CNN modeli en yüksek Recall değerini üretmiştir.
-- LSTM ve GRU modellerinde F1-score değerlerinde düşüş gözlemlenmiştir.
-- Automata modeli sembolik dönüşüm yapısı sayesinde belirli seviyede dayanıklılık göstermiştir.
-- BATADAL veri setinde Deep Learning modellerinin performansı ciddi şekilde düşmüştür.
-- Gürültü arttıkça transition yapılarında bozulmalar meydana gelmiş ve confidence score değerleri azalmıştır.
+Gaussian Noise eklenmesi sonrasında tüm modellerde performans değişimleri gözlemlenmiştir.
+SKAB veri setinde 1D-CNN modeli yüksek recall değeri (0.519) sayesinde en yüksek F1-score değerini (0.422) üretmiştir. LSTM ve GRU modellerinde ise gürültü sonrasında performans düşüşü gözlemlenmiştir.
+Probabilistic Automata modeli SKAB veri setinde F1-score = 0.237 değeri elde etmiş ve sembolik temsil yapısı sayesinde belirli seviyede dayanıklılık göstermiştir.
+BATADAL veri setinde Deep Learning modelleri anomali sınıfını yakalayamazken, Automata modeli Recall = 0.767 değeri ile anomalilerin önemli bir kısmını tespit edebilmiştir.
+Bu sonuçlar, gürültünün özellikle derin öğrenme modellerinin karar mekanizmasını etkileyebildiğini; Automata yaklaşımının ise state ve transition tabanlı yapısı sayesinde belirli seviyede dayanıklılık sağlayabildiğini göstermektedir.
 
 ---
 
@@ -942,148 +1113,6 @@ Bu özellikler deep learning modellerine kıyasla önemli yorumlanabilirlik avan
 
 ---
 
-# Parametre Duyarlılık Analizi
-
-Automata modelinin davranışını incelemek amacıyla Window Size ve Alphabet Size parametreleri üzerinde duyarlılık analizi gerçekleştirilmiştir.
-
----
-
-# Window Size Analizi
-
-## SKAB Sonuçları
-
-| Window Size | Accuracy | F1-score | State Count | Transition Density |
-|------------:|----------:|----------:|------------:|-------------------:|
-| 3 | 0.608 | 0.125 | 27.0 | 0.0977 |
-| 4 | 0.600 | 0.137 | 71.2 | 0.0317 |
-| 5 | 0.594 | 0.130 | Artış | Azalış |
-| 6 | 0.588 | 0.129 | Artış | Azalış |
-
----
-
-### SKAB
-
-<p align="center">
-<img src="results/figures/parameter_analysis/window_size_f1_sensitivity_SKAB.png" width="700">
-</p>
-
----
-
-### BATADAL
-
-<p align="center">
-<img src="results/figures/parameter_analysis/window_size_f1_sensitivity_BATADAL_dataset04.png" width="700">
-</p>
-
----
-
-## Değerlendirme
-
-- Window Size arttıkça state sayısı artmıştır.
-- Transition yoğunluğu azalmıştır.
-- Model karmaşıklığı yükselmiştir.
-- En dengeli sonuçlar Window Size = 4 için elde edilmiştir.
-
----
-
-# Alphabet Size Analizi
-
-## SKAB Sonuçları
-
-| Alphabet Size | Accuracy | F1-score | State Count |
-|--------------:|----------:|----------:|------------:|
-| 3 | 0.600 | 0.137 | 71.2 |
-| 4 | 0.615 | 0.148 | 130.6 |
-| 5 | 0.613 | 0.170 | Artış |
-| 6 | 0.600 | 0.157 | Artış |
-
----
-
-### SKAB
-
-<p align="center">
-<img src="results/figures/parameter_analysis/alphabet_size_f1_sensitivity_SKAB.png" width="700">
-</p>
-
----
-
-### BATADAL
-
-<p align="center">
-<img src="results/figures/parameter_analysis/alphabet_size_f1_sensitivity_BATADAL_dataset04.png" width="700">
-</p>
-
----
-
-## Değerlendirme
-
-- Alphabet Size arttıkça pattern çeşitliliği yükselmiştir.
-- State sayısı artmıştır.
-- Çok büyük alphabet değerlerinde performans düşüşü gözlemlenmiştir.
-- En yüksek F1-score değerleri Alphabet Size = 5 civarında elde edilmiştir.
-
----
-
-# Cross Dataset Analizi
-
-Bu deneyde modellerin bir veri setinde eğitilip farklı veri setinde test edilmesiyle genellenebilirlikleri incelenmiştir.
-
----
-
-## Probabilistic Automata Sonuçları
-
-| Train Dataset | Test Dataset | Accuracy | Precision | Recall | F1-score |
-|--------------|-------------|----------:|----------:|----------:|----------:|
-| SKAB | BATADAL | 0.519 | 0.104 | 0.477 | 0.170 |
-| BATADAL | SKAB | 0.590 | 0.362 | 0.170 | 0.222 |
-
----
-
-## Deep Learning Cross Dataset Sonuçları
-
-| Model | Train Dataset | Test Dataset | Accuracy | Precision | Recall | F1-score |
-|---------|---------|---------|---------:|---------:|---------:|---------:|
-| LSTM | SKAB | BATADAL | 0.751 | 0.150 | 0.333 | 0.204 |
-| GRU | SKAB | BATADAL | 0.702 | 0.137 | 0.398 | 0.203 |
-| CNN | SKAB | BATADAL | 0.737 | 0.140 | 0.335 | 0.195 |
-| LSTM | BATADAL | SKAB | 0.652 | 0.000 | 0.000 | 0.000 |
-| GRU | BATADAL | SKAB | 0.652 | 0.000 | 0.000 | 0.000 |
-| CNN | BATADAL | SKAB | 0.652 | 0.000 | 0.000 | 0.000 |
-
----
-
-## Cross Dataset Değerlendirmesi
-
-- Veri setleri arasında doğrudan transfer başarısı sınırlı kalmıştır.
-- SKAB üzerinde öğrenilen örüntüler BATADAL'a kısmen aktarılabilmiştir.
-- BATADAL üzerinde öğrenilen modeller SKAB üzerinde başarılı sonuç verememiştir.
-- Sensör yapılarındaki farklılıklar performansı önemli ölçüde etkilemiştir.
-- Automata modeli de benzer şekilde veri setine bağımlı davranmıştır.
-
----
-
-# Runtime Analizi
-
-Modellerin çalışma süreleri eğitim ve çıkarım süreçleri açısından karşılaştırılmıştır.
-
-| Model | Training Time (sn) | Inference Time (sn) |
-|---------|-------------------:|--------------------:|
-| LSTM | 62.574 | - |
-| GRU | 92.170 | - |
-| 1D-CNN | 81.761 | - |
-| Automata | - | 1.359 |
-
----
-
-## Runtime Değerlendirmesi
-
-Runtime sonuçlarına göre en kısa eğitim süresi 62.574 saniye ile LSTM modelinde gözlemlenmiştir. GRU modeli 92.170 saniye ile en uzun eğitim süresine sahip olurken, 1D-CNN modeli 81.761 saniyede eğitimini tamamlamıştır.
-
-Automata modeli klasik epoch tabanlı bir eğitim süreci kullanmadığı için training time değeri verilmemiştir. Buna karşılık inference süresi yalnızca 1.359 saniye olarak ölçülmüştür.
-
-Bu sonuçlar, Deep Learning modellerinin daha yüksek hesaplama maliyetine sahip olduğunu; Probabilistic Automata yaklaşımının ise daha hızlı çıkarım yapabildiğini göstermektedir.
-
----
 
 # İstatistiksel Analiz
 
